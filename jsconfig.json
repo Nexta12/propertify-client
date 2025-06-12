@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@components/*": ["src/components/*"],
+        "@context/*": ["src/context/*"],
+        "@api/*": ["src/api/*"],
+        "@pages/*": ["src/pages/*"],
+        "@assets/*": ["src/assets/*"],
+        "@hooks/*": ["src/hooks/*"],
+        "@utils/*": ["src/utils/*"],
+        "@customTypes/*": ["src/customTypes/*"],
+        "@routes/*": ["src/routes/*"], // Add @routes alias here
+        "@store/*": ["src/store/*"],
+        "@dummy/*": ["src/dummy/*"]
+      }
+    }
+  }
+  

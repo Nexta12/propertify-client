@@ -1,0 +1,66 @@
+@import '@fontsource/roboto';
+@import '@fontsource/poppins';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-primary text-primary;
+  }
+  
+  input::placeholder {
+    @apply text-primary;
+  }
+  
+  .primaryText {
+    @apply text-primary font-[400] text-[16px] leading-[22px] ;
+  }
+
+  .orangeText {
+    @apply text-orange text-[1.1rem] font-semibold;
+  }
+  .titleText{
+    @apply text-primary mb-4 text-[24px] lg:text-[30px] font-[500] lg:leading-[50px]
+  }
+  
+  /* Layout */
+  .section-container {
+    @apply p-[15px] md:px-[40px] lg:px-[100px] lg:py-[20px] w-full mx-auto ;
+  }
+  
+ 
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center  font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer uppercase;
+  }
+
+  .btn:hover{
+    @apply scale-110
+  }
+  
+  .btn-primary {
+    @apply bg-main-green text-white hover:bg-green-hover focus:ring-main-green  bg-green-gradient  hover:bg-green-gradient-hover ;
+  }
+  
+  .btn-cta {
+    @apply bg-orange text-white hover:bg-orange/90 focus:ring-orange px-8 py-3 text-lg font-bold;
+  }
+  .btn-sm {
+    @apply px-4 py-[10px] text-sm;
+  }
+  
+  .btn-md {
+    @apply px-6 py-3 text-base;
+  }
+  
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+}
+
+.tox-statusbar__right-container {
+ display: none !important;
+}
+
