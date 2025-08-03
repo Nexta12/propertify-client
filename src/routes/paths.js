@@ -10,21 +10,16 @@ export const paths = {
     // Admin Paths
     admin: "/ada",
     adminDashboard: "/ada/dashboard",
-   
-
-    generalRoute: "/gra",
-  
-
     // Agentdashboard:
     agent: "/rda",
     agentDashboard: "/rda/dashboard",
-    newProperty: "/rda/properties/add",
- 
+   
 
+    protected: '/p',
+    feed: '/p/feed',
+    dashboard: '/p/dashboard',
+    newProperty: "/p/properties/add",
 
-    // otherRoles(groups)
-    otherUsers: "/oda",
-    othersDashboard: "/oda/dashboard"
   
   };
   

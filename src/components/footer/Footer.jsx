@@ -1,5 +1,6 @@
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 import { useState } from 'react';
+import whiteLogo from "@assets/img/white-logo.png"
 
 const FooterLinkSection = ({ title, links }) => (
   <div>
@@ -62,7 +63,7 @@ const Footer = ({className}) => {
           {/* Brand Column */}
           <div className='space-y-5'>
             <a href="/">
-              <img src="./green-logo.png" className="w-40" alt="Company Logo" />
+              <img src={whiteLogo} className="w-40" alt="Company Logo" />
             </a>
             <p className='text-secondary font-secondary text-sm leading-relaxed'>
               Nigeria's fastest-growing real estate platform connecting buyers, sellers, and agents nationwide.

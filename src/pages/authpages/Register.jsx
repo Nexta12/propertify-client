@@ -9,11 +9,12 @@ import EnhancedSelect from "@components/ui/EnhancedSelect";
 import Button from "@components/ui/Button";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { NigerianStates, professions } from "@utils/data";
 import { getLoggedInUserPath, getRoleFromProfession } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import { PuffLoader } from "react-spinners";
+import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 
 const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -135,8 +136,11 @@ const Register = () => {
   if(!isAuthenticated){
   return (
     <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
-      <ToastContainer />
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+  
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden relative ">
+         <div className="absolute top-4 left-5">
+        <HandleGoBackBtn/>
+        </div>
         {/* Logo Section */}
         <div className=" mt-5 text-center">
           <div className="flex justify-center">

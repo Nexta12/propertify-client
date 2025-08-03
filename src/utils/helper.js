@@ -4,12 +4,13 @@ import { professions } from "./data";
 import { useEffect } from "react";
 
 export const getLoggedInUserPath = (user) => {
+
   const rolePathMap = {
-    [UserRole.ADMIN]: paths.adminDashboard,
-    [UserRole.REALTOR]: paths.agentDashboard,
-    [UserRole.ENGINEER]: paths.othersDashboard,
-    [UserRole.SERVICE]: paths.othersDashboard,
-    [UserRole.TRADER]: paths.othersDashboard,
+    [UserRole.ADMIN]: paths.dashboard,
+    [UserRole.REALTOR]: paths.feed,
+    [UserRole.ENGINEER]: paths.feed,
+    [UserRole.SERVICE]: paths.feed,
+    [UserRole.TRADER]: paths.feed,
   };
 
   return rolePathMap[user.role] || paths.index;
@@ -74,8 +75,56 @@ export const handleFileUploadWith = (name, files, setFormData) => {
 };
 
 export const formatTitleCase = (str) => {
+    if (typeof str !== 'string' || !str.trim()) return '';
+
   return str
-    .split('_')
+    // .split('_')
+    .split(/[-_]+/)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+   
 }
+
+export  const MessageEncoder = (message) =>{
+ return message ? encodeURIComponent(message.trim()) : "";
+
+} 
+
+  export const DateFormatter = (dateString, showTime = false) => {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return '-'; // Return '-' for invalid or null dates
+    }
+  
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const suffix = ["th", "st", "nd", "rd"][
+      (day % 10 > 3 || [11, 12, 13].includes(day % 100)) ? 0 : day % 10
+    ];
+  
+    // Format the date (e.g., "Wed, Apr 3rd, 2024")
+    const formattedDate = date.toLocaleDateString("en-US", { 
+      weekday: 'short', 
+      month: 'short', 
+      day: 'numeric',
+      year: 'numeric'
+    }).replace(/\d+/, `${day}${suffix}`);
+  
+    // Return only the date if `showTime` is false
+    if (!showTime) return formattedDate;
+  
+    // Format the time (e.g., "12:30 PM")
+    const formattedTime = date.toLocaleTimeString("en-US", {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  
+    return `${formattedDate} at ${formattedTime}`;
+  };
+
+  export const formatPercentageChange = (percent) => {
+  const sign = percent > 0 ? "+" : percent < 0 ? "" : "";
+  return `${sign}${percent}% from last month`;
+};
+
+

@@ -1,44 +1,21 @@
-
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useMemo,
-  forwardRef,
-} from "react";
-import { toast, ToastContainer } from "react-toastify";
-import Breadcrumb from "./components/Breadcrumb";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { toast } from "react-toastify";
+import { Virtuoso } from "react-virtuoso";
 import FeaturedProperties from "./components/sidebar/FeaturedProperties";
 import RecentlyViewed from "./components/sidebar/RecentlyViewed";
 import ContactAgent from "./components/sidebar/ContactAgent";
-import PropertyCard from "@components/propertyCard/PropertyCard";
 import SearchAndFilterBar from "./components/filters/SearchAndFilterBar";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
-import { featuredProperties, recentlyViewed } from "@utils/data";
 import { PuffLoader } from "react-spinners";
-import { FixedSizeList as List } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import MobileFootermenu from "./components/mobileFooterMenu/MobileFootermenu";
 import convertFiltersToAPIFormat from "./components/filters/FilterToAPIFormat";
-
-// Custom outer element to remove default scroll behavior
-const CustomScrollContainer = forwardRef(({ children, ...props }, ref) => (
-  <div
-    ref={ref}
-    {...props}
-    style={{
-      ...props.style,
-      overflow: "visible",
-    }}
-  >
-    {children}
-  </div>
-));
+import PostCard from "@components/propertyCard/PostCard";
+import MobileFootermenu from "./components/mobileFooterMenu/MobileFootermenu";
+import MobileSearchBar from "./components/filters/MobileSearchBar";
 
 const Properties = () => {
+  // State declarations
   const [filters, setFilters] = useState({
     sortBy: "most_recent",
     propertyType: [],
@@ -56,18 +33,19 @@ const Properties = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const listRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const containerRef = useRef(null);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
-  // Handle window resize for mobile detection
+  const handlePostDelete = (postId) => {
+    setProperties((prev) => prev.filter((post) => post._id !== postId));
+  };
+
+  // Handle window resize
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Fetch properties
@@ -75,50 +53,38 @@ const Properties = () => {
     async (currentPage, isInitial) => {
       if (!hasMore && !isInitial) return;
 
-      const isInitialLoad = isInitial ?? initialLoad;
-      if (!isInitialLoad) {
-        setIsFetchingMore(true);
-      } else {
-        setLoading(true);
-      }
-
+      setLoading(true);
       try {
         const params = convertFiltersToAPIFormat(filters, currentPage);
         const res = await apiClient.get(endpoints.fetchAllProperties, {
           params,
         });
-        const newProperties = res.data.data.data;
-        const pagination = res.data.data.pagination;
-        
+
         setProperties((prev) => {
-          if (isInitialLoad) return newProperties;
-          const merged = [...prev, ...newProperties];
-          return merged.filter(
-            (property, index, self) =>
-              index === self.findIndex((p) => p._id === property._id)
-          );
+          const newItems = res.data.data.data;
+          return isInitial
+            ? newItems
+            : [...prev, ...newItems].filter(
+                (p, i, self) =>
+                  i === self.findIndex((item) => item._id === p._id)
+              );
         });
 
-        setHasMore(pagination.page * pagination.limit < pagination.total);
+        setHasMore(
+          res.data.data.pagination.page * res.data.data.pagination.limit <
+            res.data.data.pagination.total
+        );
         setInitialLoad(false);
-
-        if (isInitialLoad && listRef.current) {
-          listRef.current.scrollTo(0);
-        }
       } catch (error) {
         toast.error(ErrorFormatter(error));
       } finally {
-        if (isInitialLoad) {
-          setLoading(false);
-        } else {
-          setIsFetchingMore(false);
-        }
+        setLoading(false);
       }
     },
-    [filters, hasMore, initialLoad]
+    [filters, hasMore]
   );
 
-  // Reset and fetch when filters change
+  // Reset on filter change
   useEffect(() => {
     setProperties([]);
     setPage(1);
@@ -126,127 +92,113 @@ const Properties = () => {
     setInitialLoad(true);
   }, [filters]);
 
-  // Fetch properties when page or filters change
+  // Fetch data
   useEffect(() => {
-    const isInitial = page === 1;
-    fetchProperties(page, isInitial);
+    fetchProperties(page, page === 1);
   }, [page, filters, fetchProperties]);
 
   // Debounce search
   useEffect(() => {
     if (filters.searchTerm === undefined) return;
-
-    const timer = setTimeout(() => {
-      setFilters((prev) => ({ ...prev }));
-    }, 500);
-
+    const timer = setTimeout(() => setFilters((prev) => ({ ...prev })), 500);
     return () => clearTimeout(timer);
   }, [filters.searchTerm]);
 
-  // Fixed item size based on mobile/desktop
-  const getItemSize = useCallback(() => {
-    // Card height + gap between cards
-    return isMobile ? 522 : 612; // Adjust these values based on your actual card dimensions
-  }, [isMobile]);
+  // Infinite scroll
+  const loadMore = useCallback(() => {
+    if (!loading && hasMore) setPage((prev) => prev + 1);
+  }, [loading, hasMore]);
 
-  // Handle scroll to load more
-  const handleItemsRendered = useCallback(
-    ({ visibleStopIndex }) => {
-      if (
-        visibleStopIndex >= properties.length - 2 &&
-        hasMore &&
-        !isFetchingMore
-      ) {
-        setPage((prev) => prev + 1);
-      }
-    },
-    [properties.length, hasMore, isFetchingMore]
-  );
-
-  // Calculate list height based on fixed item sizes
-  const listHeight = useMemo(() => {
-    return properties.length * getItemSize();
-  }, [properties.length, getItemSize]);
-
-  // Virtualized list row component
-  const PropertyRow = useCallback(
-    ({ index, style }) => {
-      const property = properties[index];
-      return (
-        <div style={{ ...style, paddingBottom: '16px' }}>
-          <PropertyCard 
-            property={property}
-            className="h-full" // Ensure card fills its container
-          />
-        </div>
-      );
-    },
-    [properties]
-  );
+  // Custom footer
+  const CustomFooter = useCallback(() => {
+    return (
+      <div className="">
+        {" "}
+        {/* Added bottom padding */}
+        {hasMore && loading && (
+          <div className="flex justify-center p-4">
+            <PuffLoader color="#3B82F6" size={40} />
+          </div>
+        )}
+      </div>
+    );
+  }, [loading, hasMore]);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <Breadcrumb />
-      <ToastContainer />
+    <div className="bg-gray-50 min-h-screen ">
+      {/* <Breadcrumb /> */}
 
-      <section className="section-container">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Main Content */}
-          <div className="w-full lg:w-2/3">
-            <SearchAndFilterBar filters={filters} onFilterChange={setFilters} />
+      <main className="section-container !pt-2 flex items-start gap-x-4 relative ">
+        {/* Left sidebar */}
 
-            {/* Virtualized Properties List */}
-            {loading && properties.length === 0 ? (
-              <div className="flex items-center justify-center py-8 w-full">
-                <PuffLoader color="#3B82F6" size={60} />
-              </div>
-            ) : properties.length > 0 ? (
-              <div className="properties-list-container">
-                <AutoSizer disableHeight>
-                  {({ width }) => (
-                    <List
-                      ref={listRef}
-                      height={listHeight}
-                      width={width}
-                      itemCount={properties.length}
-                      itemSize={getItemSize()}
-                      onItemsRendered={handleItemsRendered}
-                      overscanCount={3}
-                      outerElementType={CustomScrollContainer}
-                    >
-                      {PropertyRow}
-                    </List>
-                  )}
-                </AutoSizer>
+        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white p-4">
+          <SearchAndFilterBar filters={filters} onFilterChange={setFilters} />
+        </div>
 
-                {isFetchingMore && (
-                  <div className="flex items-center justify-center py-4 border-t border-gray-200">
-                    <PuffLoader color="#3B82F6" size={40} />
+        {/* Main Post Content */}
+        <div className="w-full lg:w-[calc(100%-512px)]  ">
+       
+
+          {initialLoad && properties.length === 0 ? (
+            <div className="flex items-center justify-center py-8 w-full">
+              <PuffLoader color="#3B82F6" size={60} />
+            </div>
+          ) : properties.length > 0 ? (
+            <div ref={containerRef}>
+              <Virtuoso
+                data={properties}
+                totalCount={properties.length}
+                itemContent={(index) => (
+                  <div className="mb-4">
+                    <PostCard
+                      post={properties[index]}
+                       isProperty={properties[index].isProperty}
+                      onDeleteSuccess={handlePostDelete}
+                    />
                   </div>
                 )}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                No properties found matching your criteria
-              </div>
-            )}
-          </div>
+                endReached={loadMore}
+                overscan={isMobile ? 200 : 800}
+                components={{ Footer: CustomFooter }}
+                useWindowScroll
+                style={{ overflow: "visible" }}
+                scrollSeekConfiguration={{
+                  enter: (velocity) => velocity > 1000,
+                  exit: (velocity) => velocity < 100,
+                }}
+              />
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              No properties found matching your criteria
+            </div>
+          )}
+        </div>
 
-          {/* Sidebar */}
-          <div className="relative w-full lg:w-1/3 hidden lg:flex">
-            <div className="relative">
-              <div className="w-full space-y-6 sticky top-0">
-                <FeaturedProperties featuredProperties={featuredProperties} />
-                <RecentlyViewed recentlyViewed={recentlyViewed} />
-                <ContactAgent />
-              </div>
+        {/* Right sidebad */}
+        <div className=" hidden lg:block w-1/4 sticky top-20 ">
+          <div className="relative">
+            <div className="w-full space-y-6 sticky top-0">
+              <FeaturedProperties featuredProperties={properties} />
+              <RecentlyViewed />
+              <ContactAgent />
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Mobile Footer Menu */}
-      <MobileFootermenu />
+      </main>
+
+         {/* Mobile Seearch Bar Modal Display made re-usable, */}
+
+        <MobileSearchBar showMobileSearch={showMobileSearch} setShowMobileSearch={setShowMobileSearch}>
+            <SearchAndFilterBar
+                filters={filters}
+                onFilterChange={setFilters}
+                onApplyFilters={() => setShowMobileSearch(false)}
+              />
+        </MobileSearchBar>
+
+      <MobileFootermenu onSearchClick={() => setShowMobileSearch(true)} />
     </div>
   );
 };

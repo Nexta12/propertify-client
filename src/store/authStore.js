@@ -26,7 +26,7 @@ const handleLogin = async (loginDetails, navigate, set) => {
     const user = response.data;
     const accessToken = response.accessToken;
 
-    setLocalStorageItem("user", JSON.stringify(user));
+    setLocalStorageItem("user", user);
     setLocalStorageItem("accessToken", accessToken);
 
     //  Update User
@@ -72,7 +72,7 @@ const handleLogout = async (navigate, set) => {
 
 const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
-  user: localStorageUser ? JSON.parse(localStorageUser) : null,
+  user: localStorageUser || null,
   error: null,
   setError: (error) => set({ error }),
   isLoading: false,
@@ -84,7 +84,7 @@ const useAuthStore = create((set, get) => ({
   updateUser: (data) => {
     const { user } = get();
     const updatedUser = { ...user, ...data };
-    setLocalStorageItem("user", JSON.stringify(updatedUser));
+    setLocalStorageItem("user", updatedUser);
     set({ user: updatedUser || null });
   },
 

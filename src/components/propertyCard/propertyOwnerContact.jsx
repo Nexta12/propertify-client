@@ -4,7 +4,7 @@ import { FiMail, FiPhone } from "react-icons/fi";
 const PropertyOwnerContact = ({ property }) => {
   const message = "Hello, I'm interested in your property at";
   const encodedMessage = message ? encodeURIComponent(message) : "";
-
+ 
   return (
     <div className={`flex items-center justify-between gap-3`}>
       <a
@@ -21,7 +21,7 @@ const PropertyOwnerContact = ({ property }) => {
       </a>
    
       <a
-        href={`tel:${property.owner.phone[0]}`}
+        href={`tel:${property.owner.phone}`}
         className="p-2 text-indigo-600 rounded-full bg-indigo-50 transition-colors flex gap-x-1"
       >
         <FiPhone /> <span className="text-[12px]">Call</span>

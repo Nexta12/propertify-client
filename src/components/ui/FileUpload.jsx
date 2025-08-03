@@ -1,264 +1,376 @@
-
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DeleteModal from "@components/deleteModal/DeleteModal";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
-import { FiImage } from "react-icons/fi";
+import { FiImage, FiVideo } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const FileUpload = forwardRef(({
-  value = [],
-  onChange,
-  multiple = false,
-  maxFiles = 5,
-  accept = "image/*",
-  disabled = false,
-  cloudName = import.meta.VITE_CLOUDINARY_CLOUDNAME,
-  uploadPreset = import.meta.VITE_CLOUDINARY_UPLOADPRESET,
-  className = "",
-  cropping = !multiple,
-  croppingAspectRatio,
-  croppingDefaultSelectionRatio = 1,
-}, ref) => {
-  const [files, setFiles] = useState(() => {
-    if (Array.isArray(value)) return value;
-    else if (value) return [value];
-    return [];
-  });
+const FileUpload = forwardRef(
+  (
+    {
+      value = null,
+      onChange,
+      multiple = false,
+      maxFiles = 5,
+      accept = "image/*,video/*",
+      disabled = false,
+      cloudName = import.meta.env.VITE_CLOUDINARY_CLOUDNAME,
+      uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOADPRESET,
+      className = "",
+      cropping = !multiple,
+      croppingAspectRatio,
+      croppingDefaultSelectionRatio = 1,
+    },
+    ref
+  ) => {
+    const getTypeFromUrl = (url) => {
+      if (!url) return "image";
+      const videoExtensions = [".mp4", ".webm", ".mov", ".avi"];
+      const ext = url.substring(url.lastIndexOf(".")).toLowerCase();
+      return videoExtensions.includes(ext) ? "video" : "image";
+    };
 
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+    const isValidMediaItem = (item) => {
+      if (!item) return false;
+      if (typeof item === "string") return item.trim().length > 0;
+      return item.url && item.url.trim().length > 0;
+    };
 
-  const cloudinaryRef = useRef();
-  const widgetRef = useRef();
+    const [files, setFiles] = useState(() => {
+      if (!value) return [];
+      
+      const items = Array.isArray(value) ? value : [value];
+      return items
+        .filter(isValidMediaItem)
+        .map(item => typeof item === "string" 
+          ? { url: item, type: getTypeFromUrl(item) } 
+          : item
+        );
+    });
 
-  // 👇 Expose `handleOpenWidget` to parent via ref
-  useImperativeHandle(ref, () => ({
-    open: handleOpenWidget,
-  }));
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const cloudinaryRef = useRef();
+    const widgetRef = useRef();
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState(null);
 
-  useEffect(() => {
-    if (!window.cloudinary) return;
+    useImperativeHandle(ref, () => ({
+      open: () => {
+        if (disabled) return;
 
-    cloudinaryRef.current = window.cloudinary;
-    widgetRef.current = cloudinaryRef.current.createUploadWidget(
-      {
-        cloudName,
-        uploadPreset,
-        maxFiles: multiple ? maxFiles : 1,
-        sources: ["local", "url", "camera"],
-        folder: "PropertifyNG",
-        cropping,
-        croppingAspectRatio,
-        croppingDefaultSelectionRatio,
-        showAdvancedOptions: false,
-        multiple,
-        clientAllowedFormats: getFormatsFromAccept(accept),
-        maxImageFileSize: 15000000, // 15MB
-        styles: {
-          palette: {
-            window: "#FFFFFF",
-            windowBorder: "#90A0B3",
-            tabIcon: "#0078FF",
-            menuIcons: "#5A616A",
-            textDark: "#000000",
-            textLight: "#FFFFFF",
-            link: "#0078FF",
-            action: "#FF620C",
-            inactiveTabIcon: "#0E2F5A",
-            error: "#F44235",
-            inProgress: "#0078FF",
-            complete: "#20B832",
-            sourceBg: "#E4EBF1",
+        if (!multiple && files.length > 0) {
+          if (window.confirm("Replace the current file?")) {
+            widgetRef.current?.open();
+          }
+        } else if (multiple && files.length >= maxFiles) {
+          alert(`Maximum ${maxFiles} files allowed`);
+        } else {
+          widgetRef.current?.open();
+        }
+      },
+    }));
+
+    const getFormatsFromAccept = (acceptString) => {
+      if (!acceptString) return ["image"];
+      const formats = [];
+      
+      if (acceptString.includes("image/*")) formats.push("jpg", "png", "gif", "webp");
+      if (acceptString.includes("video/*")) formats.push("mp4", "webm", "mov", "avi");
+      
+      acceptString.split(",").forEach(type => {
+        const [category, format] = type.trim().split("/");
+        if (category === "image" && format !== "*") {
+          formats.push(format);
+        } else if (category === "video" && format !== "*") {
+          formats.push(format);
+        }
+      });
+
+      return formats.length > 0 ? formats : ["jpg", "png"];
+    };
+
+    useEffect(() => {
+      if (!window.cloudinary) return;
+
+      cloudinaryRef.current = window.cloudinary;
+      widgetRef.current = cloudinaryRef.current.createUploadWidget(
+        {
+          cloudName,
+          uploadPreset,
+          maxFiles: multiple ? maxFiles : 1,
+          sources: ["local",],
+          // sources: ["local", "url", "camera"],
+          folder: "PropertifyNG",
+          cropping: cropping,
+          croppingAspectRatio: croppingAspectRatio,
+          croppingDefaultSelectionRatio: croppingDefaultSelectionRatio,
+          showAdvancedOptions: false,
+          multiple,
+          clientAllowedFormats: getFormatsFromAccept(accept),
+          resourceType: "auto",
+          maxImageFileSize: 15000000,
+          maxVideoFileSize: 50000000,
+          styles: {
+            palette: {
+              window: "#FFFFFF",
+              windowBorder: "#90A0B3",
+              tabIcon: "#0078FF",
+              menuIcons: "#5A616A",
+              textDark: "#000000",
+              textLight: "#FFFFFF",
+              link: "#0078FF",
+              action: "#FF620C",
+              inactiveTabIcon: "#0E2F5A",
+              error: "#F44235",
+              inProgress: "#0078FF",
+              complete: "#20B832",
+              sourceBg: "#E4EBF1",
+            },
           },
         },
-      },
-         (error, result) => {
-        if (!error && result && result.event) {
-          switch (result.event) {
-            case "success":
-              if (multiple) {
-                setFiles((prev) => [...prev, result.info.secure_url]);
-              } else {
-                setFiles([result.info.secure_url]);
+        (error, result) => {
+          if (!error && result && result.event) {
+            switch (result.event) {
+              case "success": {
+                const mediaItem = {
+                  url: result.info.secure_url,
+                  type: result.info.resource_type,
+                  publicId: result.info.public_id,
+                };
+
+                setFiles(prev => multiple ? [...prev, mediaItem] : [mediaItem]);
+                setUploadProgress(0);
+                setIsUploading(false);
+                break;
               }
-              setUploadProgress(0);
-              setIsUploading(false);
-              break;
-            case "progress":
-              setIsUploading(true);
-              setUploadProgress(
-                Math.floor(
-                  (result.info.bytes_uploaded / result.info.bytes_total) * 100
-                )
-              );
-              break;
-            case "close":
-              setIsUploading(false);
-              break;
-            case "failure":
-              console.error("Upload failed:", result.info);
-              setIsUploading(false);
-              break;
+              case "progress": {
+                setIsUploading(true);
+                setUploadProgress(
+                  Math.floor(
+                    (result.info.bytes_uploaded / result.info.bytes_total) * 100
+                  )
+                );
+                break;
+              }
+              case "close": {
+                setIsUploading(false);
+                break;
+              }
+              case "failure": {
+                console.error("Upload failed:", result.info);
+                setIsUploading(false);
+                break;
+              }
+            }
+          } else if (error) {
+            console.error("Upload error:", error);
+            setIsUploading(false);
           }
-        } else if (error) {
-          console.error("Upload error:", error);
-          setIsUploading(false);
         }
+      );
+    }, [
+      cloudName,
+      uploadPreset,
+      multiple,
+      maxFiles,
+      accept,
+      cropping,
+      croppingAspectRatio,
+      croppingDefaultSelectionRatio,
+    ]);
+
+    useEffect(() => {
+      if (onChange) {
+        onChange(multiple ? files : files[0] || null);
       }
-    );
-  }, [cloudName, uploadPreset]);
-  const getFormatsFromAccept = (acceptString) => {
-    if (!acceptString) return ["image"];
-    const formats = [];
-    if (acceptString.includes("image/*")) formats.push("image");
-    else {
-      acceptString.split(",").forEach((type) => {
-        const format = type.split("/")[1];
-        if (format && format !== "*") formats.push(format);
-      });
-    }
-    return formats.length > 0 ? formats : ["image"];
-  };
+    }, [files, multiple]);
 
-  useEffect(() => {
-    if (onChange) onChange(multiple ? files : files[0] || null);
-  }, [files]);
+    const handleRemove = async (index) => {
+      setOpenModal(true);
+      setItemToDelete(files[index]);
+    };
 
-  const handleRemove = (index) => {
-    setOpenModal(true);
-    setItemToDelete(files[index]);
-  };
+    const handleOpenWidget = () => {
+      if (disabled) return;
 
-  const handleOpenWidget = () => {
-    if (disabled) return;
-
-    if (!multiple && files.length > 0) {
-      if (window.confirm("Replace the current image?")) {
+      if (!multiple && files.length > 0) {
+        if (window.confirm("Replace the current file?")) {
+          widgetRef.current?.open();
+        }
+      } else if (multiple && files.length >= maxFiles) {
+        alert(`Maximum ${maxFiles} files allowed`);
+      } else {
         widgetRef.current?.open();
       }
-    } else if (multiple && files.length >= maxFiles) {
-      alert(`Maximum ${maxFiles} files allowed`);
-    } else {
-      widgetRef.current?.open();
-    }
-  };
+    };
 
-  const confirmDelete = async () => {
-    setIsDeleting(true);
-    if (itemToDelete) {
+    // Confirm Deletion of Uploaded Media file
+
+    const confirmDelete = async () => {
+      setIsDeleting(true);
       try {
-        await apiClient.post(endpoints.updateCloudinary, {
-          Model: "PropertyModel",
-          url: itemToDelete,
-        });
 
-        toast.success("File deleted");
-        const indexToDelete = files.indexOf(itemToDelete);
-        const newFiles = files.filter((_, i) => i !== indexToDelete);
-        setFiles(newFiles);
-        onChange?.(multiple ? newFiles : newFiles[0] || null);
 
-        setOpenModal(false);
-        setItemToDelete(null);
+        if (itemToDelete) {
+          const deleteDetails = {
+            Model: "PropertyModel",
+            url: itemToDelete.url || itemToDelete,
+          };
+
+       const res =   await apiClient.post(endpoints.deleteMediaFileFromCloud, deleteDetails);
+
+       if(res.data.statusCode === 200){
+          setFiles(prev => prev.filter(
+            file => file.url !== (itemToDelete.url || itemToDelete)
+          ));
+
+          toast.success(res.data.message);
+       }
+
+        
+        }
+
+        
+
       } catch (error) {
         toast.error(ErrorFormatter(error));
+      } finally {
         setOpenModal(false);
         setItemToDelete(null);
         setIsDeleting(false);
       }
-    }
-  };
+    };
 
-  return (
-    <div className={`file-upload-container ${className}`}>
-      <DeleteModal
-        isOpen={openModal}
-        onClose={() => setOpenModal(false)}
-        onConfirm={confirmDelete}
-        message="Are you sure you want to delete this file?"
-        isDeleting={isDeleting}
-      />
-      <div
-        className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
-          disabled
-            ? "bg-gray-100 border-gray-300 cursor-not-allowed"
-            : "bg-gray-50 border-blue-400 hover:border-blue-500 cursor-pointer"
-        }`}
-        onClick={handleOpenWidget}
-      >
-        <div className="flex flex-col items-center justify-center gap-3 text-center">
-          <AiOutlineCloudUpload size={32} className={disabled ? "text-gray-400" : "text-blue-500"} />
-          <p className="font-medium text-gray-700 text-[10px]">
-            {multiple ? "Upload images" : "Upload an image"}
-          </p>
-          <p className="text-[10px] text-gray-500 mt-1">
-            {getAcceptDescription(accept)} (max 5MB each)
-          </p>
-          {isUploading && (
-            <div className="mt-2 w-full">
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-blue-600 h-2 rounded-full"
-                  style={{ width: `${uploadProgress}%` }}
-                ></div>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">Uploading... {uploadProgress}%</p>
+    const getAcceptDescription = (accept) => {
+      if (!accept) return "JPG, PNG";
+      if (accept.includes("video/*") && accept.includes("image/*")) 
+        return "Images & Videos";
+      if (accept.includes("video/*")) return "Videos";
+      return "Images";
+    };
+
+    return (
+      <div className={`file-upload-container ${className}`}>
+        <DeleteModal
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+          onConfirm={confirmDelete}
+          message="Are you sure you want to delete this file?"
+          isDeleting={isDeleting}
+        />
+
+        <div
+          className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
+            disabled
+              ? "bg-gray-100 border-gray-300 cursor-not-allowed"
+              : "bg-gray-50 border-blue-400 hover:border-blue-500 cursor-pointer"
+          }`}
+          onClick={handleOpenWidget}
+        >
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
+            <AiOutlineCloudUpload
+              size={32}
+              className={disabled ? "text-gray-400" : "text-blue-500"}
+            />
+            <div>
+              <p className="font-medium text-gray-700 text-[10px]">
+                {multiple ? "Upload files" : "Upload a file"}
+              </p>
+              <p className="text-[10px] text-gray-500 mt-1">
+                {getAcceptDescription(accept)} (max {accept.includes("video/*") ? "50MB" : "15MB"} each)
+              </p>
+              {isUploading && (
+                <div className="mt-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Uploading... {uploadProgress}%
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-
-      {files.length > 0 && (
-        <div className="mt-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">
-            {multiple ? `Uploaded (${files.length}/${maxFiles})` : "Uploaded"}
-          </h4>
-          <div className={`grid gap-3 ${multiple ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4" : "grid-cols-1"}`}>
-            {files.map((file, index) => (
-              <div key={index} className="relative group rounded-md overflow-hidden border border-gray-200 h-32">
-                <img src={file} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
-                {!disabled && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleRemove(index);
-                    }}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <AiOutlineDelete size={16} />
-                  </button>
-                )}
-              </div>
-            ))}
           </div>
         </div>
-      )}
 
-      {multiple && files.length === 0 && (
-        <div className="mt-4 flex items-center justify-center gap-2 text-gray-400">
-          <FiImage size={18} />
-          <span className="text-sm">No files uploaded yet</span>
-        </div>
-      )}
-    </div>
-  );
-});
+        {files.length > 0 ? (
+          <div className="mt-4">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">
+              {multiple ? `Uploaded (${files.length}/${maxFiles})` : "Uploaded"}
+            </h4>
+            <div
+              className={`grid gap-3 ${
+                multiple
+                  ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+                  : "grid-cols-1"
+              }`}
+            >
+              {files.map((file, index) => (
+                <div
+                  key={index}
+                  className="relative group rounded-md overflow-hidden border border-gray-200 h-32"
+                >
+                  {file.type === "video" ? (
+                    <div className="relative w-full h-full">
+                      <video 
+                        className="w-full h-full object-cover"
+                        muted
+                        playsInline
+                      >
+                        <source src={file.url} type={`video/${file.url.split('.').pop()}`} />
+                      </video>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <FiVideo className="text-white text-2xl" />
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={file.url}
+                      alt={`Upload ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                  {!disabled && (
+                    <Link
+                      to={"#"}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemove(index);
+                      }}
+                      className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <AiOutlineDelete size={16} />
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 flex items-center justify-center gap-2 text-gray-400">
+            <FiImage size={18} />
+            <span className="text-sm">No files uploaded yet</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
-// Accept description generator
-const getAcceptDescription = (accept) => {
-  if (!accept || accept === "image/*") return "JPG, PNG, GIF";
-  if (accept.includes("image/png")) return "PNG";
-  if (accept.includes("image/jpeg")) return "JPG";
-  if (accept.includes("image/gif")) return "GIF";
-  return "Selected file types";
-};
+FileUpload.displayName = "FileUpload";
 
 export default FileUpload;
-

@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     fontFamily: {
       primary: ['Roboto', 'sans-serif'],
@@ -25,6 +26,7 @@ export default {
         'main-green': '#28B16D',
         'light-green': '#9CDDAE',
         'green-hover': '#09C269',
+        'dash-green': '#20a53a',
         orange: '#EE6002',
         'primary-text': '#1F3E72',
         // 'bg-green': '#f7fcf7',
@@ -36,6 +38,7 @@ export default {
 
       },
     },
+    
   },
   plugins: [],
 }

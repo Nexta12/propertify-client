@@ -20,7 +20,7 @@ const EnhancedInput = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const defaultValidators = {
-    email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+    // email: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
     password: (val) => val?.length >= 8,
   };
 
@@ -80,7 +80,7 @@ const EnhancedInput = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-gray-700 capitalize"
+          className="block text-sm font-medium text-gray-700 capitalize mb-1"
         >
           {label}
           {required && <span className="text-red-500">*</span>}

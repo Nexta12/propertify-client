@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { paths } from "@routes/paths";
 import EnhancedInput from "@components/ui/EnhancedInput";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import useAuthStore from "@store/authStore";
 import Button from "@components/ui/Button";
 import { getLoggedInUserPath } from "@utils/helper";
 import { PuffLoader } from "react-spinners";
+import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -84,8 +85,11 @@ const Login = () => {
   if(!isAuthenticated){
   return (
     <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
-      <ToastContainer />
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+           
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden relative">
+         <div className="absolute top-4 left-5">
+        <HandleGoBackBtn/>
+        </div>
         {/* Logo Section */}
         <div className="mt-5 text-center">
           <div className="flex justify-center">

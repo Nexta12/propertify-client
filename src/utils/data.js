@@ -1,58 +1,16 @@
 import { paths } from "@routes/paths";
+import { FaQuestionCircle, FaUser } from "react-icons/fa";
+import { FaTicket } from "react-icons/fa6";
 import {
   FiHome,
-  FiPieChart,
   FiUsers,
-  FiCalendar,
   FiSettings,
   FiLogOut,
+  FiPlus,
+  FiMail,
 } from "react-icons/fi";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdRssFeed } from "react-icons/md";
 
-
-
-export const featuredProperties = [
-  {
-    id: "f1",
-    image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
-    title: "Luxury Villa in Banana Island",
-    price: "$2,500,000",
-    location: "Banana Island, Lagos",
-  },
-  {
-    id: "f2",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-    title: "Modern Apartment in Ikoyi",
-    price: "$850,000",
-    location: "Ikoyi, Lagos",
-  },
-];
-
-export const recentlyViewed = [
-  {
-    id: "r1",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-    title: "Waterfront Property in Lekki",
-    price: "$1,200,000",
-    location: "Lekki Phase 1, Lagos",
-  },
-];
-
-// Hardcoded dummy data
-export const stats = {
-  totalListings: 24,
-  activeLeads: 18,
-  commission: 12450,
-  closedDeals: 2,
-};
-
-export const performanceData = [
-  { month: "Jan", views: 120, clicks: 65 },
-  { month: "Feb", views: 190, clicks: 45 },
-  { month: "Mar", views: 300, clicks: 25 },
-  { month: "Apr", views: 250, clicks: 35 },
-  { month: "May", views: 180, clicks: 25 },
-];
 
 export const leadSources = [
   { source: "Website", percentage: 45, color: "#28B16D" },
@@ -61,38 +19,7 @@ export const leadSources = [
   { source: "Direct", percentage: 10, color: "#8E9395" },
 ];
 
-export const propertiess = [
-  {
-    id: 1,
-    title: "Luxury Villa",
-    status: "active",
-    price: "$1,200,000",
-    location: "Beverly Hills, CA",
-    beds: 5,
-    baths: 4,
-    area: "3,500 sqft",
-    views: 245,
-    inquiries: 12,
-    slug: "new-property-01",
-    image:
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    id: 2,
-    title: "Downtown Apartment",
-    status: "pending",
-    price: "$750,000",
-    location: "New York, NY",
-    beds: 2,
-    baths: 2,
-    area: "1,200 sqft",
-    views: 189,
-    inquiries: 8,
-    slug: "another-new-property",
-    image:
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-  },
-];
+
 
 export const leads = [
   {
@@ -115,179 +42,97 @@ export const leads = [
   },
 ];
 
-export const appointments = [
-  {
-    id: 1,
-    client: "David Wilson",
-    property: "Luxury Villa",
-    date: "May 15, 2023",
-    time: "2:00 PM",
-    type: "In-person",
-  },
-  {
-    id: 2,
-    client: "Emily Rodriguez",
-    property: "Downtown Apartment",
-    date: "May 16, 2023",
-    time: "11:00 AM",
-    type: "Virtual",
-  },
-];
-
-// export const DashBoardMenuItems = [
-//   {
-//     title: "Dashboard",
-//     icon: MdDashboard,
-//     link: `${paths.admin}/dashboard`,
-//     visibility: ["admin"],
-//   },
-//   {
-//     title: "Dashboard",
-//     icon: MdDashboard,
-//     link: `${paths.agent}/dashboard`,
-//     visibility: ["realtor"],
-//   },
-//   {
-//     title: "Dashboard",
-//     icon: MdDashboard,
-//     link: `${paths.otherUsers}/dashboard`,
-//     visibility: ["engineer", "service", "trader"],
-//   },
-//   {
-//     title: "My Properties",
-//     icon: FiHome,
-//     link: `${paths.agent}/properties`,
-//     visibility: ["realtor"],
-//   },
-//   {
-//     title: "Leads & Inquiries",
-//     icon: FiUsers,
-//     link: `${paths.sharedRoute}/lead&inquiries`,
-//     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-//   },
-//   {
-//     title: "Analytics",
-//     icon: FiPieChart,
-//     link: `${paths.sharedRoute}/analytics`,
-//     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-//   },
-//   {
-//     title: "Schedule",
-//     icon: FiCalendar,
-//     link: `${paths.sharedRoute}/schedule`,
-//     visibility: [ "realtor", "engineer", "service", "trader"],
-//   },
-//   {
-//     title: "Settings",
-//     icon: FiSettings,
-//     link: `${paths.generalRoute}/settings`,
-//     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-//   },
-//   {
-//     title: "Logout",
-//     icon: FiLogOut,
-//     link: `${paths.sharedRoute}/settings`,
-//     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-//   },
-// ];
-
-
-// import { 
-//   MdDashboard, 
-//   FiHome, 
-//   FiUsers, 
-//   FiPieChart, 
-//   FiCalendar, 
-//   FiSettings, 
-//   FiLogOut 
-// } from "react-icons/fi";
 
 export const DashBoardMenuItems = [
   {
-    title: "Dashboard",
-    icon: MdDashboard,
-    link: `${paths.admin}/dashboard`,
-    visibility: ["admin"],
+    title: "Feed",
+    icon: MdRssFeed,
+    link: `${paths.protected}/feed`,
+    visibility: ["admin","realtor", "engineer", "service", "trader"],
   },
   {
     title: "Dashboard",
     icon: MdDashboard,
-    link: `${paths.agent}/dashboard`,
-    visibility: ["realtor"],
+    link: `${paths.protected}/dashboard`,
+    visibility: ["admin","realtor", "engineer", "service", "trader"],
   },
   {
-    title: "Dashboard",
-    icon: MdDashboard,
-    link: `${paths.otherUsers}/dashboard`,
-    visibility: ["engineer", "service", "trader"],
+    title: "Users",
+    icon: FiUsers,
+    link: `${paths.protected}/users`,
+    visibility: ["admin",],
   },
   {
-    title: "My Properties",
+    title: "Properties",
     icon: FiHome,
-    link: `${paths.agent}/properties/all`, // Main link (optional)
-    visibility: ["realtor"],
-    submenu: [
+    visibility: ["realtor", "engineer", "service", "trader"],
+    subItems: [
       {
         title: "All Properties",
-        link: `${paths.agent}/properties/all`,
+        link: `${paths.protected}/properties/all`,
       },
       {
-        title: "Add New Property",
-        link: `${paths.agent}/properties/add`,
+        title: " + New Property",
+        link: `${paths.protected}/properties/add`,
       },
-      {
-        title: "Boost Listings",
-        link: `#`,
-      },
+
     ],
   },
+   {
+    title: "Make A Posts",
+    icon: FiPlus,
+    link: `${paths.protected}/posts`,
+    visibility: ["admin","realtor", "engineer", "service", "trader"],
+  },
+ 
   {
     title: "Leads & Inquiries",
-    icon: FiUsers,
-    link: `${paths.generalRoute}/lead&inquiries`,
+    icon: FiMail,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-     submenu: [
+     subItems: [
       {
-        title: "New Leads",
-        link: `#`,
+        title: "Inbox",
+        link: `${paths.protected}/messages`,
       },
       {
-        title: "Messages",
-        link: `#`,
+        title: "Contacts",
+        link: `${paths.protected}/contacts`,
+        visibility: ["admin", "realtor", "engineer", "service", "trader"],
       },
       {
-        title: "Boost Listings",
-        link: `#`,
+        title: "Messaging",
+        link: `${paths.protected}/send-message`,
       },
-        {
-    title: "Schedule",
-    link: `${paths.generalRoute}/schedule`,
-
-  },
     ],
   },
   {
-    title: "Analytics",
-    icon: FiPieChart,
-    link: `${paths.sharedRoute}/analytics`,
+    title: "Profile",
+    icon: FaUser,
+    link: `${paths.protected}/profile/:slug`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    
+  },
+  {
+    title: "Support Tickets",
+    icon: FaQuestionCircle,
+    link: `${paths.protected}/tickets`,
+    visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    
   },
 
   {
-    title: "Settings",
+    title: "Account Setting",
     icon: FiSettings,
-    link: `${paths.generalRoute}/settings`,
+    link: `${paths.protected}/settings`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
   },
   {
     title: "Logout",
     icon: FiLogOut,
-    link: `${paths.sharedRoute}/settings`,
+    link: `#`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
   },
 ];
-
-
 
 export const NigerianStates = [
   {
@@ -1807,8 +1652,25 @@ export const frequencyOptions = [
   { value: "daily", label: "Daily" },
   { value: "hourly", label: "Per Hour" },
   { value: "weekly", label: "Weekly" },
-  { value: "outright", label: "Outright Sale" },
-  { value: "distress", label: "Distress Sale" },
+  { value: "Outright Sale", label: "Outright Sale" },
+];
+export const conditionOptions = [
+  { value: "disputed", label: "Disputed" },
+  { value: "new_property", label: "New Property" },
+  { value: "distress", label: "Distress" },
+  { value: "renovated", label: "Renovated" },
+  { value: "swampy", label: "Swampy" },
+  { value: "dilapidated", label: "Dilapidated" },
+  { value: "carcass", label: "Carcass" },
+  { value: "uncompleted", label: "Uncompleted" },
+];
+
+export const preferedContactOptions = [
+  { value: "call", label: "Call" },
+  { value: "email", label: "Email" },
+  { value: "text", label: "Text" },
+  { value: "whatsapp", label: "WhatsApp" },
+  { value: "none", label: "None" },
 ];
 
 export const professions = [
@@ -1902,5 +1764,19 @@ export const TitleOptions = [
   { label: "Rev", value: "Rev" },
   { label: "Chief", value: "Chief" },
 
+];
+
+export const supportPrioritiesOptions = [
+  { label: "Low", value: "low" },
+  { label: "Medium", value: "medium" },
+  { label: "High", value: "high" },
+  { label: "Urgent", value: "urgent" },
+];
+
+export const supportCategoriesOptions = [
+  { label: "Technical", value: "technical" },
+  { label: "Billing", value: "billing" },
+  { label: "Account", value: "account" },
+  { label: "Other", value: "other" },
 ];
 

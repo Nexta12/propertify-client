@@ -10,39 +10,60 @@ import FavouriteProperty from "./FavouriteProperty";
 import PropertyPlaceholder from "@assets/img/p1.png";
 
 const PropertyCard = memo(
-  ({ property, className, leftClass, rightClass, buttonsClass, imgClass, desClass }) => {
-
-  
+  ({
+    property,
+    className,
+    leftClass,
+    rightClass,
+    buttonsClass,
+    imgClass,
+    desClass,
+  }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const nextImage = () =>
       setCurrentImageIndex((prev) =>
-        prev === property.otherImages.length - 1 ? 0 : prev + 1
+        prev === property?.media?.length - 1 ? 0 : prev + 1
       );
 
     const prevImage = () =>
       setCurrentImageIndex((prev) =>
-        prev === 0 ? property.otherImages.length - 1 : prev - 1
+        prev === 0 ? property?.media?.length - 1 : prev - 1
       );
 
     return (
       <div
-        className={`flex flex-col rounded-sm overflow-hidden shadow-lg bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 max-w-4xl ${className}`}
+        className={`flex flex-col rounded-sm  bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 max-w-4xl ${className}`}
       >
         {/* Image Gallery - Left Side */}
-        <div
-          className={`relative w-full  group rounded-sm  ${leftClass}`}
-        >
-          <Link to={`${paths.properties}/${property.slug}`}>
-            <img
-              src={property?.otherImages[currentImageIndex] || PropertyPlaceholder}
-              alt={property.title}
-              className={`w-full h-[250px] sm:h-[350px] md:h-[400px] object-cover ${imgClass}`}
-            />
-          </Link>
+        <div className={`relative w-full  group rounded-sm  ${leftClass}`}>
+          {property?.media?.length > 0 && (
+            <Link to={`${paths.properties}/${property.slug}`}>
+              {property.media[currentImageIndex].type === "video" ? (
+                <video
+                  controls
+                  className={`w-full h-[250px] sm:h-[350px] md:h-[400px] object-cover ${imgClass}`}
+                >
+                  <source
+                    src={property.media[currentImageIndex].url}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={
+                    property.media[currentImageIndex].url || PropertyPlaceholder
+                  }
+                  alt={property.title}
+                  className={`w-full h-[250px] sm:h-[350px] md:h-[400px] object-cover ${imgClass}`}
+                />
+              )}
+            </Link>
+          )}
 
           {/* Image Counter */}
           <div className="absolute bottom-4 right-4 bg-black bg-opacity-60 text-white px-2 py-1 rounded-full text-xs">
-            {currentImageIndex + 1}/{property.otherImages.length}
+            {currentImageIndex + 1}/{property?.media?.length}
           </div>
 
           {/* Navigation Arrows */}
@@ -60,11 +81,14 @@ const PropertyCard = memo(
           </button>
 
           {/* Favorite Button */}
-          <FavouriteProperty property={property} className="absolute top-4 right-4 p-2" />
+          <FavouriteProperty
+            property={property}
+            className="absolute top-4 right-4 p-2"
+          />
         </div>
 
         {/* Property Details - Right Side */}
-        <div className={`w-full  p-5 flex flex-col ${rightClass}`}>
+        <div className={`w-full  p-5 flex flex-col flex-1 ${rightClass}`}>
           {/* Category and Price */}
           <div className="flex justify-between items-start mb-2">
             <div>

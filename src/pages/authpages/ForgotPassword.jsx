@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FiMail } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { paths } from "@routes/paths";
+import HandleGoBackBtn from '@components/goBackBtn/HandleGoBackBtn';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +18,10 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
 
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden relative ">
+          <div className="absolute top-4 left-5">
+        <HandleGoBackBtn/>
+        </div>
 
         {/* Logo Section */}
         <div className="mt-5 text-center">

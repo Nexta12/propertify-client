@@ -4,40 +4,45 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import useAuthStore from "@store/authStore";
 import { useState } from "react";
 import { FiHeart } from "react-icons/fi";
-import { toast } from "react-toastify";
+import { toast} from "react-toastify";
 
 const FavouriteProperty = ({ property, className }) => {
   const { user } = useAuthStore();
+  const [likeCount, setLikeCount] = useState(property?.likes?.length || 0);
+
   // Initialize isFavorite based on whether the property is in user's favorites
   const [isFavorite, setIsFavorite] = useState(
     user?.likedProperties?.includes(property._id) || false
   );
 
   const updateFavoriteStatus = async (propertyId) => {
+   
     try {
-      await apiClient.post(`${endpoints.favouriteProperty}/${propertyId}`);
+    await apiClient.post(`${endpoints.favouriteProperty}/${propertyId}`);
+      setLikeCount(isFavorite ? likeCount - 1 : likeCount + 1);
       // Toggle the local state optimistically
       setIsFavorite((prev) => !prev);
-      // Show appropriate toast message
-      toast.success(
-        isFavorite ? "Removed from favorites" : "Marked as Favourite"
-      );
     } catch (error) {
-      // Revert the state if the API call fails
-      setIsFavorite((prev) => !prev);
       toast.error(ErrorFormatter(error));
+      setIsFavorite((prev) => !prev);
     }
   };
 
   return (
+    <>
     <button
       onClick={() => updateFavoriteStatus(property._id)}
-      className={` rounded-full shadow-md transition-colors ${
+      className={` rounded-full transition-colors flex gap-1 ${
         user && isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"
       }  ${className} `}
     >
       <FiHeart className={isFavorite ? "fill-current" : ""} />
+       {likeCount !== 0 ? (
+          <span className="text-[10px] mt-1 " >{likeCount !== 0 ? likeCount : ""}</span>
+       ) : null}
+     
     </button>
+    </>
   );
 };
 

@@ -1,25 +1,10 @@
 
+import CollapsableBox from "@pages/privatePages/dashboard/components/CollapsableBox";
 import { NigerianStates, PropertyTypes } from "@utils/data";
-import React, { useEffect, useState } from "react";
-import { FiFilter, FiSearch, FiX } from "react-icons/fi";
+import {  FiSearch } from "react-icons/fi";
 
-const SearchAndFilterBar = ({ filters, onFilterChange }) => {
-  const [showFilters, setShowFilters] = useState(false);
+const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters  }) => {
 
-    const [sticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 5) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const toggleFilter = (filterKey, value) => {
     onFilterChange((prev) => ({
@@ -88,131 +73,113 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4 mb-6 w-full z-10 sticky top-12 lg:top-16">
-      <div className="flex flex-col sm:flex-row gap-4 items-center">
-
-        <div className="relative flex-1 w-full ">
-          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by name, location, type, etc..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition placeholder:text-neutral-400"
-            value={filters.searchTerm}
-            onChange={handleSearch}
-          />
-        </div>
-       
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="hidden lg:flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition w-full sm:w-auto justify-center"
-        >
-          <FiFilter />
-          <span>More Filters</span>
-          {showFilters && <FiX />}
-        </button>
-
+    <div className="h-full flex flex-col">
+     
+      {/* Search Bar - Always visible */}
+      <div className="relative mb-4">
+        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search properties..."
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition placeholder:text-neutral-400"
+          value={filters.searchTerm}
+          onChange={handleSearch}
+        />
       </div>
 
-      {/* Quick filters */}
-    
-      <div className={`my-4 space-y-4 max-w-[700px] ${sticky ? "hidden" : "flex flex-col"}`}>
-        {/* Listing Type */}
-        <span className="text-center text-xs italic">Smart Fllters</span>
-        <div className="flex gap-3">
-          <label className="text-sm font-medium text-gray-700 mb-2 whitespace-nowrap min-w-[80px] ">
-            By Purpose
-          </label>
-          <div className="flex-3 flex  overflow-x-auto  gap-2" style={{ scrollbarWidth: "none" }} >
-            {listingTypes.map((type) => (
-              <button
-                key={type}
-                onClick={() => toggleFilter("listingType", type)}
-                className={`px-3 py-1 text-sm rounded-full transition capitalize whitespace-nowrap ${
-                  filters.listingType.includes(type)
-                    ? "bg-green-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Property Type */}
-        <div className="flex gap-3">
-          <label className="text-sm font-medium text-gray-700 mb-2 whitespace-nowrap min-w-[80px] ">
-            By Type
-          </label>
-          <div className=" flex-3 flex  overflow-x-auto  gap-2" style={{ scrollbarWidth: "none" }} >
-            {[...new Set(PropertyTypes.map((type) => type.category))].map(
-              (category, index) => (
+      {/* Filter Section - Always visible on desktop, toggleable on mobile */}
+      <div className={`lg:block space-y-6 overflow-y-auto flex-1`}>
+        {/* Quick Filters */}
+        <div className="space-y-4">
+          <h3 className="font-medium text-gray-700 text-[13px] ">Quick Filters</h3>
+          
+          {/* Listing Type */}
+          <div>
+           
+            <div className="flex flex-wrap gap-2">
+              {listingTypes.map((type) => (
                 <button
-                  key={index}
-                  onClick={() => toggleFilter("propertyType", category)}
-                  className={`px-3 py-1 text-sm rounded-full transition capitalize whitespace-nowrap ${
-                    filters.propertyType.includes(category)
+                  key={type}
+                  onClick={() => toggleFilter("listingType", type)}
+                  className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                    filters.listingType.includes(type)
                       ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
                 >
-                  {category}
+                  {type}
                 </button>
-              )
-            )}
+              ))}
+            </div>
           </div>
-        </div>
-        {/* By Location */}
-        <div className="flex gap-3">
-          <label className="text-sm font-medium text-gray-700 mb-2 whitespace-nowrap min-w-[80px]">
-            By States
-          </label>
-          <div className="flex-3 flex  overflow-x-auto  gap-2" style={{ scrollbarWidth: "none" }}>
-            {NigerianStates.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => toggleFilter("location", item.state)}
-                className={`px-3 py-1 text-sm rounded-full transition capitalize whitespace-nowrap ${ filters.location.includes(item.state)
+
+          {/* Property Type */}
+           
+          <div>
+            <label className="block text-[13px] font-medium text-gray-700 mb-2">
+              By Type
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[...new Set(PropertyTypes.map((type) => type.category))].map(
+                (category, index) => (
+                  <button
+                    key={index}
+                    onClick={() => toggleFilter("propertyType", category)}
+                    className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                      filters.propertyType.includes(category)
+                        ? "bg-green-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Location */}
+           <CollapsableBox className="!p-0  !shadow-none !border-none pr-1 !text-[13px]" title="By States"  >
+          <div>
+            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
+              By States
+            </label> */}
+            <div className="flex flex-wrap gap-2">
+              {NigerianStates.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => toggleFilter("location", item.state)}
+                  className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                    filters.location.includes(item.state)
                       ? "bg-green-600 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"} `}
-              >
-                {item.state}
-              </button>
-            ))}
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {item.state}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
- 
-
-      {/* Expanded Filters */}
-      <div
-        className={`fixed inset-0 bg-white z-50 overflow-y-auto p-4 transition-all duration-300 lg:static lg:bg-gray-50 lg:rounded-lg lg:mt-4 lg:p-6 ${
-          showFilters ? "block" : "hidden"
-        }`}
-      >
-        <div className="lg:hidden flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Filters</h3>
-          <button
-            onClick={() => setShowFilters(false)}
-            className="text-gray-600"
-          >
-            <FiX size={24} />
-          </button>
+          </CollapsableBox>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Advanced Filters */}
+        <CollapsableBox className="!p-0  !shadow-none !border-none pr-1 " title="Advanced" >
+        <div className="space-y-6 pt-4 border-t border-gray-200">
+          {/* <h3 className="font-medium text-gray-700">Advanced Filters</h3> */}
+
           {/* Sort By */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-[13px] font-medium text-gray-700 mb-2">
               Sort By
             </label>
             <select
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 "
               value={filters.sortBy}
               onChange={handleSortChange}
             >
               {sortOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option className="" key={option.value} value={option.value}>
                   {option.label}
                 </option>
               ))}
@@ -221,36 +188,40 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
 
           {/* Price Range */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Price Range: &#x20A6;{filters.priceRange[0].toLocaleString()} -
-              &#x20A6;
-              {filters.priceRange[1].toLocaleString()}
+            <label className="block text-[13px] font-medium text-gray-700 mb-2">
+              Price Range
             </label>
-            <div className="space-y-2">
-              <input
-                type="range"
-                min="0"
-                max="10000000"
-                step="100000"
-                value={filters.priceRange[0]}
-                onChange={(e) => handlePriceChange(0, e.target.value)}
-                className="w-full"
-              />
-              <input
-                type="range"
-                min="0"
-                max="10000000"
-                step="100000"
-                value={filters.priceRange[1]}
-                onChange={(e) => handlePriceChange(1, e.target.value)}
-                className="w-full"
-              />
+            <div className="space-y-3">
+              <div className="flex justify-between text-[13px] text-gray-600">
+                <span>₦{filters.priceRange[0].toLocaleString()}</span>
+                <span>₦{filters.priceRange[1].toLocaleString()}</span>
+              </div>
+              <div className="space-y-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="10000000"
+                  step="100000"
+                  value={filters.priceRange[0]}
+                  onChange={(e) => handlePriceChange(0, e.target.value)}
+                  className="w-full"
+                />
+                <input
+                  type="range"
+                  min="0"
+                  max="10000000"
+                  step="100000"
+                  value={filters.priceRange[1]}
+                  onChange={(e) => handlePriceChange(1, e.target.value)}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
 
           {/* Bedrooms */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-[13px] font-medium text-gray-700 mb-2">
               Bedrooms
             </label>
             <div className="flex flex-wrap gap-2">
@@ -258,7 +229,7 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
                 <button
                   key={num}
                   onClick={() => toggleFilter("bedrooms", num)}
-                  className={`px-3 py-1 text-sm rounded-full transition ${
+                  className={`px-3 py-1 text-[13px] rounded-full transition ${
                     filters.bedrooms.includes(num)
                       ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -272,7 +243,7 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
 
           {/* Bathrooms */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-[13px] font-medium text-gray-700 mb-2">
               Bathrooms
             </label>
             <div className="flex flex-wrap gap-2">
@@ -280,7 +251,7 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
                 <button
                   key={num}
                   onClick={() => toggleFilter("bathrooms", num)}
-                  className={`px-3 py-1 text-sm rounded-full transition ${
+                  className={`px-3 py-1 text-[13px] rounded-full transition ${
                     filters.bathrooms.includes(num)
                       ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -292,19 +263,21 @@ const SearchAndFilterBar = ({ filters, onFilterChange }) => {
             </div>
           </div>
         </div>
+        </CollapsableBox>
 
-        <div className="mt-6 flex gap-4">
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4 border-t border-gray-200">
           <button
             onClick={clearFilters}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+            className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
           >
-            Clear Filters
+            Clear All
           </button>
           <button
-            onClick={() => setShowFilters(false)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            onClick={onApplyFilters}
+            className="lg:hidden flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
           >
-            Apply Filters
+            Apply
           </button>
         </div>
       </div>

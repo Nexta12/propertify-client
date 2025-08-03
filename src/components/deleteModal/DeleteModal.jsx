@@ -1,5 +1,5 @@
 
-const DeleteModal = ({isOpen,onClose,onConfirm,message,isDeleting, confirmText, onAction, actTionText, isTakingAction}) => {
+const DeleteModal = ({isOpen,onClose,onConfirm,message,isDeleting, confirmText, onAction, actTionText, isTakingAction, confirmTextClass}) => {
   if (!isOpen) return null; // Don't render the modal if it's not open
   return (
     <div
@@ -7,12 +7,12 @@ const DeleteModal = ({isOpen,onClose,onConfirm,message,isDeleting, confirmText, 
       aria-hidden={!isOpen}
       role="dialog"
     >
-      <div className="bg-white p-6 rounded-md w-[90%] md:w-[70%] lg:w-[50%]">
+      <div className="bg-white p-6 rounded-md w-fit">
         <div className="flex flex-col gap-4 text-center">
           <p>{message}</p>
           <div className="flex justify-center gap-4">
             <button
-              className="bg-main-green text-white py-1 px-4 rounded-md"
+              className="border border-black/15 text-neutral-700 py-1 px-4 rounded-md"
               onClick={onClose}
             >
               Cancel
@@ -30,7 +30,7 @@ const DeleteModal = ({isOpen,onClose,onConfirm,message,isDeleting, confirmText, 
 
             <button
              type="button"
-              className="bg-red-500 text-white py-1 px-4 rounded-md"
+              className={`text-red-500 border  border-black/15 py-1 px-4 rounded-md ${confirmTextClass} `}
               onClick={onConfirm}
             >
              {isDeleting ? "Please wait..." : confirmText ? confirmText : "Delete"}

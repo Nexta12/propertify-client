@@ -6,88 +6,96 @@ import NotFound from "@pages/notFound/NotFound";
 import Properties from "@pages/publicPages/properties/Properties";
 import PropertyDetails from "@pages/publicPages/propertyDetail/PropertyDetails";
 import Register from "@pages/authpages/Register";
+import VerifyOTP from "@pages/authpages/VerifyOTP";
 import Login from "@pages/authpages/Login";
 import ForgotPassword from "@pages/authpages/ForgotPassword";
+import MyProperties from "@pages/privatePages/properties/MyProperties";
+import NewProperty from "@pages/privatePages/properties/NewProperty";
+import PrivatePagesLayout from "@pages/privatePages/PrivatePagesLayout";
+import Dashboard from "@pages/privatePages/dashboard/Dashboard";
+import Messages from "@pages/privatePages/leads/Messages";
+import ViewMessage from "@pages/privatePages/leads/ViewMessage";
+import EditProperty from "@pages/privatePages/properties/EditProperty";
+import Settings from "@pages/privatePages/settings/Settings";
+import Contacts from "@pages/privatePages/contactList/Contacts";
+import NewContact from "@pages/privatePages/contactList/NewContact";
+import ViewContact from "@pages/privatePages/contactList/ViewContact";
+import BulkMessage from "@pages/privatePages/contactList/SendBulkMessage";
+import Feed from "@pages/privatePages/feed/Feed";
+import Profile from "@pages/privatePages/userProfile/Profile";
+import DirectMessage from "@pages/privatePages/leads/DirectMessage";
+import NewPost from "@pages/posts/NewPost";
+import EditPost from "@pages/posts/EditPost";
+import Users from "@pages/privatePages/users/Users";
+import AddUsers from "@pages/privatePages/users/AddUsers";
+import NewTicket from "@pages/privatePages/tickets/NewTicket";
+import Tickets from "@pages/privatePages/tickets/Tickets";
+import SingleTicket from "@pages/privatePages/tickets/SingleTicket";
 
-import Settings from "@pages/privatePages/agentManager/settings/Settings";
 
-import AdminDashboard from "@pages/privatePages/adminManager/dashboard/AdminDashboard";
-import OtherUsersDashboard from "@pages/privatePages/otherRolesManager/dashboard/OtherUsersDashboard";
-
-import AgentDashboard from "@pages/privatePages/agentManager/dashboard/AgentDashboard";
-import MyProperties from "@pages/privatePages/agentManager/propertySettings/MyProperties";
-import Schedule from "@pages/privatePages/agentManager/schedule/Schedule";
-import Analytics from "@pages/privatePages/agentManager/analytics/Analytics";
-import Leads from "@pages/privatePages/agentManager/leads/Leads";
-import NewProperty from "@pages/privatePages/agentManager/propertySettings/NewProperty";
-import EditProperty from "@pages/privatePages/agentManager/propertySettings/EditProperty";
-import ViewProperty from "@pages/privatePages/agentManager/propertySettings/ViewProperty";
-import AdminLayout from "@pages/privatePages/adminManager/dashboard/AdminLayout";
-import AgentLayout from "@pages/privatePages/agentManager/AgentLayout";
-import OthersLayout from "@pages/privatePages/otherRolesManager/OthersLayout";
-import GeneralPrivateLayout from "@pages/privatePages/PrivateLayout";
-import VerifyOTP from "@pages/authpages/VerifyOTP";
 
 
 
 const AppRoutes = () => (
   <Routes>
+
+        {/* Auth Pages */}
+      <Route path={paths.register} element={<Register />} />
+      <Route path={paths.login} element={<Login />} />
+      <Route path={paths.verifyOTP} element={<VerifyOTP />} />
+      <Route path={paths.forgotPassword} element={<ForgotPassword />} />
+
+
     {/* Public Routes */}
     <Route path={paths.index} element={<PublicLayout />}>
       <Route path={paths.index} element={<Homepage />} />
       <Route path={paths.properties} element={<Properties />} />
       <Route path={`${paths.properties}/:slug`} element={<PropertyDetails />} />
     </Route>
+    
+    {/* Protected Pages */}
 
+      <Route path={paths.protected} element={<PrivatePagesLayout />}>
+       
+       <Route path={`${paths.protected}/feed`} element={<Feed />} />
+       <Route path={`${paths.protected}/dashboard`} element={<Dashboard />} />
+        {/* Properties */}
+       <Route path={`${paths.protected}/properties/all`} element={<MyProperties />} />
+       <Route path={`${paths.protected}/properties/add`} element={<NewProperty/>} />
+       <Route path={`${paths.protected}/properties/edit/:slug`} element={<EditProperty/>} />
 
-    {/* Admin Private Routes */}
-    <Route path={paths.admin} element={<AdminLayout />}>
-      <Route path={`${paths.admin}/dashboard`} element={<AdminDashboard />} />
+       {/* Posts */}
+      <Route path={`${paths.protected}/posts`} element={<NewPost />} />
+      <Route path={`${paths.protected}/posts/edit/:slug`} element={<EditPost />} />
 
-    </Route>
-
-     {/* Agents Private Routes */}
-    <Route path={paths.agent} element={<AgentLayout />}>
+       {/* Users */}
+       <Route path={`${paths.protected}/users`} element={<Users />} />
+       <Route path={`${paths.protected}/users/add`} element={<AddUsers />} />
       
-      <Route path={`${paths.agent}/dashboard`} element={<AgentDashboard />} />
-      <Route path={`${paths.agent}/properties/all`} element={<MyProperties />} />
-      <Route path={`${paths.agent}/properties/add`} element={<NewProperty/>} />
-      <Route path={`${paths.agent}/properties/edit/:slug`} element={<EditProperty/>} />
-      <Route path={`${paths.agent}/properties/:slug`} element={<ViewProperty/>} />
+        {/* Lead, Inquiries and Messages */}
+       <Route path={`${paths.protected}/messages`} element={<Messages />} />
+       <Route path={`${paths.protected}/messages/:id`} element={<ViewMessage />} />
+       <Route path={`${paths.protected}/messages/dm/:slug`} element={<DirectMessage />} />
+
+       {/* Analytics */}
      
-      <Route path={`${paths.agent}/analytics`} element={<Analytics />} />
+         <Route path={`${paths.protected}/profile/:slug`} element={<Profile />} />
 
-      <Route path={`${paths.agent}/settings`} element={<Settings />} />
-     
-    </Route>
+         <Route path={`${paths.protected}/settings`} element={<Settings />} />
+         <Route path={`${paths.protected}/contacts`} element={<Contacts />} />
+         <Route path={`${paths.protected}/contacts/new`} element={<NewContact />} />
+         <Route path={`${paths.protected}/contacts/:id`} element={<ViewContact />} />
+         <Route path={`${paths.protected}/send-message`} element={<BulkMessage />} />
 
-     {/* General Private Routes */}
-    <Route path={paths.generalRoute} element={<GeneralPrivateLayout />}>
-      
-      <Route path={`${paths.generalRoute}/settings`} element={<Settings />} />
-       <Route path={`${paths.generalRoute}/lead&inquiries`} element={<Leads />} />
-        <Route path={`${paths.generalRoute}/schedule`} element={<Schedule />} />
-     
-    </Route>
+         {/* Tickets */}
+          <Route path={`${paths.protected}/tickets/create`} element={<NewTicket />} />
+          <Route path={`${paths.protected}/tickets`} element={<Tickets />} />
+          <Route path={`${paths.protected}/tickets/:id`} element={<SingleTicket />} />
 
 
-     {/* Other Users Private Routes */}
-    <Route path={paths.otherUsers} element={<OthersLayout />}>
-      
-      <Route path={`${paths.otherUsers}/dashboard`} element={<OtherUsersDashboard />} />
+      </Route>
 
-    </Route>
-
-
-
-      {/* Auth Pages */}
-      <Route path={paths.register} element={<Register />} />
-      <Route path={paths.login} element={<Login />} />
-      <Route path={paths.verifyOTP} element={<VerifyOTP />} />
-      <Route path={paths.forgotPassword} element={<ForgotPassword />} />
-      
-
-
+   
     {/* NOT FOUND ROUTE */}
     <Route path="*" element={<NotFound />} />
   </Routes>

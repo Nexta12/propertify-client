@@ -6,8 +6,10 @@ import { MdMenu, MdOutlineClose } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import Avater from "@assets/img/avater.png";
 import { getLoggedInUserPath } from "@utils/helper";
-import { FiUser, FiHome, FiCalendar, FiInbox, FiLogOut } from "react-icons/fi";
+import { FiUser, FiHome, FiInbox, FiLogOut } from "react-icons/fi";
 import LogoGreen from "@assets/img/green-logo.png";
+
+import { FaUser } from "react-icons/fa";
 
 const HeaderMenu = [
   { title: "Home", link: paths.index },
@@ -18,52 +20,57 @@ const HeaderMenu = [
 ];
 
 const Header = () => {
-  const { user, isAuthenticated, validateAuth, logout } = useAuthStore();
+ const { user, isAuthenticated, validateAuth, logout } = useAuthStore();
   const [userMenuDropdown, setUserMenuDropdown] = useState(false);
-  const userMenuRef = useRef(null);
-  const navigate = useNavigate();
-
   const [sidepanel, setSidepanel] = useState(false);
   const [sticky, setIsSticky] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const [scrollDirection, setScrollDirection] = useState(null);
+  const prevScrollY = useRef(0);
+  const [hideOnScroll, setHideOnScroll] = useState(false);
+
+  const navigate = useNavigate();
+  const userMenuRef = useRef(null);
 
   const handleSidepanel = () => setSidepanel(!sidepanel);
 
   useEffect(() => {
     const verifyAuth = async () => {
-      await validateAuth(); // Ensure validateAuth works properly
+      await validateAuth();
     };
     verifyAuth();
   }, [validateAuth]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 0.5) {
+      const currentScrollY = window.scrollY;
+
+      // Sticky handling
+      if (currentScrollY > 0.5) {
         setIsSticky(true);
         setScrolled(true);
       } else {
         setIsSticky(false);
         setScrolled(false);
       }
+
+      // Only apply hide/show on mobile
+      if (window.innerWidth < 1024) {
+        if (currentScrollY > prevScrollY.current) {
+          setScrollDirection('down');
+          setHideOnScroll(true);
+        } else if (currentScrollY < prevScrollY.current) {
+          setScrollDirection('up');
+          setHideOnScroll(false);
+        }
+      }
+
+      prevScrollY.current = currentScrollY;
     };
 
-    // Add smooth behavior to html element
-    document.documentElement.style.scrollBehavior = "smooth";
-
-    // Use requestAnimationFrame for smoother scroll detection
-    let animationFrameId;
-    const debouncedScroll = () => {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(handleScroll);
-    };
-
-    window.addEventListener("scroll", debouncedScroll);
-    return () => {
-      window.removeEventListener("scroll", debouncedScroll);
-      cancelAnimationFrame(animationFrameId);
-      document.documentElement.style.scrollBehavior = "auto";
-    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleUserMenuToggle = (e) => {
@@ -79,17 +86,18 @@ const Header = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+   if (!scrollDirection) void scrollDirection
 
   return (
     <header
-      className={` w-full z-50 transition-all duration-300  ${
-        sticky ? "sticky top-0" : "relative top-0  "
-      } ${scrolled ? "bg-white" : "bg-white"} `}
+       className={`w-full z-50 transition-transform duration-300 ${
+        sticky ? "fixed top-0" : "relative"
+      } ${scrolled ? "bg-white" : "bg-white"} ${
+        hideOnScroll ? "-translate-y-full" : "translate-y-0"
+      }`}
     >
       <div className="section-container flex items-center justify-between py-3">
         {/* Left Section - Logo and Menu */}
@@ -113,7 +121,9 @@ const Header = () => {
           </a>
 
           {/* Desktop Menu */}
-          <nav className="hidden lg:flex space-x-6">
+         
+        </div>
+         <nav className="hidden lg:flex space-x-6">
             {HeaderMenu.map((item, index) => (
               <a
                 href={item.link}
@@ -124,11 +134,9 @@ const Header = () => {
               </a>
             ))}
           </nav>
-        </div>
 
         {/* Right Section - Auth Buttons */}
         <div className="flex items-center gap-4">
-
           {isAuthenticated ? (
             <div ref={userMenuRef} className="relative  ">
               <div
@@ -168,7 +176,7 @@ const Header = () => {
                   </Link>
 
                   <Link
-                    to={`${paths.agent}/properties`}
+                    to={`${paths.protected}/properties/all`}
                     className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200
                rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
                   >
@@ -177,21 +185,21 @@ const Header = () => {
                   </Link>
 
                   <Link
-                    to={`${paths.agent}/properties`}
+                    to={`${paths.protected}/settings`}
                     className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200
                rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
                   >
-                    <FiCalendar className="w-5 h-5 mr-3 text-gray-400" />
-                    Schedules
+                    <FaUser className="w-5 h-5 mr-3 text-gray-400" />
+                    Account
                   </Link>
 
                   <Link
-                    to={`${paths.agent}/properties`}
+                    to={`${paths.protected}/messages`}
                     className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200
                rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
                   >
                     <FiInbox className="w-5 h-5 mr-3 text-gray-400" />
-                    Leads & Inquiries
+                    Messages
                   </Link>
 
                   <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
@@ -217,13 +225,12 @@ const Header = () => {
               </Link>
               <Link
                 to={paths.register}
-                className="btn btn-primary btn-sm hover:scale-105 transition-transform duration-200"
+                className="btn btn-primary btn-sm !text-[10px] hover:scale-105 transition-transform duration-200"
               >
                 Get Started
               </Link>
             </>
           )}
-
         </div>
       </div>
 
@@ -258,12 +265,12 @@ const Header = () => {
               </Link>
             ) : (
               <Link
-              to={"#"}
+                to={"#"}
                 onClick={() => logout(navigate)}
                 className="flex items-center gap-2 p-4 border-b border-gray-100 hover:bg-bg-green"
               >
                 <FiLogOut className="w-5 h-5" />
-               
+
                 <span className="orangeText">Logout</span>
               </Link>
             )}

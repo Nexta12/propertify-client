@@ -15,7 +15,8 @@ const Hero = () => {
 
 
   return (
-    <section className="section-container bg-bg-green h-screen xs:h-[640px] md:h-[510px] lg:h-[490px] md:items-center justify-center flex items-start  gap-4 flex-col-reverse md:flex-row ">
+   
+    <section className="section-container  mx-auto section-container bg-bg-green h-screen xs:h-[640px] md:h-[510px] lg:h-[490px] md:items-center justify-center flex items-start  gap-4 flex-col-reverse md:flex-row ">
       <div className="flex-1 flex flex-col gap-y-5">
         <h2 className=" text-[24px] text-center md:text-left lg:text-[42px] font-[500] lg:leading-[50px]">
           Grow Your Real Estate Network <br /> List & Connect for Free
