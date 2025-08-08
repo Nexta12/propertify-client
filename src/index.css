@@ -33,7 +33,7 @@ html {
   
   /* Layout */
   .section-container {
-    @apply p-[15px] md:px-[40px] lg:px-[30px] lg:py-[20px] w-full mx-auto ;
+    @apply p-[15px] md:px-[40px] lg:px-[80px] lg:py-[20px] w-full mx-auto ;
   }
   
  
@@ -77,6 +77,11 @@ html {
   overflow-y: auto;
 }
 
+
+/* Dark mode placeholder */
+.dark .ql-editor::before {
+  color: #d1d5db !important; 
+}
 
 /* Firefox */
 * {

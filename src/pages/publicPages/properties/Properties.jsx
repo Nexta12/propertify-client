@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 import { Virtuoso } from "react-virtuoso";
-import FeaturedProperties from "./components/sidebar/FeaturedProperties";
-import RecentlyViewed from "./components/sidebar/RecentlyViewed";
-import ContactAgent from "./components/sidebar/ContactAgent";
 import SearchAndFilterBar from "./components/filters/SearchAndFilterBar";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
@@ -13,6 +10,8 @@ import convertFiltersToAPIFormat from "./components/filters/FilterToAPIFormat";
 import PostCard from "@components/propertyCard/PostCard";
 import MobileFootermenu from "./components/mobileFooterMenu/MobileFootermenu";
 import MobileSearchBar from "./components/filters/MobileSearchBar";
+import TipsCard from "@components/tips/TipsCard";
+import QuickNote from "@components/tips/QuickNotes";
 
 const Properties = () => {
   // State declarations
@@ -125,20 +124,18 @@ const Properties = () => {
   }, [loading, hasMore]);
 
   return (
-    <div className="bg-gray-50 min-h-screen ">
+    <div className="bg-gray-50 dark:bg-gray-800 min-h-screen ">
       {/* <Breadcrumb /> */}
 
       <main className="section-container !pt-2 flex items-start gap-x-4 relative ">
         {/* Left sidebar */}
 
-        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white p-4">
+        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white dark:bg-gray-900 p-2 ">
           <SearchAndFilterBar filters={filters} onFilterChange={setFilters} />
         </div>
 
         {/* Main Post Content */}
-        <div className="w-full lg:w-[calc(100%-512px)]  ">
-       
-
+        <div className="w-full lg:w-[calc(100%-512px)] mb-8 ">
           {initialLoad && properties.length === 0 ? (
             <div className="flex items-center justify-center py-8 w-full">
               <PuffLoader color="#3B82F6" size={60} />
@@ -152,7 +149,7 @@ const Properties = () => {
                   <div className="mb-4">
                     <PostCard
                       post={properties[index]}
-                       isProperty={properties[index].isProperty}
+                      isProperty={properties[index].isProperty}
                       onDeleteSuccess={handlePostDelete}
                     />
                   </div>
@@ -176,27 +173,66 @@ const Properties = () => {
         </div>
 
         {/* Right sidebad */}
-        <div className=" hidden lg:block w-1/4 sticky top-20 ">
-          <div className="relative">
-            <div className="w-full space-y-6 sticky top-0">
-              <FeaturedProperties featuredProperties={properties} />
-              <RecentlyViewed />
-              <ContactAgent />
+
+        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 space-y-6">
+          <TipsCard
+            tips={[
+              "Always verify documents.",
+              "Always meet in public places.",
+              "Report suspicious listings.",
+              "Don't make payments in a haste.",
+            ]}
+          />
+
+          <div className="bg-white dark:bg-gray-950 p-4 rounded-md shadow-sm">
+            <h3 className="font-semibold text-primary-text dark:text-white mb-2 text-sm">
+              🔥 Popular Searches
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {[
+                "Lekki",
+                "Self-Contain",
+                "3 Bedroom",
+                "Shortlet",
+                "Lagos",
+                "Verified Only",
+              ].map((tag, index) => (
+               <button
+  key={index}
+  onClick={() =>
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: tag,
+    }))
+  }
+  className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-200 
+             dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+>
+  {tag}
+</button>
+
+              ))}
             </div>
           </div>
-        </div>
 
+          <QuickNote className="mt-4">
+            📌 Tip: You can quickly share properties across social media.
+          </QuickNote>
+        </div>
       </main>
 
-         {/* Mobile Seearch Bar Modal Display made re-usable, */}
+      {/* Mobile Seearch Bar Modal Display made re-usable, */}
 
-        <MobileSearchBar showMobileSearch={showMobileSearch} setShowMobileSearch={setShowMobileSearch}>
-            <SearchAndFilterBar
-                filters={filters}
-                onFilterChange={setFilters}
-                onApplyFilters={() => setShowMobileSearch(false)}
-              />
-        </MobileSearchBar>
+      <MobileSearchBar
+        showMobileSearch={showMobileSearch}
+        setShowMobileSearch={setShowMobileSearch}
+      >
+        <SearchAndFilterBar
+          filters={filters}
+          onFilterChange={setFilters}
+          onApplyFilters={() => setShowMobileSearch(false)}
+        />
+      </MobileSearchBar>
 
       <MobileFootermenu onSearchClick={() => setShowMobileSearch(true)} />
     </div>

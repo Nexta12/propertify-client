@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "@store/authStore";
 import { BsChevronDown } from "react-icons/bs";
 import { AnimatePresence, motion as Motion } from "framer-motion";
+import ToggleSwitch from "@components/toggleSwitch/ToggleSwitch";
 
 const SidebarNav = ({ handleSidepanel }) => {
   const { pathname } = useLocation();
@@ -16,7 +17,7 @@ const SidebarNav = ({ handleSidepanel }) => {
   };
 
   return (
-    <nav className="p-4 bg-white dark:bg-gray-900 overflow-y-auto h-full">
+    <nav className="p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 overflow-y-auto h-full">
       {DashBoardMenuItems.map((item, i) => {
         if (!item.visibility.includes(user?.role)) return null;
 
@@ -47,6 +48,9 @@ const SidebarNav = ({ handleSidepanel }) => {
           />
         );
       })}
+      <div className="lg:hidden flex justify-end">
+       <ToggleSwitch />
+       </div>
     </nav>
   );
 };
@@ -74,56 +78,59 @@ function SubMenu({ item, pathname, onClick }) {
 
   return (
     <div className="mb-2">
-      <div
-        className={`flex items-center px-3 gap-x-3 rounded-sm py-2 group hover:bg-green-500/25 transition-all duration-300 ease-in-out cursor-pointer ${
-          isActive ? "bg-green-500/15 text-main-green " : "hover:bg-green-500/15"
-        }`}
-        onClick={() => setIsOpen(!isOpen)}
+  <div
+    className={`flex items-center px-3 gap-x-3 rounded-sm py-2 group cursor-pointer transition-all duration-300 ease-in-out 
+      ${isActive 
+        ? "bg-green-500/15 text-main-green dark:bg-green-400/10 dark:text-green-300" 
+        : "hover:bg-green-500/15 dark:hover:bg-green-400/10 text-gray-700 dark:text-gray-200"
+      }`}
+    onClick={() => setIsOpen(!isOpen)}
+  >
+    <span className="text-xl">
+      <Icon className="text-main-green dark:text-green-300" />
+    </span>
+    <div className="flex items-center text-[14px] justify-between flex-1">
+      <span>{item.title}</span>
+      <span
+        className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
       >
-        <span className="text-xl">
-          <Icon className="text-main-green" />
-        </span>
-        <div className="flex items-center justify-between flex-1">
-          <span>{item.title}</span>
-          <span
-            className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-          >
-            <BsChevronDown />
-          </span>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <Motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="ml-8 mt-1 overflow-hidden"
-          >
-            {visibleSubItems.map((subItem, index) => {
-              const isSubActive =
-                pathname === subItem.link || pathname.includes(subItem.link);
-              return (
-                <Link
-                  key={index}
-                  to={subItem.link}
-                  onClick={onClick}
-                  className={`block px-3 py-2 mb-1 rounded-sm transition-colors duration-200 ${
-                    isSubActive
-                      ? "bg-green-hover/65 text-white"
-                      : "hover:bg-green-700/20"
-                  }`}
-                >
-                  {subItem.title}
-                </Link>
-              );
-            })}
-          </Motion.div>
-        )}
-      </AnimatePresence>
+        <BsChevronDown />
+      </span>
     </div>
+  </div>
+
+  <AnimatePresence>
+    {isOpen && (
+      <Motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.2 }}
+        className="ml-8 mt-1 overflow-hidden"
+      >
+        {visibleSubItems.map((subItem, index) => {
+          const isSubActive =
+            pathname === subItem.link || pathname.includes(subItem.link);
+          return (
+            <Link
+              key={index}
+              to={subItem.link}
+              onClick={onClick}
+              className={`block px-3 py-1 mb-1 text-[14px] rounded-sm transition-colors duration-200 ${
+                isSubActive
+                  ? "bg-green-hover/65 text-white"
+                  : "hover:bg-green-700/20 dark:hover:bg-green-600/30 text-gray-700 dark:text-gray-200"
+              }`}
+            >
+              {subItem.title}
+            </Link>
+          );
+        })}
+      </Motion.div>
+    )}
+  </AnimatePresence>
+</div>
+
   );
 }
 
@@ -136,18 +143,24 @@ function SideBarLink({ item, pathname, onClick }) {
   }
 
   return (
-    <Link
-      to={item.link}
-      className={`flex items-center px-3 gap-x-3 mb-2 rounded-sm py-2 group transition-all duration-300 ease-in-out ${
-        isActive ? "bg-green-500/15 text-main-green" : "hover:bg-green-500/25"
-      }`}
-      onClick={onClick}
-    >
-      <span className="text-xl">
-        <Icon className="text-main-green" />
-      </span>
-      <span>{item.title}</span>
-    </Link>
+    <Link 
+  to={item.link}
+  className={`flex items-center px-3 gap-x-3 text-[14px] mb-2 rounded-sm py-2 group transition-all duration-300 ease-in-out 
+    ${isActive 
+      ? "bg-green-500/15 text-main-green dark:bg-green-400/10 dark:text-green-300" 
+      : "hover:bg-green-500/25 dark:hover:bg-green-400/10 text-gray-700 dark:text-gray-200"
+    }`}
+  onClick={onClick}
+>
+  <span className="text-xl">
+    <Icon className="text-main-green dark:text-green-300" />
+  </span>
+  <span>{item.title}</span>
+</Link>
+
+
+
+
   );
 }
 

@@ -6,10 +6,13 @@ export const endpoints = {
   ForgetPassword: "/api/secure/forgot-password",
   ResetPassword: "/api/secure/reset-password",
   verifyOtp: "/api/secure/verify-otp",
+  resendOTP: "/api/secure/resend-otp",
   validateAuth: "/api/secure/validate",
 
   // Users
   getAllUsers: "/api/user/getAll",
+  getUserId: "/api/user/getUserId",
+  fetchAllProfessionals: "/api/user/professionals",
   getUserDetails: "/api/user/getUser",
   UpdateUser: "/api/user/update",
   CreateUser: "/api/user/create",
@@ -31,15 +34,27 @@ export const endpoints = {
   trackViewNoClicks: "/api/property/trackViewNoClicks",
 
 
-  // Message Property Seller
+  // Messaging
+  //  contact from
   messageSellerContactForm: "/api/contact-form/send-message",
-  sendDirectMessage: "/api/message/send-message",
-  sendBulkMessage: "/api/message/send-bulk-message",
-  fetchUserMessages: "/api/message/user-message",
-  getSentMessages: "/api/message/sent-messages",
-  getSingleMessage: "/api/message/read-message",
-  replyMessage: "/api/message/reply-message",
-  deleteMessage: "/api/message/delete-message",
+  replyContactFormMessage: "/api/contact-form/reply-message",
+  deleteContactFormMessage: "/api/contact-form/delete-message",
+
+   //  Direct Message (DM)
+  sendDirectMessage: "/api/direct-message/send-message",
+  deleteDirectMessage: "/api/direct-message/delete-message",
+  replyDirectMessage: "/api/direct-message/reply-message",
+  
+  // Bulk Message
+  sendBulkMessage: "/api/bulk-message/send-bulk-message",
+  deleteBulkMessage: "/api/bulk-message/delete",
+
+
+  fetchUserMessages: "/api/direct-message/user-message",
+  getSentMessages: "/api/direct-message/sent-messages",
+  getSingleMessage: "/api/direct-message/read-message",
+
+  deleteMessage: "/api/direct-message/delete-message",
 
   // Contact Lists
   fetchUserContactsList: "/api/contact/getAll",

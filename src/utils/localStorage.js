@@ -1,5 +1,5 @@
 const isClient = typeof window !== 'undefined';
-const LocalStorageKeys = ["accessToken", "user", 'otp', 'otpEmail']; // Define allowed keys
+const LocalStorageKeys = ["accessToken", "user", 'otp', 'otpEmail', 'resetEmail']; // Define allowed keys
 
 export const setLocalStorageItem = (keyType, payload) => {
   if (isClient) {

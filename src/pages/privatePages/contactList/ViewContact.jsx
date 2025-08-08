@@ -5,7 +5,6 @@ import {
   FiCalendar,
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
-import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 import { useEffect, useState } from "react";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import { useParams } from "react-router-dom";
@@ -15,7 +14,7 @@ import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import Avater from "@assets/img/avater.png";
 import { formatTitleCase } from "@utils/helper";
-import EnhancedInput from "@components/ui/EnhancedInput";
+
 
 const ViewContact = () => {
   // const [message, setMessage] = useState("");

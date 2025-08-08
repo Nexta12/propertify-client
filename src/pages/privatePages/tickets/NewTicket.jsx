@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import EnhancedEditor from "@components/ui/EnhancedTextArea";
+import EnhancedTextarea from "@components/ui/EnhancedTextarea";
 import { apiClient } from "@api/apiClient";
 import { toast } from "react-toastify";
 import { supportCategoriesOptions, supportPrioritiesOptions } from "@utils/data";
@@ -9,6 +9,7 @@ import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import DOMPurify from "dompurify";
+import HeaderTitle from "@components/ui/HeaderTitle";
 
 
 const NewTicket = () => {
@@ -59,13 +60,12 @@ const NewTicket = () => {
   return (
     <div className="max-w-6xl mx-auto  px-4 sm:px-6 lg:px-8">
         <HandleGoBackBtn/>
-      <h2 className="text-2xl font-semibold text-primary-text mb-6 text-center">
-        Submit a Support Ticket
-      </h2>
+    
+      <HeaderTitle titleText="Submit a Support Ticket" />
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-white p-6 rounded-lg shadow-md"
+        className="space-y-6 bg-white dark:bg-gray-800 border dark:border-gray-400 mt-3 p-6 rounded-lg shadow-md"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <EnhancedSelect
@@ -96,7 +96,7 @@ const NewTicket = () => {
           className="focus:outline-none w-full p-4"
         />
 
-        <EnhancedEditor
+        <EnhancedTextarea
           id="message"
           label="Message"
           name="message"
@@ -104,7 +104,7 @@ const NewTicket = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe your issue or request in detail..."
           rows={6}
-          className="w-full p-4"
+          className="w-full p-4 text-white"
         />
 
         {/* Optional file upload (replace with your FileUpload component if needed) */}
@@ -113,7 +113,7 @@ const NewTicket = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-main-green text-white px-6 py-2 rounded-lg hover:bg-green-hover disabled:opacity-60 transition-all"
+            className="bg-main-green text-white  px-6 py-2 rounded-lg hover:bg-green-hover disabled:opacity-60 transition-all"
           >
             {isLoading ? "Submitting..." : "Submit Ticket"}
           </button>

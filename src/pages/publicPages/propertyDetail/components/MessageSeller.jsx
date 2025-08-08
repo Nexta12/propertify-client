@@ -1,6 +1,7 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import EnhancedInput from "@components/ui/EnhancedInput";
+import EnhancedEditor from "@components/ui/EnhancedTextArea";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -95,13 +96,13 @@ const MessageSeller = ({ receiverId, propertyId }) => {
         />
       </div>
       <div>
-        <textarea
+        <EnhancedEditor
           name="message"
           onChange={handleChange}
           value={formData.message}
           required
-          className="w-full px-3 py-2 h-36 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-hover text-neutral-500 text-sm"
-        ></textarea>
+          className="w-full px-3 py-2 h-36 dark:text-gray-200"
+        />
       </div>
 
       <button

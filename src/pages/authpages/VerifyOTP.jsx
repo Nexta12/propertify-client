@@ -9,41 +9,46 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 import LogoGreen from "@assets/img/green-logo.png";
+import { toast } from "react-toastify";
+import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
+import FullPageLoader from "./FullPageLoader";
 
 const VerifyOTP = () => {
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPage, setShowPage] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
-  //   useEffect(() => {
-  //     const getOtpPage = getLocalStorageItem('otp');
-  //     if (!getOtpPage) {
-  //       navigate(paths.login);
-  //     } else {
-  //       setShowPage(true);
-  //     }
-  //   }, [navigate]);
+  useEffect(() => {
+    const getOtpPage = getLocalStorageItem("otp");
+    if (!getOtpPage) {
+      navigate(paths.login);
+    } else {
+      setShowPage(true);
+    }
+  }, [navigate]);
 
-  //   useEffect(() => {
-  //     const email = getLocalStorageItem('otp');
-  //     if (email) {
-  //       setUserEmail(email);
-  //       const fetchUserId = async () => {
-  //         try {
-  //           const res = await apiClient.post(endpoints.getUserId, { email });
-  //           setUserId(res.data.userId);
-  //         } catch (error) {
-  //           console.log(error);
-
-  //         }
-  //       };
-  //       fetchUserId();
-  //     }
-  //   }, []);
+  useEffect(() => {
+    const email = getLocalStorageItem("otpEmail");
+    if (email) {
+      const fetchUserId = async () => {
+        try {
+          const res = await apiClient.post(endpoints.getUserId, {
+            email
+          });
+         if(res.status == 200) {
+            setUserId(res.data.data?._id);
+         }
+        } catch (error) {
+          console.log(error)
+          toast.error(ErrorFormatter(error));
+        }
+      };
+      fetchUserId();
+    }
+  }, []);
 
   const handleInputChange = (index, value) => {
     if (/^\d*$/.test(value) && value.length <= 1) {
@@ -85,100 +90,107 @@ const VerifyOTP = () => {
 
     // Validate all OTP fields are filled
     if (otp.some((digit) => !digit)) {
-      //   setMessage({ error: 'Please enter all OTP digits', success: null });
+      toast.error("Please enter all OTP digits");
       return;
     }
 
     if (!userId) {
-      //   setMessage({ error: 'User ID is missing', success: null });
+      toast.error("Unidentified user");
       return;
     }
 
     const otpCode = otp.join("");
+   
 
     try {
       setIsLoading(true);
-      const response = await apiClient.post(endpoints.verifyOtp, {
+      await apiClient.post(endpoints.verifyOtp, {
         otp: otpCode,
         userId,
       });
 
-      if (response.status === 200) {
-        removeLocalStorageItem("otp");
-        removeLocalStorageItem("otp");
-        setIsLoading(false);
-        // setMessage({ error: null, success: 'OTP verified successfully' });
-        setTimeout(() => {
+      removeLocalStorageItem("otp");
+      removeLocalStorageItem("otpEmail");
+
+       const resetPage = getLocalStorageItem("resetEmail");
+
+      toast.success("Otp Verified");
+
+      setTimeout(() => {
+        if(resetPage ){
+          navigate(paths.SetNewPassword)
+        }else{
           navigate(paths.login);
-        }, 2000);
-      }
+        }
+      }, 3000);
     } catch (error) {
-      console.log(error);
+      toast.error(ErrorFormatter(error));
+      removeLocalStorageItem("otp");
+      removeLocalStorageItem("otpEmail");
       setIsLoading(false);
     }
   };
 
-  //   if (!showPage) {
-  //     return <PuffLoader/>
-  //   }
+
+   if (!showPage) {
+  return <FullPageLoader />;
+}
 
   return (
-    <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Logo Section */}
-        <div className="mt-5 text-center">
-          <div className="flex justify-center mb-5">
-            <Link to={paths.index}>
-              <img src={LogoGreen} alt="Logo" width={140} />
-            </Link>
-          </div>
-
-          <header className="mb-8">
-            <p className="text-[15px] text-green">
-              Enter the 4-digit code sent to your email
-            </p>
-          </header>
+    <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      {/* Logo Section */}
+      <div className="mt-5 text-center">
+        <div className="flex justify-center mb-5">
+          <Link to={paths.index}>
+            <img src={LogoGreen} alt="Logo" width={140} />
+          </Link>
         </div>
 
-        <form id="otp-form" onSubmit={handleSubmit}>
-          <div className="flex items-center justify-center gap-3">
-            {[0, 1, 2, 3].map((index) => (
-              <input
-                key={index}
-                type="text"
-                value={otp[index]}
-                autoFocus={index === 0}
-                className="h-14 w-14 appearance-none rounded border p-4 text-center text-2xl font-extrabold outline-none text-dark bg-light-gray border-gray hover:border-gray focus:border-green focus:ring-green focus:bg-white focus:ring-2"
-                pattern="[0-9]*"
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                onPaste={handlePaste}
-                maxLength="1"
-                ref={(el) => (inputsRef.current[index] = el)}
-              />
-            ))}
-          </div>
-          <div className="mx-auto mt-4 max-w-[260px]">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="inline-flex w-full justify-center whitespace-nowrap rounded-lg text-sm font-medium text-white shadow-sm transition-colors duration-150 bg-green px-3.5 py-2.5 shadow-light-green/10 hover:bg-green focus:ring-green focus:outline-none focus:ring focus-visible:ring-green focus-visible:outline-none focus-visible:ring"
-            >
-              {isLoading ? "Loading..." : "Verify Account"}
-            </button>
-          </div>
-        </form>
-      
-         {/* Login Link */}
-          <div className="text-center text-sm text-[#1F3E72] mb-10">
-            Didn&apos;t receive code? { " "}
-            <Link
-              to={paths.login}
-              className="font-medium text-[#28B16D] hover:text-[#09C269]"
-            >
-            Resend otp
-            </Link>
-          </div>
+        <header className="mb-8">
+          <p className="text-[15px] text-green">
+            Enter the 4-digit code sent to your email
+          </p>
+        </header>
+      </div>
+
+      <form id="otp-form" onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center gap-3">
+          {[0, 1, 2, 3].map((index) => (
+            <input
+              key={index}
+              type="text"
+              value={otp[index]}
+              autoFocus={index === 0}
+              className="h-14 w-14 appearance-none rounded border p-4 text-center text-2xl font-extrabold outline-none text-dark bg-light-gray border-gray hover:border-gray focus:border-green focus:ring-green focus:bg-white focus:ring-2"
+              pattern="[0-9]*"
+              onChange={(e) => handleInputChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              onPaste={handlePaste}
+              maxLength="1"
+              ref={(el) => (inputsRef.current[index] = el)}
+            />
+          ))}
+        </div>
+        <div className="mx-auto mt-4 max-w-[260px]">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="inline-flex w-full justify-center whitespace-nowrap rounded-lg text-sm font-medium bg-main-green text-white dark:text-gray-300 shadow-sm transition-colors duration-150 bg-green px-3.5 py-2.5 shadow-light-green/10 hover:bg-green focus:ring-green focus:outline-none focus:ring focus-visible:ring-green focus-visible:outline-none focus-visible:ring"
+          >
+            {isLoading ? "Loading..." : "Verify Account"}
+          </button>
+        </div>
+      </form>
+
+      {/* Login Link */}
+      <div className="text-center text-sm text-[#1F3E72] my-6 dark:text-gray-300">
+        Didn&apos;t receive code?{" "}
+        <Link
+          to={paths.login}
+          className="font-medium text-[#28B16D] hover:text-[#09C269]"
+        >
+          Resend otp
+        </Link>
       </div>
     </div>
   );

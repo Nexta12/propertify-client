@@ -6,18 +6,27 @@ import Modal from "@components/modal/Modal";
 import DataTable from "@components/ui/DataTable";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { formatDistanceToNow } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiEye, FiTrash2, FiSlash } from "react-icons/fi";
 import { toast } from "react-toastify";
 import UserProfileCard from "./UserProfileCard";
 import Avater from "@assets/img/avater.png";
 import { paths } from "@routes/paths";
+import { getPermittedRole } from "@utils/helper";
+import useAuthStore from "@store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const [openModal, setOpenModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [clickedUser, setClickedUser] = useState(null);
+  const { user } = useAuthStore()
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    getPermittedRole(user, navigate )
+  },[user, navigate ])
 
   const fetchUsers = async ({ page, limit, sortField, sortOrder, search }) => {
     try {
@@ -64,10 +73,10 @@ const Users = () => {
           />
         </div>
         <div>
-          <div className="text-sm font-medium text-gray-900 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
            {row.original.title} {row.original.firstName || 'NA'} {row.original.lastName}
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-gray-500 dark:text-gray-200">
             {row.original.role && (
               <span className="capitalize">{row.original.role}</span>
             )}
@@ -127,7 +136,7 @@ const Users = () => {
       <div className="flex gap-2">
         <button
           onClick={() => handleView(row.original)}
-          className="p-2 text-gray-500 rounded hover:bg-gray-100 hover:text-gray-700"
+          className="p-2 text-gray-500 dark:text-gray-100 rounded hover:bg-gray-100 dark:hover:text-primary-text hover:text-gray-700"
           title="View"
         >
           <FiEye className="w-4 h-4" />

@@ -10,7 +10,7 @@ const HandleGoBackBtn = () => {
   return (
     <button
       onClick={() => handleGoBack(navigate, user)}
-      className="flex items-center text-neutral-400 hover:text-blue-800 mb-1 transition-colors text-xs md:text-sm "
+      className="flex items-center dark:text-gray-300 text-neutral-400 hover:text-blue-800 mb-1 transition-colors text-xs md:text-sm "
     >
       <FaArrowLeftLong className="mr-2" />
       Back

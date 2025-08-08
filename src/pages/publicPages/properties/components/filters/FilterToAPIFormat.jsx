@@ -24,7 +24,7 @@ const convertFiltersToAPIFormat = (filters, currentPage) => {
     search: filters.searchTerm,
     page: currentPage,
     limit: 10,
-    // isProperty: typeof filters.isProperty === "boolean" ? filters.isProperty : undefined,
+    
   };
 };
 

@@ -14,6 +14,7 @@ import { paths } from "@routes/paths";
 import MobileSidebar from "./MobileSidebar";
 import { MdMenu, MdOutlineClose } from "react-icons/md";
 import GreenLogo from "@assets/img/green-logo.png";
+import WhiteLogo from "@assets/img/white-logo.png";
 import Notification from "./Notification";
 
 const MobileHeader = () => {
@@ -63,7 +64,7 @@ const MobileHeader = () => {
   return (
     <div className="relative">
       <header
-        className={`md:hidden bg-white shadow-sm p-4 flex justify-between items-center 
+        className={`lg:hidden bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center 
         fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
           hideOnScroll ? "-translate-y-full" : "translate-y-0"
         }`}
@@ -71,12 +72,18 @@ const MobileHeader = () => {
         <div className="flex items-center">
           <button
             onClick={handleSidepanel}
-            className="lg:hidden text-2xl text-gray-600 focus:outline-none mr-3"
+            className="lg:hidden text-2xl text-gray-600 dark:text-gray-200 focus:outline-none mr-3"
             aria-label="Toggle menu"
           >
             {sidepanel ? <MdOutlineClose size={24} /> : <MdMenu size={24} />}
           </button>
-          <img src={GreenLogo} alt="Logo" width={120} />
+
+              {/* Light Mode Logo */}
+                <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
+          
+                {/* Dark Mode Logo */}
+                <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
+
         </div>
 
         <div className="flex items-center space-x-3">

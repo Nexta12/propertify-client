@@ -18,12 +18,14 @@ import PropertyAmenities from "./components/PropertyAmenities";
 import LocationMap from "./components/LocationMap";
 import PropertyTitleSection from "./components/PropertyTitleSection";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import { formatTitleCase } from "@utils/helper";
+import Comments from "@components/propertyCard/Comments";
 
 const PropertyDetails = () => {
   const { slug } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showFullScreen, setShowFullScreen] = useState(false);
-
+  const [allComments, setAllComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [property, setProperty] = useState({
     _id: "",
@@ -84,6 +86,24 @@ const PropertyDetails = () => {
       prev === 0 ? property?.media?.length - 1 : prev - 1
     );
 
+
+      // FetCh Post Comment.
+     useEffect(() => {
+       const fetchPostComments = async () => {
+         try {
+           const response = await apiClient.get(
+             `${endpoints.fetchPostComment}/${property?._id}`
+           );
+   
+           setAllComments(response.data.data);
+         } catch (error) {
+           toast(ErrorFormatter(error));
+         }
+       };
+   
+      if(property._id) fetchPostComments();
+     }, [property]);
+
   if (!isLoading) {
     <section className="flex bg-gray-50 items-center justify-center w-full min-h-screen">
       <PuffLoader />
@@ -91,13 +111,13 @@ const PropertyDetails = () => {
   }
 
   return (
-    <div className="section-container bg-gray-50 min-h-screen">
+    <div className="section-container bg-gray-50 min-h-screen dark:bg-gray-900">
       {/* Breadcrumb Navigation */}
       <BreadcrumbNav
         baseNave="Home"
         firstPath={paths.properties}
         firstPathTitle="Properties"
-        secondPathTitle={truncate(property?.title, { length: 20 })}
+        secondPathTitle={truncate(property.title != undefined ? property.title : formatTitleCase(property.slug)  , { length: 20 })}
       />
 
       <div className=" w-full overflow-x-hidden">
@@ -108,9 +128,9 @@ const PropertyDetails = () => {
             <div className="lg:col-span-2 space-y-6 w-full">
               <HandleGoBackBtn />
               {/* Property Title and Actions */}
-              {property.isProperty && (
-                <PropertyTitleSection property={property} />
-              )}
+              <PropertyTitleSection property={property} />
+              {/* {property.isProperty && (
+              )} */}
 
               {/* Image Slider */}
               <ImageSlider
@@ -129,6 +149,9 @@ const PropertyDetails = () => {
               {property.isProperty && <PropertyAmenities property={property} />}
               {/* Map Preview */}
               {property.isProperty && <LocationMap property={property} />}
+
+              {/* Comments */}
+              <Comments post={property} allComments={allComments} setAllComments={setAllComments} />
             </div>
 
             {/* Sidebar */}
@@ -138,8 +161,8 @@ const PropertyDetails = () => {
               <OwnerContact property={property} />
 
               {/* Send Message */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold mb-4">Contact Marketer</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-semibold mb-4 dark:text-gray-200">Contact Marketer</h3>
                 <MessageSeller
                   receiverId={property.owner._id}
                   propertyId={property._id}

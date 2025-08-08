@@ -1,5 +1,6 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
+import { httpError } from "@pages/errorPages/ErrorCodes";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { paths } from "@routes/paths";
 import { getLoggedInUserPath } from "@utils/helper";
@@ -26,8 +27,19 @@ const handleLogin = async (loginDetails, navigate, set) => {
     const user = response.data;
     const accessToken = response.accessToken;
 
-    setLocalStorageItem("user", user);
+    const userDetail = {
+      _id: user._id,
+      slug: user.slug,
+      likedProperties: user.likedProperties,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      title: user.title,
+      userStatus: user.userStatus
+      
+    }
     setLocalStorageItem("accessToken", accessToken);
+    setLocalStorageItem("user", userDetail);
 
     //  Update User
     set({ user: user, isAuthenticated: true, isLoading: false, error: null });
@@ -41,6 +53,12 @@ const handleLogin = async (loginDetails, navigate, set) => {
       isAuthenticated: false,
       isLoading: false,
     });
+    if(ErrorFormatter(error) === httpError.UnverifiedAccount){
+      setTimeout(()=>{
+        navigate(paths.resendOTP)
+      }, 2000)
+     
+    }
   }
 };
 

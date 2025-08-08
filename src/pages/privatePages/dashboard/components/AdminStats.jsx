@@ -56,7 +56,7 @@ const AdminStats = () => {
         <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
           Platform Overview
         </h2>
-        <ToggleSwitch />
+         <span></span>
       </div>
 
       {/* Grid Layout */}

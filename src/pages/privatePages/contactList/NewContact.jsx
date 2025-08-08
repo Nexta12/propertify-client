@@ -14,6 +14,8 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { FiLoader, FiUpload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import HeaderTitle from "@components/ui/HeaderTitle";
 
 const NewContact = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +87,7 @@ const NewContact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Check If profile is complete */}
       <CompleteProfileCall />
 
@@ -93,21 +95,13 @@ const NewContact = () => {
         <div className="w-full mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <button
-              onClick={() => handleGoBack(navigate, user)}
-              className="flex items-center text-neutral-600 transition-colors text-xs md:text-sm "
-            >
-              <FaArrowLeftLong className="mr-2" />
-              Back
-            </button>
-            <h1 className=" text-md md:text-2xl font-bold text-gray-800">
-              Add New Contact
-            </h1>
+           <HandleGoBackBtn/>
+             <HeaderTitle titleText="Add New Contact"/>
             <div className="w-8"></div> {/* Spacer for alignment */}
           </div>
 
           {/* Main Card */}
-          <div className="bg-white rounded-xl shadow-md relative min-h-[calc(100vh-200px)] p-4 py-8 lg:px-8">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md relative min-h-[calc(100vh-200px)] p-4 py-8 lg:px-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {/* Title + First Name (in 1 column on md+) */}
@@ -200,7 +194,7 @@ const NewContact = () => {
                   <button
                     type="button"
                     onClick={() => handleGoBack(navigate, user)}
-                    className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
+                    className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
                   >
                     Cancel
                   </button>

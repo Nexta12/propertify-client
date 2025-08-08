@@ -35,7 +35,7 @@ const UserProfileCard = ({ currentUser }) => {
   }, [currentUser?.slug]);
 
   return (
-    <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 max-h-[30rem] overflow-y-auto">
+    <div className=" mx-auto bg-white dark:bg-gray-800 dark:shadow-gray-700 max-h-[30rem] overflow-y-auto">
       <div className="p-6 flex flex-col md:flex-row items-center justify-center md:justify-start md:items-start space-x-4">
         <img
           className="h-24 w-24 rounded-full border-4 border-white dark:border-gray-800 shadow-md"

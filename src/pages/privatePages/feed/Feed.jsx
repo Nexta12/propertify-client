@@ -1,13 +1,15 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import PostCard from "@components/propertyCard/PostCard";
+import PopularSearches from "@components/tips/PopularSearches";
+import QuickNote from "@components/tips/QuickNotes";
+import TipsCard from "@components/tips/TipsCard";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import convertFiltersToAPIFormat from "@pages/publicPages/properties/components/filters/FilterToAPIFormat";
 import MobileSearchBar from "@pages/publicPages/properties/components/filters/MobileSearchBar";
 import SearchAndFilterBar from "@pages/publicPages/properties/components/filters/SearchAndFilterBar";
 import MobileFootermenu from "@pages/publicPages/properties/components/mobileFooterMenu/MobileFootermenu";
-import FeaturedProperties from "@pages/publicPages/properties/components/sidebar/FeaturedProperties";
-import RecentlyViewed from "@pages/publicPages/properties/components/sidebar/RecentlyViewed";
+import useSearchStore from "@store/searchStore";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -34,10 +36,56 @@ const Feed = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const containerRef = useRef(null);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const { deskTopSearchTerm, setDeskTopSearchTerm } = useSearchStore();
+  const [debouncedSearchEnabled, setDebouncedSearchEnabled] = useState(true);
 
   const handlePostDelete = (postId) => {
     setProperties((prev) => prev.filter((post) => post._id !== postId));
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (deskTopSearchTerm !== "") {
+        setPage(1);
+        setHasMore(true);
+        setInitialLoad(true);
+        setFilters((prev) => ({
+          ...prev,
+          deskTopSearchTerm,
+        }));
+      }
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timer);
+  }, [deskTopSearchTerm]);
+
+  useEffect(() => {
+    if (deskTopSearchTerm === undefined || deskTopSearchTerm === null) return;
+
+    if (debouncedSearchEnabled) {
+      const timer = setTimeout(() => {
+        setPage(1);
+        setHasMore(true);
+        setInitialLoad(true);
+        setFilters((prev) => ({
+          ...prev,
+          searchTerm: deskTopSearchTerm,
+        }));
+      }, 300); // Debounced
+
+      return () => clearTimeout(timer);
+    } else {
+      // No debounce
+      setPage(1);
+      setHasMore(true);
+      setInitialLoad(true);
+
+      setFilters((prev) => ({
+        ...prev,
+        searchTerm: deskTopSearchTerm || "",
+      }));
+    }
+  }, [deskTopSearchTerm, debouncedSearchEnabled]);
 
   // Handle window resize
   useEffect(() => {
@@ -95,13 +143,6 @@ const Feed = () => {
     fetchProperties(page, page === 1);
   }, [page, filters, fetchProperties]);
 
-  // Debounce search
-  useEffect(() => {
-    if (filters.searchTerm === undefined) return;
-    const timer = setTimeout(() => setFilters((prev) => ({ ...prev })), 500);
-    return () => clearTimeout(timer);
-  }, [filters.searchTerm]);
-
   // Infinite scroll
   const loadMore = useCallback(() => {
     if (!loading && hasMore) setPage((prev) => prev + 1);
@@ -125,7 +166,7 @@ const Feed = () => {
   return (
     <section className="flex relative w-full">
       {/* Main Container */}
-      <div className="flex-[2] lg:mr-4">
+      <div className="flex-[2] lg:mr-4 mb-8">
         <div>
           {initialLoad && properties.length === 0 ? (
             <div className="flex items-center justify-center py-8 w-full">
@@ -165,9 +206,34 @@ const Feed = () => {
       </div>
       {/* Right Sidebar */}
       <div className="hidden lg:block flex-1 space-y-5 self-start sticky top-0">
-        <FeaturedProperties featuredProperties={properties} />
-        <RecentlyViewed />
-        {/* <ContactAgent /> */}
+        <TipsCard
+          title="🔐 Safety Guidelines"
+          tips={[
+            "Always verify property documents.",
+            "Always meet in public places.",
+            "Report suspicious listings immediately.",
+            "Visit properties before making payment.",
+          ]}
+        />
+
+        <PopularSearches
+          tags={[
+            "Lekki",
+            "Self-Contain",
+            "3 Bedroom",
+            "Shortlet",
+            "Abuja",
+            "Verified Only",
+          ]}
+          onTagClick={(tag) => {
+            setDebouncedSearchEnabled(false);
+            setDeskTopSearchTerm(tag);
+          }}
+        />
+
+        <QuickNote className="mt-4">
+          📌 Tip: You can quickly share properties across social media.
+        </QuickNote>
       </div>
 
       {/* Mobile Seearch Bar Modal Display made re-usable, */}

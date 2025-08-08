@@ -30,18 +30,20 @@ const FavouriteProperty = ({ property, className }) => {
 
   return (
     <>
-    <button
-      onClick={() => updateFavoriteStatus(property._id)}
-      className={` rounded-full transition-colors flex gap-1 ${
-        user && isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"
-      }  ${className} `}
-    >
-      <FiHeart className={isFavorite ? "fill-current" : ""} />
-       {likeCount !== 0 ? (
-          <span className="text-[10px] mt-1 " >{likeCount !== 0 ? likeCount : ""}</span>
-       ) : null}
-     
-    </button>
+ <button
+  onClick={() => updateFavoriteStatus(property._id)}
+  className={`rounded-full transition-colors flex gap-1 items-center px-2 py-1
+    ${user && isFavorite
+      ? "bg-red-500 text-white"
+      : "bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200"}
+    ${className}`}
+>
+  <FiHeart className={`${isFavorite ? "fill-current" : ""}`} />
+  {likeCount !== 0 && (
+    <span className="text-[10px] mt-1">{likeCount}</span>
+  )}
+</button>
+
     </>
   );
 };

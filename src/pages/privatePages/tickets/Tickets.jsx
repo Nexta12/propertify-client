@@ -92,109 +92,107 @@ const Tickets = () => {
     );
   }
 
-  const columns = [
-    {
-      accessorKey: "serialNo",
-      header: "S/No",
-      cell: ({ row }) => row.index + 1,
-    },
-    {
-      accessorKey: "fullName",
-      header: "Name",
-      cell: ({ row }) => {
-        const { userId } = row.original;
-        return (
-          <span className="whitespace-nowrap capitalize">
-            {userId?.firstName || "NA"} {userId?.lastName || ""}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: "subject",
-      header: "Subject",
-      cell: ({ row }) => (
+ const columns = [
+  {
+    accessorKey: "serialNo",
+    header: "S/No",
+    cell: ({ row }) => row.index + 1,
+  },
+  {
+    accessorKey: "fullName",
+    header: "Name",
+    cell: ({ row }) => {
+      const { userId } = row.original;
+      return (
         <span className="whitespace-nowrap capitalize">
-          { truncate(row.original.subject, {length: 15})}
+          {userId?.firstName || "NA"} {userId?.lastName || ""}
         </span>
-      ),
+      );
     },
-    {
-      accessorKey: "email",
-      header: "Email",
-      cell: ({ row }) => row.original.userId?.email || "N/A",
+  },
+  {
+    accessorKey: "subject",
+    header: "Subject",
+    cell: ({ row }) => (
+      <span className="whitespace-nowrap capitalize">
+        {truncate(row.original.subject, { length: 15 })}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => row.original.userId?.email || "N/A",
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
+    cell: ({ row }) => formatTitleCase(row.original.category),
+  },
+  {
+    accessorKey: "priority",
+    header: "Priority",
+    cell: ({ row }) => {
+      const priority = row.original.priority.toLowerCase();
+      const colors = {
+        urgent: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
+        high: "bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-100",
+        medium: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+        low: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+      };
+      const colorClass = colors[priority] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+      return (
+        <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}>
+          {priority}
+        </span>
+      );
     },
-    {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => formatTitleCase(row.original.category),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status.toLowerCase();
+      const colors = {
+        closed: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
+        "in-progress": "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100",
+        open: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+        resolved: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+      };
+      const colorClass = colors[status] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+      return (
+        <span
+          className={`text-xs px-2 py-1 rounded-full font-medium capitalize whitespace-nowrap ${colorClass}`}
+        >
+          {status}
+        </span>
+      );
     },
-    {
-      accessorKey: "priority",
-      header: "Priority",
-      cell: ({ row }) => {
-        const priority = row.original.priority.toLowerCase();
-        const colors = {
-          urgent: "bg-red-100 text-red-600",
-          high: "bg-orange-100 text-orange-700",
-          medium: "bg-yellow-100 text-yellow-700",
-          low: "bg-green-100 text-green-600",
-        };
-        const colorClass = colors[priority] || "bg-gray-100 text-gray-700";
-        return (
-          <span
-            className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}
-          >
-            {priority}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        const status = row.original.status.toLowerCase();
-        const colors = {
-          closed: "bg-red-100 text-red-600",
-          "in-progress": "bg-blue-100 text-blue-700",
-          open: "bg-green-100 text-green-600",
-          resolved: "bg-yellow-100 text-yellow-700",
-        };
-        const colorClass = colors[status] || "bg-gray-100 text-gray-700";
-        return (
-          <span
-            className={`text-xs px-2 py-1 rounded-full font-medium capitalize whitespace-nowrap ${colorClass}`}
-          >
-            {status}
-          </span>
-        );
-      },
-    },
-    
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleView(row.original)}
-            className="px-2 py-1 text-xs text-main-green bg-green-100 rounded hover:bg-green-200"
-          >
-            View
-          </button>
-          {user.role === "admin" && (
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleView(row.original)}
+          className="px-2 py-1 text-xs text-main-green bg-green-100 dark:bg-green-900 dark:text-green-300 rounded hover:bg-green-200 dark:hover:bg-green-800"
+        >
+          View
+        </button>
+        {user.role === "admin" && (
           <button
             onClick={() => handleDelete(row.original)}
-            className="px-2 py-1 text-xs text-red-500 rounded hover:bg-red-100"
+            className="px-2 py-1 text-xs text-red-500 dark:text-red-300 rounded hover:bg-red-100 dark:hover:bg-red-800"
           >
             <FiTrash2 />
           </button>
-           )}
-        </div>
-      ),
-    },
-  ];
+        )}
+      </div>
+    ),
+  },
+];
+
 
   const handleView = (data) => {
     navigate(`${paths.protected}/tickets/${data._id}`);

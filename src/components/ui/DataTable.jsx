@@ -100,7 +100,7 @@ const DataTable = ({
               value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
               placeholder="Search..."
-              className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8F5E9] dark:focus:ring-gray-600 focus:border-[#C8E6C9] dark:bg-gray-700 dark:text-white transition-all duration-200"
+              className="w-full px-4 py-2 border border-gray-200 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8F5E9] dark:focus:ring-gray-600 focus:border-[#C8E6C9] dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-300 transition-all duration-200"
             />
             <span className="absolute right-3 top-2.5 text-gray-400">
               <FiSearch className="h-5 w-5" />

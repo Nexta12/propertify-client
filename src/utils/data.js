@@ -1,6 +1,6 @@
 import { paths } from "@routes/paths";
 import { FaQuestionCircle, FaUser } from "react-icons/fa";
-import { FaTicket } from "react-icons/fa6";
+
 import {
   FiHome,
   FiUsers,

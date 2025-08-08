@@ -71,67 +71,67 @@ const EnhancedInput = ({
   };
 
   const inputType = type === "password" && showPassword ? "text" : type;
+const baseClasses =
+  "w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#28B16D] focus:border-transparent text-sm font-medium placeholder:text-neutral-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400";
 
-  const baseClasses =
-    " w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#28B16D] focus:border-transparent text-sm font-medium placeholder:text-neutral-400 ";
-
-  return (
-    <div className={`input-group relative ${className} w-full`}>
-      {label && (
-        <label
-          htmlFor={name}
-          className="block text-sm font-medium text-gray-700 capitalize mb-1"
-        >
-          {label}
-          {required && <span className="text-red-500">*</span>}
-        </label>
-      )}
-      <div className="relative">
-        {type === "password" && (
-          <>
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiLock className="text-[#8E9395]" />
-            </div>
-
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {!showPassword ? (
-                <FiEye className="text-[#8E9395] hover:text-[#0a0a0a]" />
-              ) : (
-                <FiEyeOff className="text-[#8E9395] hover:text-[#0a0a0a]" />
-              )}
-            </button>
-          </>
-        )}
-
-        {type === "email" && (
+return (
+  <div className={`input-group relative ${className} w-full`}>
+    {label && (
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 dark:text-gray-200 capitalize mb-1"
+      >
+        {label}
+        {required && <span className="text-red-500">*</span>}
+      </label>
+    )}
+    <div className="relative">
+      {type === "password" && (
+        <>
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FiMail className="text-[#8E9395]" />
+            <FiLock className="text-[#8E9395] dark:text-gray-400" />
           </div>
-        )}
-        <input
-          type={inputType}
-          id={name}
-          name={name}
-          value={value || ""}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder={placeholder}
-          maxLength={maxLength}
-          className={`${
-            type === "email" || type === "password" ? "pl-10" : ""
-          } ${baseClasses} ${error ? "border-red-500" : "border-gray-300"} `}
-        />
-      </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-600">{getErrorMessage()}</p>
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {!showPassword ? (
+              <FiEye className="text-[#8E9395] hover:text-[#0a0a0a] dark:hover:text-gray-100" />
+            ) : (
+              <FiEyeOff className="text-[#8E9395] hover:text-[#0a0a0a] dark:hover:text-gray-100" />
+            )}
+          </button>
+        </>
       )}
+
+      {type === "email" && (
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <FiMail className="text-[#8E9395] dark:text-gray-400" />
+        </div>
+      )}
+
+      <input
+        type={inputType}
+        id={name}
+        name={name}
+        value={value || ""}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        className={`${
+          type === "email" || type === "password" ? "pl-10" : ""
+        } ${baseClasses} ${error ? "border-red-500 dark:border-red-500" : "border-gray-300 dark:border-gray-600"}`}
+      />
     </div>
-  );
+    {error && (
+      <p className="mt-1 text-sm text-red-600 dark:text-red-500">{getErrorMessage()}</p>
+    )}
+  </div>
+);
+
 };
 
 export default EnhancedInput;

@@ -5,42 +5,44 @@ import ProfileTab from './components/ProfileTab';
 import UpdatePasswordTab from './components/UpdatePasswordTab';
 import CompanyTab from './components/CompanyTab';
 import HandleGoBackBtn from '@components/goBackBtn/HandleGoBackBtn';
+import HeaderTitle from '@components/ui/HeaderTitle';
 
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile');
   
   return (
-     <section className="bg-neutral-100  max-w-7xl mx-auto">
-       <div className="bg-white overflow-hidden border border-gray-100">
+     <section className="bg-neutral-100 dark:bg-gray-800  max-w-7xl mx-auto">
+       <div className="bg-white dark:bg-gray-800 overflow-hidden border border-gray-100 dark:border-gray-400">
         <div className="pt-2 pl-3">
         <HandleGoBackBtn/>
         </div>
         {/* Header */}
-        <div className="px-8 py-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900">Account Settings</h1>
-          <p className="text-gray-500 mt-1">Manage your personal and company information</p>
+        <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-400">
+        
+           <HeaderTitle titleText={"Account Settings"}/>
+          <p className="text-gray-500 mt-1 dark:text-gray-200">Manage your personal and company information</p>
         </div>
 
         {/* Tabs */}
         <div className="flex border-b border-gray-200 overflow-x-auto" style={{scrollbarWidth: "none"}} >
           <button
             onClick={() => setActiveTab('profile')}
-            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'profile' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'profile' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 dark:text-gray-200 hover:text-gray-700'}`}
           >
             <FiUser className="text-lg" />
             Edit Profile
           </button>
           <button
             onClick={() => setActiveTab('password')}
-            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'password' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'password' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 dark:text-gray-200 hover:text-gray-700'}`}
           >
             <FiLock className="text-lg" />
             Update Password
           </button>
           <button
             onClick={() => setActiveTab('company')}
-            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'company' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'company' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 dark:text-gray-200 hover:text-gray-700'}`}
           >
             <FiBriefcase className="text-lg" />
             My Company

@@ -270,102 +270,104 @@ const FileUpload = forwardRef(
           isDeleting={isDeleting}
         />
 
-        <div
-          className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
-            disabled
-              ? "bg-gray-100 border-gray-300 cursor-not-allowed"
-              : "bg-gray-50 border-blue-400 hover:border-blue-500 cursor-pointer"
-          }`}
-          onClick={handleOpenWidget}
-        >
-          <div className="flex flex-col items-center justify-center gap-3 text-center">
-            <AiOutlineCloudUpload
-              size={32}
-              className={disabled ? "text-gray-400" : "text-blue-500"}
-            />
-            <div>
-              <p className="font-medium text-gray-700 text-[10px]">
-                {multiple ? "Upload files" : "Upload a file"}
-              </p>
-              <p className="text-[10px] text-gray-500 mt-1">
-                {getAcceptDescription(accept)} (max {accept.includes("video/*") ? "50MB" : "15MB"} each)
-              </p>
-              {isUploading && (
-                <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: `${uploadProgress}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Uploading... {uploadProgress}%
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
 
-        {files.length > 0 ? (
-          <div className="mt-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-2">
-              {multiple ? `Uploaded (${files.length}/${maxFiles})` : "Uploaded"}
-            </h4>
+        <div
+  className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
+    disabled
+      ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 cursor-not-allowed"
+      : "bg-gray-50 dark:bg-gray-900 border-blue-400 hover:border-blue-500 dark:hover:border-blue-300 cursor-pointer"
+  }`}
+  onClick={handleOpenWidget}
+>
+  <div className="flex flex-col items-center justify-center gap-3 text-center">
+    <AiOutlineCloudUpload
+      size={32}
+      className={disabled ? "text-gray-400" : "text-blue-500 dark:text-blue-400"}
+    />
+    <div>
+      <p className="font-medium text-gray-700 dark:text-gray-200 text-[10px]">
+        {multiple ? "Upload files" : "Upload a file"}
+      </p>
+      <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+        {getAcceptDescription(accept)} (max {accept.includes("video/*") ? "50MB" : "15MB"} each)
+      </p>
+      {isUploading && (
+        <div className="mt-2">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div
-              className={`grid gap-3 ${
-                multiple
-                  ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-                  : "grid-cols-1"
-              }`}
-            >
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="relative group rounded-md overflow-hidden border border-gray-200 h-32"
-                >
-                  {file.type === "video" ? (
-                    <div className="relative w-full h-full">
-                      <video 
-                        className="w-full h-full object-cover"
-                        muted
-                        playsInline
-                      >
-                        <source src={file.url} type={`video/${file.url.split('.').pop()}`} />
-                      </video>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <FiVideo className="text-white text-2xl" />
-                      </div>
-                    </div>
-                  ) : (
-                    <img
-                      src={file.url}
-                      alt={`Upload ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  {!disabled && (
-                    <Link
-                      to={"#"}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleRemove(index);
-                      }}
-                      className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <AiOutlineDelete size={16} />
-                    </Link>
-                  )}
-                </div>
-              ))}
+              className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Uploading... {uploadProgress}%
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+{files.length > 0 ? (
+  <div className="mt-4">
+    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+      {multiple ? `Uploaded (${files.length}/${maxFiles})` : "Uploaded"}
+    </h4>
+    <div
+      className={`grid gap-3 ${
+        multiple
+          ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+          : "grid-cols-1"
+      }`}
+    >
+      {files.map((file, index) => (
+        <div
+          key={index}
+          className="relative group rounded-md overflow-hidden border border-gray-200 dark:border-gray-700 h-32"
+        >
+          {file.type === "video" ? (
+            <div className="relative w-full h-full">
+              <video 
+                className="w-full h-full object-cover"
+                muted
+                playsInline
+              >
+                <source src={file.url} type={`video/${file.url.split('.').pop()}`} />
+              </video>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <FiVideo className="text-white text-2xl" />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="mt-4 flex items-center justify-center gap-2 text-gray-400">
-            <FiImage size={18} />
-            <span className="text-sm">No files uploaded yet</span>
-          </div>
-        )}
+          ) : (
+            <img
+              src={file.url}
+              alt={`Upload ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          )}
+          {!disabled && (
+            <Link
+              to={"#"}
+              onClick={(e) => {
+                e.preventDefault();
+                handleRemove(index);
+              }}
+              className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <AiOutlineDelete size={16} />
+            </Link>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+) : (
+  <div className="mt-4 flex items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
+    <FiImage size={18} />
+    <span className="text-sm">No files uploaded yet</span>
+  </div>
+)}
+
       </div>
     );
   }

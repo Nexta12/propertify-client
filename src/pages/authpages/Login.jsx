@@ -8,6 +8,8 @@ import Button from "@components/ui/Button";
 import { getLoggedInUserPath } from "@utils/helper";
 import { PuffLoader } from "react-spinners";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import GreenLogo from "@assets/img/green-logo.png"
+import FullPageLoader from "./FullPageLoader";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -53,7 +55,8 @@ const Login = () => {
       return;
     }
 
-    await login(formData, navigate);
+   await login(formData, navigate);
+
   };
 
   useEffect(() => {
@@ -75,18 +78,15 @@ const Login = () => {
     }
   }, [user, isAuthenticated, navigate]);
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
-         <PuffLoader/>
-      </div>
-    ) 
-  }
+ if (authLoading) {
+  return <FullPageLoader />;
+}
+
   if(!isAuthenticated){
   return (
-    <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
+  
            
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden relative">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden relative">
          <div className="absolute top-4 left-5">
         <HandleGoBackBtn/>
         </div>
@@ -94,7 +94,7 @@ const Login = () => {
         <div className="mt-5 text-center">
           <div className="flex justify-center">
             <Link to={paths.index}>
-              <img src="./green-logo.png" alt="" width={140} />
+              <img src={GreenLogo} alt="" width={140} />
             </Link>
           </div>
           <p className="text-[#8E9395] text-sm mt-1">Sign in to your account</p>
@@ -155,7 +155,7 @@ const Login = () => {
           </Button>
 
           {/* Register Link */}
-          <div className="text-center text-sm text-[#1F3E72]">
+          <div className="text-center text-sm text-[#1F3E72] dark:text-gray-400">
             Don't have an account?{" "}
             <Link
               to={paths.register}
@@ -166,7 +166,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-    </div>
+ 
   );
     }
 };

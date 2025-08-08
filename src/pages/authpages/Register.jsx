@@ -15,6 +15,9 @@ import { getLoggedInUserPath, getRoleFromProfession } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import { PuffLoader } from "react-spinners";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import { removeLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
+import GreenLogo from "@assets/img/green-logo.png"
+import FullPageLoader from "./FullPageLoader";
 
 const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -91,18 +94,23 @@ const Register = () => {
         ...formData,
         role: userRole,
       });
-      setIsSubmitting(false);
-      if (res.status == 201) {
-        toast.success("Registration successful! Redirecting...");
+    
 
-        setTimeout(() => {
-          navigate(paths.login);
-        }, 2000);
+      if (res.status == 201) {
+        toast.success("An OTP was sent to your email..");
+         setLocalStorageItem('otpEmail', formData.email);
+         setLocalStorageItem('otp', true);
+          setTimeout(() => {
+            navigate(paths.verifyOTP);
+          }, 3000);
       }
     } catch (error) {
       toast.error(ErrorFormatter(error));
+       removeLocalStorageItem('userEmail', formData.email);
+       removeLocalStorageItem('showOtpPage', true);
     } finally {
       setIsSubmitting(false);
+      
     }
   };
 
@@ -125,19 +133,15 @@ const Register = () => {
     }
   }, [user, isAuthenticated, navigate]);
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
-        <PuffLoader />
-      </div>
-    );
-  }
+ if (authLoading) {
+  return <FullPageLoader />;
+}
 
   if(!isAuthenticated){
   return (
-    <div className="min-h-screen bg-[#E8F5E9] flex items-center justify-center p-4">
+ 
   
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden relative ">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden relative ">
          <div className="absolute top-4 left-5">
         <HandleGoBackBtn/>
         </div>
@@ -145,7 +149,7 @@ const Register = () => {
         <div className=" mt-5 text-center">
           <div className="flex justify-center">
             <Link to={paths.index}>
-              <img src="./green-logo.png" alt="" width={140} />
+              <img src={GreenLogo} alt="" width={140} />
             </Link>
           </div>
           <p className="text-[#8E9395] mt-1">Join our community today</p>
@@ -247,7 +251,7 @@ const Register = () => {
           </Button>
 
           {/* Login Link */}
-          <div className="text-center text-sm text-[#1F3E72]">
+          <div className="text-center text-sm text-[#1F3E72] dark:text-gray-300">
             Already have an account?{" "}
             <Link
               to={paths.login}
@@ -258,7 +262,7 @@ const Register = () => {
           </div>
         </form>
       </div>
-    </div>
+  
   );
    }
 

@@ -128,3 +128,10 @@ export  const MessageEncoder = (message) =>{
 };
 
 
+export const getPermittedRole = (user, navigate) => {
+   if(user.role !== UserRole.ADMIN) {
+    return navigate(getLoggedInUserPath(user))
+   }
+
+}
+

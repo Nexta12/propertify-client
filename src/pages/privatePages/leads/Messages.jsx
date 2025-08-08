@@ -59,26 +59,40 @@ useEffect(() => {
   }
 }, [user, authLoading]);
 
-    const handleDelete = (id) => {
+    const handleDelete = (msg) => {
     setOpenModal(true);
-    setItemToDelete(id);
+    setItemToDelete(msg);
   };
 
   const confirmDelete = async () => {
     setIsDeleting(true)
     if (itemToDelete) {
       try {
-        await apiClient.delete(`${endpoints.deleteMessage}/${itemToDelete}`);
+
+        if(itemToDelete.type == "contactForm"){
+           await apiClient.delete(`${endpoints.deleteContactFormMessage}/${itemToDelete._id}`);
+        }
+
+        if(itemToDelete.type == "directMessage"){
+            await apiClient.delete(`${endpoints.deleteDirectMessage}/${itemToDelete._id}`);
+        }
+
+        if(itemToDelete.type == "bulkMessage"){
+            await apiClient.delete(`${endpoints.deleteBulkMessage}/${itemToDelete._id}`);
+        }
+
+        // await apiClient.delete(`${endpoints.deleteMessage}/${itemToDelete}`);
         setReceivedMessages((prev) =>
-          prev.filter((msg) => msg._id !== itemToDelete)
+          prev.filter((msg) => msg._id !== itemToDelete._id)
         );
 
         setSentMessages((prev) =>
-          prev.filter((msg) => msg._id !== itemToDelete)
+          prev.filter((msg) => msg._id !== itemToDelete._id)
         );
         setOpenModal(false);
         setItemToDelete(null);
         toast.success("Message deleted.");
+
       } catch (error) {
         toast.error(ErrorFormatter(error));
         setOpenModal(false);
@@ -107,66 +121,62 @@ useEffect(() => {
     }
 
     return (
-      <div className="relative p-4 bg-white shadow-sm border rounded-2xl mb-4 hover:shadow-md transition-all">
-        <div className="flex justify-between items-start">
-          <div>
-            <p className="text-primary-text font-semibold capitalize">
-              {isSent ? "To:" : "From:"}{" "}
-              {isSent ?  truncate(recipientsName, {length: 30})  : senderName}
-            </p>
-            <p className="mt-1 text-sm text-gray-700">
-              {truncate(message.message, { length: `${!isSent ? 100 : 1000}` })}
-            </p>
+      <div className="relative p-4 bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-2xl mb-4 hover:shadow-md transition-all">
+  <div className="flex justify-between items-start">
+    <div>
+      <p className="text-primary-text dark:text-gray-200 font-semibold capitalize">
+        {isSent ? "To:" : "From:"}{" "}
+        {isSent ? truncate(recipientsName, { length: 30 }) : senderName}
+      </p>
+      <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
+        {truncate(message.message, { length: `${!isSent ? 100 : 1000}` })}
+      </p>
 
-          
-              <Link
-                to={`${paths.protected}/messages/${message._id}`}
-                className="inline-block mt-3 text-main-green text-sm font-medium hover:underline"
-              >
-                Read More →
-              </Link>
-          
-          </div>
+      <Link
+        to={`${paths.protected}/messages/${message._id}`}
+        className="inline-block mt-3 text-main-green text-sm font-medium hover:underline"
+      >
+        Read More →
+      </Link>
+    </div>
 
-          <div className="relative">
-            <button
-              onClick={() => setShowMenu((prev) => !prev)}
-              className="text-gray-500 hover:text-main-green"
-            >
-              <FiMoreVertical />
-            </button>
-            {showMenu && (
-              <div className="absolute right-0 top-6 w-32 bg-white border rounded-md shadow-md z-10">
-               
-                  <Link
-                    to={`${paths.protected}/messages/${message._id}`}
-                    className="flex items-center px-3 py-2 text-sm hover:bg-gray-100"
-                  >
-                    <FiEye className="mr-2" />
-                    View
-                  </Link>
-               
-                
-                  <button
-                    onClick={() => {
-                      setShowMenu(false);
-                      onDelete(message._id);
-                    }}
-                    className="w-full flex items-center px-3 py-2 text-sm text-red-500 hover:bg-red-50"
-                  >
-                    <FiTrash2 className="mr-2" />
-                    Delete
-                  </button>
-              
-              </div>
-            )}
-          </div>
+    <div className="relative">
+      <button
+        onClick={() => setShowMenu((prev) => !prev)}
+        className="text-gray-500 dark:text-gray-300 hover:text-main-green"
+      >
+        <FiMoreVertical />
+      </button>
+
+      {showMenu && (
+        <div className="absolute right-0 top-6 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-md z-10">
+          <Link
+            to={`${paths.protected}/messages/${message._id}`}
+            className="flex items-center px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-100"
+          >
+            <FiEye className="mr-2" />
+            View
+          </Link>
+          <button
+            onClick={() => {
+              setShowMenu(false);
+              onDelete(message);
+            }}
+            className="w-full flex items-center px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900 dark:text-red-400"
+          >
+            <FiTrash2 className="mr-2" />
+            Delete
+          </button>
         </div>
+      )}
+    </div>
+  </div>
 
-        <span className="block mt-3 text-xs text-secondary capitalize">
-          {formatDistanceToNow(message.createdAt, { addSuffix: true })}
-        </span>
-      </div>
+  <span className="block mt-3 text-xs text-secondary dark:text-gray-400 capitalize">
+    {formatDistanceToNow(message.createdAt, { addSuffix: true })}
+  </span>
+</div>
+
     );
   };
 
@@ -179,7 +189,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="p-4 md:p-8 font-sans text-primary-text">
+    <div className="p-4 md:p-8 font-sans text-primary-text dark:text-gray-300">
       <DeleteModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
@@ -197,7 +207,7 @@ useEffect(() => {
           className={`pb-2 px-4 text-sm font-medium ${
             activeTab === "received"
               ? "border-b-2 border-main-green text-main-green"
-              : "text-secondary"
+              : "text-secondary dark:text-gray-300"
           }`}
         >
           Received
@@ -207,7 +217,7 @@ useEffect(() => {
           className={`pb-2 px-4 text-sm font-medium ${
             activeTab === "sent"
               ? "border-b-2 border-main-green text-main-green"
-              : "text-secondary"
+              : "text-secondary dark:text-gray-300"
           }`}
         >
           Sent
@@ -225,7 +235,7 @@ useEffect(() => {
             />
           ))
         ) : (
-          <p className="text-sm text-gray-500">No received messages yet.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-300">No received messages yet.</p>
         ))}
 
       {activeTab === "sent" &&

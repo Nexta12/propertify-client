@@ -74,106 +74,104 @@ const MyProperties = () => {
     );
   }
 
-  const columns = [
-    {
-      accessorKey: "title",
-      header: "PROPERTY",
-      cell: ({ row }) => (
-        <div className="flex items-center">
-          <div className="flex-shrink-0 h-10 w-10">
-            <Link to={`${paths.protected}/properties/${row.original.slug}`}>
-              <img
-                className="h-10 w-10 rounded"
-                src={row.original.media[0]?.url || PropertyPlaceholder}
-                alt={row.original.title}
-              />
-            </Link>
-          </div>
-          <div className="ml-4">
-            <Link to={`${paths.protected}/properties/${row.original.slug}`}>
-              <div className="text-sm font-medium text-gray-900">
-                {truncate(row.original.title, { length: 40 })}
-              </div>
-            </Link>
-          </div>
+const columns = [
+  {
+    accessorKey: "title",
+    header: "PROPERTY",
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <div className="flex-shrink-0 h-10 w-10">
+          <Link to={`${paths.protected}/properties/${row.original.slug}`}>
+            <img
+              className="h-10 w-10 rounded"
+              src={row.original.media[0]?.url || PropertyPlaceholder}
+              alt={row.original.title}
+            />
+          </Link>
         </div>
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: "STATUS",
-      cell: (info) => {
-        const status = info.getValue();
-        return (
-          <span
-            className={`
-              px-2 py-1 rounded-sm text-xs font-semibold 
-              ${
-                status === "published"
-                  ? "bg-green-100 text-green-800"
-                  : status === "draft"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : status === "archived"
-                  ? "bg-gray-100 text-gray-800"
-                  : "bg-blue-100 text-blue-800"
-              }
-            `}
-          >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: "price",
-      header: "PRICE",
-      cell: (info) => {
-        const { price, currency, frequency } = info.row.original;
-        return (
-          <div className="capitalize">
-            {currency} {formatLargeNumber(price)} {frequency}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "location",
-      header: "LOCATION",
-      cell: (info) => info.getValue(),
-    },
-    {
-      id: "actions",
-      header: "ACTIONS",
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleBoost(row.original)}
-            className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            Promote
-          </button>
-          <button
-            onClick={() => handleView(row.original)}
-            className="px-2 py-1 text-xs text-main-green rounded hover:bg-green-600 hover:text-white"
-          >
-            <FiEye />
-          </button>
-          <button
-            onClick={() => handleEdit(row.original)}
-            className="px-2 py-1 text-xs text-blue-500 rounded hover:bg-blue-600 hover:text-white"
-          >
-            <FiEdit />
-          </button>
-          <button
-            onClick={() => handleDelete(row.original)}
-            className="px-2 py-1 text-xs text-red-500 rounded hover:bg-red-600 hover:text-white"
-          >
-            <FiTrash2 />
-          </button>
+        <div className="ml-4">
+          <Link to={`${paths.protected}/properties/${row.original.slug}`}>
+            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              {truncate(row.original.title, { length: 40 })}
+            </div>
+          </Link>
         </div>
-      ),
+      </div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "STATUS",
+    cell: (info) => {
+      const status = info.getValue();
+      const statusClasses = {
+        published: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
+        draft: "bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100",
+        archived: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100",
+        default: "bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100",
+      };
+      const appliedClass = statusClasses[status] || statusClasses.default;
+
+      return (
+        <span className={`px-2 py-1 rounded-sm text-xs font-semibold ${appliedClass}`}>
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+      );
     },
-  ];
+  },
+  {
+    accessorKey: "price",
+    header: "PRICE",
+    cell: (info) => {
+      const { price, currency, frequency } = info.row.original;
+      return (
+        <div className="capitalize text-gray-700 dark:text-gray-300">
+          {currency} {formatLargeNumber(price)} {frequency}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "location",
+    header: "LOCATION",
+    cell: (info) => (
+      <div className="text-gray-700 dark:text-gray-300">{info.getValue()}</div>
+    ),
+  },
+  {
+    id: "actions",
+    header: "ACTIONS",
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleBoost(row.original)}
+          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
+        >
+          Promote
+        </button>
+        <button
+          onClick={() => handleView(row.original)}
+          className="px-2 py-1 text-xs text-main-green rounded hover:bg-green-600 hover:text-white dark:text-white"
+        >
+          <FiEye />
+        </button>
+        <button
+          onClick={() => handleEdit(row.original)}
+          className="px-2 py-1 text-xs text-blue-500 rounded hover:bg-blue-600 hover:text-white dark:text-blue-300"
+        >
+          <FiEdit />
+        </button>
+        <button
+          onClick={() => handleDelete(row.original)}
+          className="px-2 py-1 text-xs text-red-500 rounded hover:bg-red-600 hover:text-white dark:text-red-400"
+        >
+          <FiTrash2 />
+        </button>
+      </div>
+    ),
+  },
+];
+
 
   const handleView = (data) => {
     navigate(`${paths.properties}/${data.slug}`);

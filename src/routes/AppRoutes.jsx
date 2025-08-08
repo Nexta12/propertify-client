@@ -31,6 +31,10 @@ import AddUsers from "@pages/privatePages/users/AddUsers";
 import NewTicket from "@pages/privatePages/tickets/NewTicket";
 import Tickets from "@pages/privatePages/tickets/Tickets";
 import SingleTicket from "@pages/privatePages/tickets/SingleTicket";
+import Professionals from "@pages/publicPages/professionals/Professionals";
+import AuthLayout from "@pages/authpages/authLayout";
+import ResendOTP from "@pages/authpages/ResendOTP";
+import ResetPassword from "@pages/authpages/ResetPassword";
 
 
 
@@ -40,16 +44,20 @@ const AppRoutes = () => (
   <Routes>
 
         {/* Auth Pages */}
+     <Route path={paths.auth} element={<AuthLayout />}>
       <Route path={paths.register} element={<Register />} />
       <Route path={paths.login} element={<Login />} />
       <Route path={paths.verifyOTP} element={<VerifyOTP />} />
+      <Route path={paths.resendOTP} element={<ResendOTP />} />
       <Route path={paths.forgotPassword} element={<ForgotPassword />} />
-
+      <Route path={paths.SetNewPassword} element={<ResetPassword />} />
+     </Route>
 
     {/* Public Routes */}
     <Route path={paths.index} element={<PublicLayout />}>
       <Route path={paths.index} element={<Homepage />} />
       <Route path={paths.properties} element={<Properties />} />
+      <Route path={paths.professionals} element={<Professionals />} />
       <Route path={`${paths.properties}/:slug`} element={<PropertyDetails />} />
     </Route>
     

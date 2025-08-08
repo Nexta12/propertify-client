@@ -10,12 +10,13 @@ const PublicLayout = () => {
   // List of paths where footer should be hidden on mobile
   const hideFooterOnMobilePaths = [
     '/properties',
+    '/professionals',
   ];
 
   const shouldHideFooter = hideFooterOnMobilePaths.includes(location.pathname);
 
   return (
-    <div className="bg-white p-0 m-0">
+    <div className="bg-white p-0 m-0 dark:bg-gray-900 ">
         <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
       <Header />
       <Outlet />

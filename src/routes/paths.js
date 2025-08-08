@@ -1,11 +1,20 @@
 export const paths = {
+
+  // Auth Paths
+
+  auth: "/secure",
+  register: "/secure/register",
+  login: '/secure/login',
+  verifyOTP: '/secure/otp-verification',
+  resendOTP: '/secure/resend-otp',
+  forgotPassword: '/secure/forgot-password',
+  SetNewPassword: '/secure/reset-password',
+
+
   // Public Paths
     index: "/",
-    register: "/register",
-    login: '/login',
-    verifyOTP: '/otp-verification',
-    forgotPassword: '/forgot-password',
     properties: "/properties",
+    professionals: "/professionals",
 
     // Admin Paths
     admin: "/ada",

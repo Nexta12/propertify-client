@@ -123,7 +123,7 @@ const NewPost = () => {
   });
 
   return (
-    <section className=" mx-auto px-4 mb-8">
+    <section className=" mx-auto px-4 mb-8 dark:bg-gray-800 dark:text-gray-100">
       {/* Check If profile is complete */}
       <CompleteProfileCall />
 
@@ -139,17 +139,17 @@ const NewPost = () => {
       <HandleGoBackBtn />
 
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-primary-text mb-2">
+        <h1 className="text-2xl font-semibold text-primary-text mb-2 dark:text-gray-100">
           Create New Post
         </h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-100 ">
           Start sharing your ideas, thoughts, or updates.
         </p>
       </div>
 
-      <form className="space-y-8" onSubmit={handleSubmit}>
+      <form className="space-y-8 " onSubmit={handleSubmit}  >
         {/* Content Section */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-400 shadow-sm p-6 space-y-4">
           <EnhancedTextarea
             name="description"
             label="Post Content"
@@ -160,7 +160,7 @@ const NewPost = () => {
           />
           {user?.firstName && user?.lastName && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                 Upload Media (Images or Videos)
               </label>
               <FileUpload
@@ -169,7 +169,7 @@ const NewPost = () => {
                 multiple
                 maxFiles={4}
                 accept="image/*,video/*"
-                className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-green-500 transition"
+                className="border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-6 hover:border-green-500 transition"
               />
             </div>
           )}
@@ -181,7 +181,7 @@ const NewPost = () => {
             <button
               type="button"
               onClick={handleCancel}
-              className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+              className="w-full sm:w-auto px-6 py-3 border border-gray-300 dark:text-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 dark:hover:text-gray-600 transition"
             >
               Cancel
             </button>

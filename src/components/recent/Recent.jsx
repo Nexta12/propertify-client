@@ -34,7 +34,7 @@ const Recent = () => {
 
   return (
     <div className="section-container mb-10">
-      <h2 className="titleText text-center "> Explore Recent Listings</h2>
+      <h2 className="titleText text-center dark:text-gray-300 "> Explore Recent Listings</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
         {/* Property Card */}

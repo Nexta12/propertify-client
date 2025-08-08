@@ -9,7 +9,6 @@ import DesktopSidebar from "./dashboard/components/DesktopSidebar";
 import DesktopTopbar from "./dashboard/components/DesktopTopbar";
 import { ToastContainer } from "react-toastify";
 
-
 const PrivatePagesLayout = () => {
   const notifications = 2;
   const navigate = useNavigate();
@@ -53,7 +52,7 @@ const PrivatePagesLayout = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="bg-gray-50 font-sans p-0 m-0 min-h-screen">
+      <div className="bg-gray-50 dark:bg-gray-800 font-sans p-0 m-0 min-h-screen">
           <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
         {/* Fixed Top Navigation */}
         <MobileHeader notifications={notifications} />
@@ -61,15 +60,16 @@ const PrivatePagesLayout = () => {
           <DesktopTopbar notifications={notifications} />
         </div>
 
-        <div className="flex items-start  max-w-[1440px] mx-auto lg:pl-4">
+        <div className="flex items-start  max-w-[1440px] mx-auto lg:pl-4  ">
           {/* Sidebar */}
-          <aside className="hidden md:block w-[310px] bg-white h-screen shadow-md overflow-y-auto mt-5  max-h-[calc(100vh-80px)] sticky top-[80px]">
+          <aside className="hidden lg:block w-[310px] bg-white h-screen shadow-md overflow-y-auto mt-5  max-h-[calc(100vh-80px)] sticky top-[80px]">
             <DesktopSidebar />
-          
+             
           </aside>
+         
 
           {/* Main Content */}
-          <main className="flex-1 w-full min-h-screen px-4 mt-20 md:mt-5">
+          <main className="flex-1 w-full min-h-screen px-4 mt-20 lg:mt-5">
             <Outlet />
           </main>
         </div>
