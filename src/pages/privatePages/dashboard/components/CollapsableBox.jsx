@@ -9,7 +9,7 @@ const CollapsableBox = ({ title, children, link, className }) => {
      <div
       className={`bg-white dark:bg-gray-900 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700  ${className}`}
     >
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+      <div className="flex  sm:flex-row justify-between items-start sm:items-center gap-2">
         <h3 className="text-gray-700 dark:text-gray-200 text-[13px] font-medium">
           {title}
         </h3>

@@ -22,7 +22,7 @@ const CompleteProfileCall = () => {
   };
 
   return (
-    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal isOpen={isModalOpen} onClose={goToProfile}>
       <div className="text-center p-6 max-w-md mx-auto">
         <div className="flex justify-center mb-4">
           <div className="bg-red-100 text-red-600 rounded-full p-3">
@@ -44,12 +44,12 @@ const CompleteProfileCall = () => {
           >
             Go to Profile
           </button>
-          <button
-            onClick={() => setIsModalOpen(false)}
+          {/* <button
+            onClick={goToProfile}
             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
           >
             Maybe Later
-          </button>
+          </button> */}
         </div>
       </div>
     </Modal>

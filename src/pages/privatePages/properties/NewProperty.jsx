@@ -11,6 +11,7 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import CollapsableBox from "@pages/privatePages/dashboard/components/CollapsableBox";
 import {
   Amenities,
+  categoryOptions,
   conditionOptions,
   currencyOptions,
   frequencyOptions,
@@ -47,6 +48,7 @@ const NewProperty = () => {
     price: "",
     currency: "",
     frequency: "",
+    category: "",
     condition: "",
     state: "",
     city: "",
@@ -140,6 +142,7 @@ const NewProperty = () => {
       price: "",
       currency: "",
       frequency: "",
+      category: "",
       condition: "",
       state: "",
       city: "",
@@ -293,23 +296,32 @@ const NewProperty = () => {
 
   <HandleGoBackBtn />
 
-  <div className=" px-6 py-5 text-center rounded-t-lg">
+  <div className=" px-6 py-5 text-center rounded-t-lg bg-white dark:bg-gray-800 dark:text-gray-200">
     <HeaderTitle titleText="List a New Property" />
   </div>
 
   <form className="space-y-6 w-full mb-6" onSubmit={handleSubmit}>
     {/* Basic Information */}
-    <div className="bg-white dark:bg-gray-900 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-      <div className="grid grid-cols-1 gap-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+      <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <EnhancedInput
             name="title"
             label="Property Title*"
             value={formData.title}
             onChange={handleChange}
             placeholder="e.g. Beautiful 3-bedroom apartment in Lekki"
-            maxLength={35}
+            maxLength={55}
             required
+          />
+
+          <EnhancedSelect
+            name="category"
+            label="Property Category"
+            value={formData.category}
+            onChange={handleChange}
+            options={categoryOptions}
+            placeholder="Select Document"
           />
 
           <EnhancedSelect
@@ -322,7 +334,7 @@ const NewProperty = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <EnhancedSelect
             name="propertyType"
             label="Property Type*"
@@ -354,7 +366,7 @@ const NewProperty = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <EnhancedInput
             name="price"
             label="Price*"
@@ -389,7 +401,7 @@ const NewProperty = () => {
 
     {/* Property Details */}
     {(isResidential || isCommercial) && (
-      <div className="bg-white dark:bg-gray-900 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-xl font-semibold text-main-green border-b pb-3">
           Property Details
         </h3>
@@ -442,7 +454,7 @@ const NewProperty = () => {
     )}
 
     {/* Property Location */}
-    <div className="bg-white dark:bg-gray-900 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
       <h3 className="text-xl font-semibold text-main-green border-b pb-3">
         Property Location
       </h3>
@@ -498,7 +510,7 @@ const NewProperty = () => {
     </div>
 
     {/* Description */}
-    <div className="bg-white dark:bg-gray-900 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
       <h3 className="text-xl font-semibold text-main-green border-b pb-3">
         Detailed Description
       </h3>
@@ -509,12 +521,13 @@ const NewProperty = () => {
         value={formData.description}
         onChange={handleChange}
         rows={6}
+        withToolbar
       />
     </div>
 
     {/* Amenities */}
     {isResidential && (
-      <div className="bg-white dark:bg-gray-900 space-y-6 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 space-y-6 border border-gray-200 dark:border-gray-700">
         <CollapsableBox title="Amenities">
           <EnhancedCheckbox
             name="amenities"
@@ -529,7 +542,7 @@ const NewProperty = () => {
 
     {/* Media */}
     {(user?.firstName && user?.lastName) && (
-      <div className="bg-white dark:bg-gray-900 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b pb-3">
           Media
         </h3>

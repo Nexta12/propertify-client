@@ -2,11 +2,13 @@ import { paths } from "@routes/paths";
 import useAuthStore from "@store/authStore";
 import { getLoggedInUserPath } from "@utils/helper";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext  } from "react-router-dom";
 import b3 from "@assets/img/b3.png"
 
 const Hero = () => {
  const { user, isAuthenticated, validateAuth} = useAuthStore();
+    const { setChatOpen } = useOutletContext();
+
    useEffect(() => {
      const verifyAuth = async () => {
        await validateAuth(); // Ensure validateAuth works properly
@@ -34,7 +36,12 @@ const Hero = () => {
       >
         Get Started
       </Link>
-      <button className="btn btn-primary btn-sm">Chat With Us</button>
+       <button
+            className="btn btn-primary btn-sm"
+             onClick={() => setChatOpen(true)} 
+          >
+            Chat With Us
+          </button>
     </div>
   </div>
   <div className="md:flex-1 w-full">

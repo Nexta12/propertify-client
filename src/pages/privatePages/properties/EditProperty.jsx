@@ -11,6 +11,7 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import CollapsableBox from "@pages/privatePages/dashboard/components/CollapsableBox";
 import {
   Amenities,
+  categoryOptions,
   conditionOptions,
   currencyOptions,
   frequencyOptions,
@@ -22,7 +23,7 @@ import {
 } from "@utils/data";
 import { useEffect, useMemo, useState } from "react";
 import { MdLocationOn } from "react-icons/md";
-import { toast  } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteModal from "@components/deleteModal/DeleteModal";
@@ -50,6 +51,7 @@ const EditProperty = () => {
     price: "",
     currency: "",
     frequency: "",
+    category: "",
     condition: "",
     state: "",
     city: "",
@@ -186,7 +188,7 @@ const EditProperty = () => {
       try {
         const deleteDetails = {
           url: itemToDelete,
-          propertyId: formData._id
+          propertyId: formData._id,
         };
         // Make an API call to delete the item
         await apiClient.post(endpoints.deleteMediaFileFromCloud, deleteDetails);
@@ -257,7 +259,6 @@ const EditProperty = () => {
           replace: true,
         });
       }
-  
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -318,8 +319,8 @@ const EditProperty = () => {
         message="Are you Sure You want to this file ?"
         isDeleting={isDeleting}
       />
-      <HandleGoBackBtn/>
-  
+      <HandleGoBackBtn />
+
       <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-5 text-center">
         <h2 className="text-2xl font-bold text-white">Edit Listing</h2>
       </div>
@@ -332,17 +333,24 @@ const EditProperty = () => {
           </h3>
 
           <div className="grid grid-cols-1 gap-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <EnhancedInput
                 name="title"
                 label="Property Title*"
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="e.g. Beautiful 3-bedroom apartment in Lekki"
-                maxLength={35}
+                maxLength={45}
                 required
               />
-
+              <EnhancedSelect
+                name="category"
+                label="Property Category"
+                value={formData.category}
+                onChange={handleChange}
+                options={categoryOptions}
+                placeholder="Select Document"
+              />
               <EnhancedSelect
                 name="documentType"
                 label="Property Document"
@@ -545,6 +553,8 @@ const EditProperty = () => {
             onChange={handleChange}
             rows={6}
             required
+            withToolbar
+            
           />
         </div>
 

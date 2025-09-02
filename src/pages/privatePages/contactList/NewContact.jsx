@@ -10,7 +10,6 @@ import useAuthStore from "@store/authStore";
 import { preferedContactOptions, professions, TitleOptions } from "@utils/data";
 import { handleGoBack } from "@utils/helper";
 import { useState } from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { FiLoader, FiUpload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

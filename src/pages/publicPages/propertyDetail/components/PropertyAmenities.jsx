@@ -5,7 +5,7 @@ import { MdAir, MdSecurity } from "react-icons/md"
 
 const PropertyAmenities = ({property}) => {
   return (
-   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+   <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-8">
   <h3 className="text-lg font-semibold mb-6 text-primary-text dark:text-white">
     Amenities
   </h3>

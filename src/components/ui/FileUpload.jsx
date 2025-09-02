@@ -10,7 +10,7 @@ import { endpoints } from "@api/endpoints";
 import DeleteModal from "@components/deleteModal/DeleteModal";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
-import { FiImage, FiVideo } from "react-icons/fi";
+import {  FiVideo } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -25,10 +25,12 @@ const FileUpload = forwardRef(
       disabled = false,
       cloudName = import.meta.env.VITE_CLOUDINARY_CLOUDNAME,
       uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOADPRESET,
-      className = "",
+      className,
+      innerClass,
       cropping = !multiple,
       croppingAspectRatio,
       croppingDefaultSelectionRatio = 1,
+   
     },
     ref
   ) => {
@@ -262,6 +264,7 @@ const FileUpload = forwardRef(
 
     return (
       <div className={`file-upload-container ${className}`}>
+
         <DeleteModal
           isOpen={openModal}
           onClose={() => setOpenModal(false)}
@@ -271,15 +274,15 @@ const FileUpload = forwardRef(
         />
 
 
-        <div
-  className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
+<div className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${innerClass} ${
     disabled
       ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 cursor-not-allowed"
       : "bg-gray-50 dark:bg-gray-900 border-blue-400 hover:border-blue-500 dark:hover:border-blue-300 cursor-pointer"
   }`}
-  onClick={handleOpenWidget}
+  onClick={handleOpenWidget} title="Upload Media"
 >
-  <div className="flex flex-col items-center justify-center gap-3 text-center">
+
+  <div className="flex flex-col items-center justify-center gap-3 text-center  ">
     <AiOutlineCloudUpload
       size={32}
       className={disabled ? "text-gray-400" : "text-blue-500 dark:text-blue-400"}
@@ -306,6 +309,7 @@ const FileUpload = forwardRef(
       )}
     </div>
   </div>
+
 </div>
 
 {files.length > 0 ? (
@@ -362,10 +366,7 @@ const FileUpload = forwardRef(
     </div>
   </div>
 ) : (
-  <div className="mt-4 flex items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
-    <FiImage size={18} />
-    <span className="text-sm">No files uploaded yet</span>
-  </div>
+  null
 )}
 
       </div>

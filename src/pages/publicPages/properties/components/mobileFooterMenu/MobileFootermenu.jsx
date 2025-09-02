@@ -1,11 +1,11 @@
 import { paths } from "@routes/paths";
 import useAuthStore from "@store/authStore";
 import { useEffect, useRef, useState } from "react";
-import { FiHome, FiUserX } from "react-icons/fi";
+import { FiHome, FiPlus, FiUserX } from "react-icons/fi";
 import { MdGroup, MdRssFeed, MdSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const MobileFootermenu = ({ onSearchClick }) => {
+const MobileFootermenu = ({ onSearchClick, setopenPostCreator }) => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollDirection, setScrollDirection] = useState(null); // Start with null
   const prevScrollY = useRef(0);
@@ -82,13 +82,13 @@ const MobileFootermenu = ({ onSearchClick }) => {
     </Link>
 
     {user && (
-      <button>
+      <button onClick={()=> setopenPostCreator()} >
         <li className="flex flex-col items-center px-2 py-2 transition-all duration-150 ease-in hover:bg-neutral-200 dark:hover:bg-gray-800">
           <span className="text-neutral-800 dark:text-gray-100 text-xl">
-            <FiUserX />
+            <FiPlus />
           </span>
           <span className="text-[13px] text-gray-500 dark:text-gray-300 whitespace-nowrap">
-            My Posts
+            Posts
           </span>
         </li>
       </button>

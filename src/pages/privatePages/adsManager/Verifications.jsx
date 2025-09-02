@@ -1,0 +1,9 @@
+
+
+const Verifications = () => {
+  return (
+    <div>Verifications</div>
+  )
+}
+
+export default Verifications

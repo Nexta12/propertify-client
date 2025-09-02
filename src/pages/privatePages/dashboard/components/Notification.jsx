@@ -31,6 +31,7 @@ const Notification = () => {
     };
   }, [socket, user?.id]);
 
+
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -71,6 +72,8 @@ const Notification = () => {
           notif._id === notifId ? { ...notif, isSeen: true } : notif
         )
       );
+
+
     } catch (error) {
       toast.error(ErrorFormatter(error));
     }
@@ -116,7 +119,7 @@ const Notification = () => {
         <div className="p-4 border-b border-gray-100 dark:border-gray-700 font-semibold text-gray-700 dark:text-gray-200">
           Notifications
         </div>
-        <div className="max-h-60 overflow-y-auto">
+        <div className=" min-h-20 max-h-60 overflow-y-auto">
           {notifications?.length > 0 ? (
             notifications.map((notif, index) => (
               <div

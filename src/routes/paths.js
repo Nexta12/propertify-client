@@ -1,3 +1,5 @@
+
+
 export const paths = {
 
   // Auth Paths
@@ -9,19 +11,15 @@ export const paths = {
   resendOTP: '/secure/resend-otp',
   forgotPassword: '/secure/forgot-password',
   SetNewPassword: '/secure/reset-password',
+  paymentSuccess: '/secure/paystack-callback',
 
 
   // Public Paths
     index: "/",
     properties: "/properties",
     professionals: "/professionals",
+    companies:"/companies",
 
-    // Admin Paths
-    admin: "/ada",
-    adminDashboard: "/ada/dashboard",
-    // Agentdashboard:
-    agent: "/rda",
-    agentDashboard: "/rda/dashboard",
    
 
     protected: '/p',
@@ -29,6 +27,7 @@ export const paths = {
     dashboard: '/p/dashboard',
     newProperty: "/p/properties/add",
 
-  
+
+
   };
   

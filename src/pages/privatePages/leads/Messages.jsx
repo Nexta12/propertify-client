@@ -121,7 +121,7 @@ useEffect(() => {
     }
 
     return (
-      <div className="relative p-4 bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-2xl mb-4 hover:shadow-md transition-all">
+      <div className="relative p-4 bg-gray-50 dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-2xl mb-4 hover:shadow-md transition-all">
   <div className="flex justify-between items-start">
     <div>
       <p className="text-primary-text dark:text-gray-200 font-semibold capitalize">
@@ -189,7 +189,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="p-4 md:p-8 font-sans text-primary-text dark:text-gray-300">
+    <div className="p-4 md:p-8 font-sans bg-white text-primary-text dark:text-gray-300">
       <DeleteModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}

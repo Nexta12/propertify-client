@@ -1,7 +1,6 @@
 import { useState } from "react";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import EnhancedTextarea from "@components/ui/EnhancedTextarea";
 import { apiClient } from "@api/apiClient";
 import { toast } from "react-toastify";
 import { supportCategoriesOptions, supportPrioritiesOptions } from "@utils/data";
@@ -10,6 +9,8 @@ import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import DOMPurify from "dompurify";
 import HeaderTitle from "@components/ui/HeaderTitle";
+import EnhancedEditor from "@components/ui/EnhancedTextarea";
+import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 
 
 const NewTicket = () => {
@@ -59,6 +60,7 @@ const NewTicket = () => {
 
   return (
     <div className="max-w-6xl mx-auto  px-4 sm:px-6 lg:px-8">
+          <CompleteProfileCall />
         <HandleGoBackBtn/>
     
       <HeaderTitle titleText="Submit a Support Ticket" />
@@ -82,7 +84,7 @@ const NewTicket = () => {
             value={category}
             options={supportCategoriesOptions}
             onChange={(e) => setCategory(e.target.value)}
-            required
+            
           />
         </div>
 
@@ -96,7 +98,7 @@ const NewTicket = () => {
           className="focus:outline-none w-full p-4"
         />
 
-        <EnhancedTextarea
+        <EnhancedEditor
           id="message"
           label="Message"
           name="message"
@@ -104,7 +106,7 @@ const NewTicket = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe your issue or request in detail..."
           rows={6}
-          className="w-full p-4 text-white"
+          className="w-full p-4"
         />
 
         {/* Optional file upload (replace with your FileUpload component if needed) */}

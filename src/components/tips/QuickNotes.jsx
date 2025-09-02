@@ -1,7 +1,7 @@
 const QuickNote = ({
   children,
   className = "",
-  bgColor = "bg-bg-green dark:bg-gray-900",
+  bgColor = "bg-bg-green dark:bg-gray-800",
 }) => {
   return (
     <div

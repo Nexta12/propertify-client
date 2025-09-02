@@ -8,12 +8,10 @@ import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
 import Button from "@components/ui/Button";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
-
 import { toast } from "react-toastify";
 import { NigerianStates, professions } from "@utils/data";
 import { getLoggedInUserPath, getRoleFromProfession } from "@utils/helper";
 import useAuthStore from "@store/authStore";
-import { PuffLoader } from "react-spinners";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import { removeLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import GreenLogo from "@assets/img/green-logo.png"

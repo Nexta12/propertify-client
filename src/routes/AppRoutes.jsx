@@ -35,7 +35,20 @@ import Professionals from "@pages/publicPages/professionals/Professionals";
 import AuthLayout from "@pages/authpages/authLayout";
 import ResendOTP from "@pages/authpages/ResendOTP";
 import ResetPassword from "@pages/authpages/ResetPassword";
-
+import AdsDashboard from "@pages/privatePages/adsManager/AdsDashboard";
+import AllAds from "@pages/privatePages/adsManager/AllAds";
+import AdsTips from "@pages/privatePages/adsManager/AdsTips";
+import NewAds from "@pages/privatePages/adsManager/NewAds";
+import PaymentSuccess from "@pages/privatePages/adsManager/PaymentSuccess";
+import ChatDashBoard from "@pages/privatePages/chatDashboard/ChatDashBoard";
+import GetVerifiedPage from "@pages/privatePages/adsManager/GetVerifiedPage";
+import Badges from "@pages/privatePages/adsManager/Badges";
+import Verifications from "@pages/privatePages/adsManager/Verifications";
+import Companies from "@pages/publicPages/company/Companies";
+import SingleCompany from "@pages/publicPages/company/SingleCompany";
+import CreateCompany from "@pages/privatePages/companyPageSettings/CreateCompany";
+import MyCompanies from "@pages/privatePages/companyPageSettings/MyCompanies";
+import UpdateCompany from "@pages/privatePages/companyPageSettings/UpdateCompany";
 
 
 
@@ -51,6 +64,7 @@ const AppRoutes = () => (
       <Route path={paths.resendOTP} element={<ResendOTP />} />
       <Route path={paths.forgotPassword} element={<ForgotPassword />} />
       <Route path={paths.SetNewPassword} element={<ResetPassword />} />
+      <Route path={paths.paymentSuccess} element={<PaymentSuccess />} />
      </Route>
 
     {/* Public Routes */}
@@ -59,6 +73,9 @@ const AppRoutes = () => (
       <Route path={paths.properties} element={<Properties />} />
       <Route path={paths.professionals} element={<Professionals />} />
       <Route path={`${paths.properties}/:slug`} element={<PropertyDetails />} />
+      <Route path={paths.companies} element={<Companies />} />
+      <Route path={`${paths.companies}/:slug`} element={<SingleCompany />} />
+     
     </Route>
     
     {/* Protected Pages */}
@@ -67,6 +84,8 @@ const AppRoutes = () => (
        
        <Route path={`${paths.protected}/feed`} element={<Feed />} />
        <Route path={`${paths.protected}/dashboard`} element={<Dashboard />} />
+       <Route path={`${paths.protected}/live-chat`} element={<ChatDashBoard />} />
+
         {/* Properties */}
        <Route path={`${paths.protected}/properties/all`} element={<MyProperties />} />
        <Route path={`${paths.protected}/properties/add`} element={<NewProperty/>} />
@@ -100,7 +119,20 @@ const AppRoutes = () => (
           <Route path={`${paths.protected}/tickets`} element={<Tickets />} />
           <Route path={`${paths.protected}/tickets/:id`} element={<SingleTicket />} />
 
-
+        {/* Ads Zone */}
+         <Route path={`${paths.protected}/ads-manager`} element={<AdsDashboard />} />
+         <Route path={`${paths.protected}/ads/all`} element={<AllAds />} />
+         <Route path={`${paths.protected}/ads-tips`} element={<AdsTips />} />
+         <Route path={`${paths.protected}/new-ads`} element={<NewAds />} />
+         <Route path={`${paths.protected}/verification`} element={<GetVerifiedPage />} />
+         <Route path={`${paths.protected}/badges`} element={<Badges />} />
+         <Route path={`${paths.protected}/verified-list`} element={<Verifications />} />
+       
+        {/* Company Settings */}
+         <Route path={`${paths.protected}/create-company`} element={<CreateCompany />} />
+         <Route path={`${paths.protected}/company-pages`} element={<MyCompanies />} />
+         <Route path={`${paths.protected}/companies/:slug`} element={<SingleCompany />} />
+         <Route path={`${paths.protected}/companies/update/:slug`} element={<UpdateCompany />} />
       </Route>
 
    

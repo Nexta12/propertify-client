@@ -1,6 +1,5 @@
 import { paths } from "@routes/paths";
 import useAuthStore from "@store/authStore";
-import {  getLoggedInUserPath } from "@utils/helper";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avater from "@assets/img/avater.png";
@@ -67,7 +66,7 @@ const DeskTopUserMenu = () => {
               >
                 <div className="flex flex-col gap-1 py-1">
                   <Link
-                    to={getLoggedInUserPath(user)}
+                      to={`${paths.protected}/dashboard`}
                     onClick={() => setUserMenuDropdown(false)}
                     className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200
                rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"

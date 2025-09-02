@@ -5,6 +5,7 @@ import EnhancedEditor from "@components/ui/EnhancedTextArea";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify"
 
 const MessageSeller = ({ receiverId, propertyId }) => {
   const [isSending, setIsSending] = useState(false);
@@ -33,8 +34,12 @@ const MessageSeller = ({ receiverId, propertyId }) => {
       senderLastName: formData.senderLastName,
       senderEmail: formData.senderEmail,
       senderPhone: formData.senderPhone,
-      message: formData.message,
       propertyId,
+      message: DOMPurify.sanitize(formData.message.trim(), {
+                      ALLOWED_TAGS: [],
+                      ALLOWED_ATTR: [],
+                      KEEP_CONTENT: true,
+                    }),
     };
 
     try {

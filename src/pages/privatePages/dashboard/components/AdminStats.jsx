@@ -1,14 +1,13 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
-import ToggleSwitch from "@components/toggleSwitch/ToggleSwitch";
 import SocketContext from "@context/SocketContext";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import useAuthStore from "@store/authStore";
+import { formatLargeNumber } from "@utils/helper";
 import { useContext, useEffect, useState } from "react";
 import {
   FiUsers,
   FiHome,
-  FiDollarSign,
   FiMessageSquare,
   FiHelpCircle,
   FiCheckCircle,
@@ -26,14 +25,21 @@ const AdminStats = () => {
   useEffect(() => {
     const fetchAdminStats = async () => {
       try {
-        const [resUsers, resPosts, resInqu, resContacts, resTickets] =
-          await Promise.all([
-            apiClient.get(endpoints.getAdminUserStats),
-            apiClient.get(endpoints.getAdminPostsStats),
-            apiClient.get(endpoints.getInquiryStats),
-            apiClient.get(endpoints.getUsersAllContacts),
-            apiClient.get(endpoints.getAllTicketsStats),
-          ]);
+        const [
+          resUsers,
+          resPosts,
+          resInqu,
+          resContacts,
+          resTickets,
+          resRevenue,
+        ] = await Promise.all([
+          apiClient.get(endpoints.getAdminUserStats),
+          apiClient.get(endpoints.getAdminPostsStats),
+          apiClient.get(endpoints.getInquiryStats),
+          apiClient.get(endpoints.getUsersAllContacts),
+          apiClient.get(endpoints.getAllTicketsStats),
+          apiClient.get(endpoints.getAllRevenueStat),
+        ]);
 
         setMetricsData({
           users: resUsers.data,
@@ -41,6 +47,7 @@ const AdminStats = () => {
           inquiries: resInqu.data,
           contacts: resContacts.data,
           tickets: resTickets.data,
+          revenue: resRevenue.data.data,
         });
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -50,13 +57,14 @@ const AdminStats = () => {
     if (user) fetchAdminStats();
   }, [user]);
 
+
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 p-6 mb-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
           Platform Overview
         </h2>
-         <span></span>
+        <span></span>
       </div>
 
       {/* Grid Layout */}
@@ -142,7 +150,7 @@ const AdminStats = () => {
               </p>
             </div>
 
-             <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-sm">
               {metricsData?.posts?.data?.postsByStatus &&
                 Object.entries(metricsData.posts.data.postsByStatus).map(
                   ([status, count]) => (
@@ -160,15 +168,14 @@ const AdminStats = () => {
             </div>
 
             <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-            
               <div className="grid grid-cols-2 gap-2 mt-1">
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <span className="font-medium">Properties:</span>{" "}
-                 {metricsData?.posts?.data?.isPropertyStats?.true?.toLocaleString()}
+                  {metricsData?.posts?.data?.isPropertyStats?.true?.toLocaleString()}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <span className="font-medium">Posts:</span>{" "}
-                   {metricsData?.posts?.data?.isPropertyStats?.false?.toLocaleString()}
+                  {metricsData?.posts?.data?.isPropertyStats?.false?.toLocaleString()}
                 </p>
               </div>
 
@@ -179,7 +186,7 @@ const AdminStats = () => {
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <span className="font-medium">Clicks:</span>{" "}
-                    {metricsData?.posts?.data?.totalClicks?.toLocaleString()}
+                  {metricsData?.posts?.data?.totalClicks?.toLocaleString()}
                 </p>
               </div>
               <p className="text-sm text-red-500 dark:text-red-400 font-medium mt-1">
@@ -193,7 +200,7 @@ const AdminStats = () => {
         {/* Revenue Section */}
         <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors">
           <div className="flex items-center mb-4">
-            <FiDollarSign className="text-green-500 dark:text-green-400 text-xl mr-2" />
+            <p className="text-green-500 dark:text-green-400 text-xl mr-2">₦</p>
             <h3 className="font-semibold text-gray-700 dark:text-gray-200">
               Revenue
             </h3>
@@ -201,7 +208,7 @@ const AdminStats = () => {
           <div className="space-y-4">
             <div>
               <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                $40,000,000
+                ₦{formatLargeNumber(metricsData?.revenue?.allTimeRevenue)}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 All-time revenue
@@ -211,9 +218,23 @@ const AdminStats = () => {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
                 <p className="font-medium text-gray-600 dark:text-gray-300">
+                  Last Month:{" "}
+                  <span className="text-gray-500 dark:text-gray-400">
+                    ₦
+                    {formatLargeNumber(
+                      metricsData?.revenue?.lastMonthRevenue
+                    )}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-600 dark:text-gray-300">
                   This Month:{" "}
                   <span className="text-gray-500 dark:text-gray-400">
-                    $4,000
+                    ₦
+                    {formatLargeNumber(
+                      metricsData?.revenue?.currentMonthRevenue
+                    )}
                   </span>
                 </p>
               </div>
@@ -221,17 +242,70 @@ const AdminStats = () => {
                 <p className="font-medium text-gray-600 dark:text-gray-300">
                   Monthly Avg:{" "}
                   <span className="text-gray-500 dark:text-gray-400">
-                    $2,100
+                    ₦{" "}
+                    {formatLargeNumber(
+                      metricsData?.revenue?.monthlyAverageRevenue
+                    )}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-600 dark:text-gray-300">
+                  This Week:{" "}
+                  <span className="text-gray-500 dark:text-gray-400">
+                    ₦
+                    {formatLargeNumber(
+                      metricsData?.revenue?.thisWeekRevenue
+                    )}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-600 dark:text-gray-300">
+                  Today:{" "}
+                  <span className="text-gray-500 dark:text-gray-400">
+                    ₦{" "}
+                    {formatLargeNumber(
+                      metricsData?.revenue?.todaysRevenue
+
+                    )}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-600 dark:text-gray-300">
+                  Daily Av:{" "}
+                  <span className="text-gray-500 dark:text-gray-400">
+                    ₦{" "}
+                    {formatLargeNumber(
+                      metricsData?.revenue?.averageDailyRevenue
+
+                    )}
                   </span>
                 </p>
               </div>
             </div>
 
             <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-              <p className="text-sm text-green-500 dark:text-green-400 font-medium">
-                <FiTrendingUp className="inline mr-1" />+
-                8% from last month
-              </p>
+              {metricsData?.revenue?.percentChange !== undefined && (
+                <p
+                  className={`text-sm font-medium flex items-center ${
+                    metricsData.revenue.percentChange >= 0
+                      ? "text-green-500 dark:text-green-400"
+                      : "text-red-500 dark:text-red-400"
+                  }`}
+                >
+                  <FiTrendingUp
+                    className={`inline mr-1 ${
+                      metricsData.revenue.percentChange >= 0
+                        ? "rotate-0"
+                        : "rotate-180"
+                    }`}
+                  />
+                  {Math.abs(metricsData.revenue.percentChange).toFixed(2)}% from
+                  last month
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -270,7 +344,8 @@ const AdminStats = () => {
                 {metricsData?.inquiries?.data?.totalContactFormInquiries.toLocaleString()}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {metricsData?.inquiries?.data?.thisWeekContactFormInquiries.toLocaleString()} new this week
+                {metricsData?.inquiries?.data?.thisWeekContactFormInquiries.toLocaleString()}{" "}
+                new this week
               </p>
             </div>
           </div>
@@ -294,12 +369,12 @@ const AdminStats = () => {
               </p>
 
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                 {metricsData?.tickets?.data?.thisWeekTickets.toLocaleString()} new this week
+                {metricsData?.tickets?.data?.thisWeekTickets.toLocaleString()}{" "}
+                new this week
               </p>
-
             </div>
 
-               <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-sm">
               {metricsData?.tickets?.data?.ticketsByStatus &&
                 Object.entries(metricsData.tickets.data.ticketsByStatus).map(
                   ([status, count]) => (

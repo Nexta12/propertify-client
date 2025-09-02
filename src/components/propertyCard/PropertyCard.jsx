@@ -8,6 +8,7 @@ import SocialShare from "./SocialShare";
 import PropertyOwnerContact from "./propertyOwnerContact";
 import FavouriteProperty from "./FavouriteProperty";
 import PropertyPlaceholder from "@assets/img/p1.png";
+import PromotionBadge from "./PromotionBadge";
 
 const PropertyCard = memo(
   ({
@@ -18,6 +19,7 @@ const PropertyCard = memo(
     buttonsClass,
     imgClass,
     desClass,
+    promoType
   }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const nextImage = () =>
@@ -85,6 +87,11 @@ const PropertyCard = memo(
       property={property}
       className="absolute top-4 right-4 p-2"
     />
+
+      {property.promotionType == "featured" && <PromotionBadge post={property} className="absolute top-4 left-4 py-1 px-2 bg-orange rounded-sm text-white" /> }
+
+      {/* This help show what ads look like during shooting ads */}
+       {promoType && (<span className="absolute top-4 left-4 py-1 px-2 text-xs bg-orange rounded-sm text-white" >{ promoType}</span> )}
   </div>
 
   {/* Property Details - Right Side */}

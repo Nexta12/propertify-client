@@ -12,6 +12,8 @@ import MobileFootermenu from "./components/mobileFooterMenu/MobileFootermenu";
 import MobileSearchBar from "./components/filters/MobileSearchBar";
 import TipsCard from "@components/tips/TipsCard";
 import QuickNote from "@components/tips/QuickNotes";
+import RightWidgetAdsHandler from "@pages/privatePages/feed/RightWidgetAdsHandler";
+import { insertAdvertManager, shufflePostsArray } from "@utils/helper";
 
 const Properties = () => {
   // State declarations
@@ -36,6 +38,23 @@ const Properties = () => {
   const containerRef = useRef(null);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
+  const sponsoredPosts = useRef([]);
+  const globalPostCounter = useRef(0);
+
+  // Fetch sponsored posts separately (only once)
+  useEffect(() => {
+    const fetchSponsoredPosts = async () => {
+      try {
+        const res = await apiClient.get(endpoints.fetchSponsoredPosts);
+        sponsoredPosts.current = res.data.data;
+      } catch (error) {
+        console.error("Failed to fetch sponsored posts", error);
+      }
+    };
+
+    fetchSponsoredPosts();
+  }, []);
+
   const handlePostDelete = (postId) => {
     setProperties((prev) => prev.filter((post) => post._id !== postId));
   };
@@ -59,14 +78,32 @@ const Properties = () => {
           params,
         });
 
+        // Insert ads into the new properties
+        const { mixedPosts, newCounter } = insertAdvertManager(
+          res.data.data.data,
+          sponsoredPosts.current,
+          globalPostCounter.current,
+          currentPage
+        );
+
+        globalPostCounter.current = newCounter;
+
         setProperties((prev) => {
-          const newItems = res.data.data.data;
-          return isInitial
-            ? newItems
-            : [...prev, ...newItems].filter(
-                (p, i, self) =>
-                  i === self.findIndex((item) => item._id === p._id)
-              );
+          const merged = isInitial ? mixedPosts : [...prev, ...mixedPosts];
+
+          // Remove duplicates while preserving order
+          const uniquePosts = [];
+          const ids = new Set();
+
+          for (const post of merged) {
+            const id = post.syntheticId || post._id;
+            if (!ids.has(id)) {
+              ids.add(id);
+              uniquePosts.push(post);
+            }
+          }
+
+          return uniquePosts;
         });
 
         setHasMore(
@@ -89,6 +126,7 @@ const Properties = () => {
     setPage(1);
     setHasMore(true);
     setInitialLoad(true);
+    globalPostCounter.current = 0;
   }, [filters]);
 
   // Fetch data
@@ -123,16 +161,29 @@ const Properties = () => {
     );
   }, [loading, hasMore]);
 
+  // Shuffle posts Locally
+    useEffect(() => {
+    if (properties.length === 0) return;
+  
+    const interval = setInterval(() => {
+      setProperties((prev) => shufflePostsArray(prev));
+    }, 5 * 60 * 1000); // every 5 minutes
+  
+    return () => clearInterval(interval);
+  }, [properties.length]);
+
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 min-h-screen ">
+    <div className="bg-gray-100  dark:bg-gray-800 min-h-screen ">
       {/* <Breadcrumb /> */}
 
       <main className="section-container !pt-2 flex items-start gap-x-4 relative ">
         {/* Left sidebar */}
 
-        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white dark:bg-gray-900 p-2 ">
-          <SearchAndFilterBar filters={filters} onFilterChange={setFilters} />
-        </div>
+        <SearchAndFilterBar
+          filters={filters}
+          onFilterChange={setFilters}
+          className="hidden  w-1/4 "
+        />
 
         {/* Main Post Content */}
         <div className="w-full lg:w-[calc(100%-512px)] mb-8 ">
@@ -148,6 +199,9 @@ const Properties = () => {
                 itemContent={(index) => (
                   <div className="mb-4">
                     <PostCard
+                      key={
+                        properties[index].syntheticId || properties[index]._id
+                      }
                       post={properties[index]}
                       isProperty={properties[index].isProperty}
                       onDeleteSuccess={handlePostDelete}
@@ -174,7 +228,8 @@ const Properties = () => {
 
         {/* Right sidebad */}
 
-        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 space-y-6">
+        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 space-y-4">
+          <RightWidgetAdsHandler />
           <TipsCard
             tips={[
               "Always verify documents.",
@@ -184,7 +239,7 @@ const Properties = () => {
             ]}
           />
 
-          <div className="bg-white dark:bg-gray-950 p-4 rounded-md shadow-sm">
+          {/* <div className="bg-white dark:bg-gray-950 p-4 rounded-md shadow-sm">
             <h3 className="font-semibold text-primary-text dark:text-white mb-2 text-sm">
               🔥 Popular Searches
             </h3>
@@ -197,23 +252,22 @@ const Properties = () => {
                 "Lagos",
                 "Verified Only",
               ].map((tag, index) => (
-               <button
-  key={index}
-  onClick={() =>
-    setFilters((prev) => ({
-      ...prev,
-      searchTerm: tag,
-    }))
-  }
-  className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-200 
+                <button
+                  key={index}
+                  onClick={() =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      searchTerm: tag,
+                    }))
+                  }
+                  className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-200 
              dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
->
-  {tag}
-</button>
-
+                >
+                  {tag}
+                </button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <QuickNote className="mt-4">
             📌 Tip: You can quickly share properties across social media.

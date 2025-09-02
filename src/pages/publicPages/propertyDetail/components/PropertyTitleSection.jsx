@@ -14,7 +14,7 @@ const PropertyTitleSection = ({property}) => {
                    
                   </h1>
                   {property.isProperty && (
-                  <div className="flex items-center text-gray-600 mt-2">
+                  <div className="flex items-center text-gray-600 mt-2 dark:text-gray-200">
                     <MdLocationOn className="mr-1" />
                     <span className="capitalize">
                       {property?.location} {property?.city} {property?.state}

@@ -87,30 +87,73 @@ const Comments = ({ post, allComments, setAllComments }) => {
         isDeleting={isDeleting}
       />
 
-      <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 max-h-64 overflow-y-auto">
+<div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 relative flex flex-col max-h-[500px]">
+  {/* Scrollable comments */}
+  <div className="flex-1 overflow-y-auto pr-1">
+    {allComments?.length > 0 ? (
+      allComments.map((comment, index) => (
+        <div key={index} className="mb-3">
+          <div className="flex items-start space-x-2">
+            <img
+              src={comment?.userId?.profilePic || user.profilePic || Avater}
+              alt="Profile"
+              className="w-8 h-8 rounded-full"
+            />
+            <div>
+              <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
+                <span className="font-semibold text-sm dark:text-gray-100">
+                  {comment?.userId?.firstName || user.firstName }  {comment?.userId?.lastName || user.lastName }
+                </span>
+                <p className="text-sm dark:text-gray-200">{comment?.comment}</p>
+              </div>
+              <div className="flex items-center gap-4 mt-1">
+                {comment?.createdAt && (
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400 capitalize">
+                    {formatDistanceToNow(new Date(comment?.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                )}
+                {user && comment?.userId?._id === user.id && (
+                  <button
+                    onClick={() => deleteComment(comment?._id)}
+                    role="button"
+                    title="delete"
+                  >
+                    <FaTrash className="text-red-400 text-[10px]" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-center text-gray-500 dark:text-gray-400 text-sm py-2">
+        No comments yet
+      </p>
+    )}
+  </div>
+
+  {/* Comment form fixed at footer */}
   {user?.firstName && user?.lastName ? (
     <form
-      className="mx-4 flex items-center gap-3"
+      className="flex items-center gap-1 border-t border-gray-200 dark:border-gray-700 px-2 pt-2 bg-white dark:bg-gray-900"
       onSubmit={handleCommentSubmit}
     >
       <div className="flex-grow">
         <EnhancedTextArea
           name="comment"
+          label="Drop a comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleCommentSubmit(e);
-            }
-          }}
-          className="w-full p-4 rounded-md border border-gray-300 dark:border-gray-600 focus:border-main-green focus:ring-0 outline-none resize-none transition dark:bg-gray-900 dark:text-gray-100"
+          className="w-full p-1 !rounded-2xl overflow-hidden focus:border-main-green focus:ring-0 outline-none resize-none transition dark:bg-gray-800 dark:text-gray-100"
         />
       </div>
       <button
         type="submit"
         title="Send"
-        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        className="rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition p-2"
       >
         <BsSend className="text-2xl text-main-green" />
       </button>
@@ -124,51 +167,8 @@ const Comments = ({ post, allComments, setAllComments }) => {
       )}
     </>
   )}
-
-  {allComments?.length > 0 ? (
-    allComments.map((comment, index) => (
-      <div key={index} className="mb-3">
-        <div className="flex items-start space-x-2">
-          <img
-            src={comment?.userId?.profilePic || Avater}
-            alt="Profile"
-            className="w-8 h-8 rounded-full"
-          />
-          <div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
-              <span className="font-semibold text-sm dark:text-gray-100">
-                {comment?.userId?.firstName}
-              </span>
-              <p className="text-sm dark:text-gray-200">{comment?.comment}</p>
-            </div>
-            <div className="flex items-center gap-4 mt-2">
-              {comment?.createdAt && (
-                <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                  {formatDistanceToNow(new Date(comment?.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              )}
-              {user && comment?.userId?._id === user.id && (
-                <button
-                  onClick={() => deleteComment(comment?._id)}
-                  role="button"
-                  title="delete"
-                >
-                  <FaTrash className="text-red-400 text-[10px]" />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    ))
-  ) : (
-    <p className="text-center text-gray-500 dark:text-gray-400 text-sm py-2">
-      No comments yet
-    </p>
-  )}
 </div>
+
 
     </>
   );

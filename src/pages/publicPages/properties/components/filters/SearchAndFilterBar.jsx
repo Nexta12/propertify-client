@@ -4,7 +4,7 @@ import CollapsableBox from "@pages/privatePages/dashboard/components/Collapsable
 import { NigerianStates, PropertyTypes } from "@utils/data";
 import { FiSearch } from "react-icons/fi";
 
-const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequired = true }) => {
+const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequired = true, className }) => {
   const toggleFilter = (filterKey, value) => {
     onFilterChange((prev) => ({
       ...prev,
@@ -64,8 +64,11 @@ const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequire
     { value: "verified", label: "Verified Only" },
   ];
 
+
+
   return (
-    <div className="bg-white dark:bg-gray-900 pr-2 shadow-sm text-sm space-y-4 flex flex-col h-full overflow-y-auto">
+
+    <div className={` bg-white dark:bg-gray-900  shadow-sm text-sm space-y-4 lg:flex flex-col h-full overflow-y-auto sticky top-20 p-4 ${className}  `}>
   {/* Search Input */}
   <div className="relative">
     <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary dark:text-gray-400" />
@@ -121,7 +124,7 @@ const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequire
         </div>
 
         <CollapsableBox title="By States" className="!p-0 !shadow-none !border-none pr-1 !text-[13px]">
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap gap-2 pt-2 max-h-[100px] overflow-y-auto">
             {NigerianStates.map((item, index) => (
               <button
                 key={index}
@@ -141,7 +144,7 @@ const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequire
 
       {/* Advanced Filters */}
       <CollapsableBox title="Advanced" className="!p-0 !shadow-none !border-none pr-1">
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-6">
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4 max-h-[100px] overflow-y-auto">
           {/* Sort By */}
           <div>
             <label className="block text-[13px] font-medium text-primary-text dark:text-white mb-2">Sort By</label>
@@ -246,7 +249,8 @@ const SearchAndFilterBar = ({ filters, onFilterChange, onApplyFilters, isRequire
       </div>
     </>
   )}
-</div>
+  
+    </div>
 
   );
 };

@@ -1,16 +1,18 @@
 import { paths } from "@routes/paths";
-import { FaQuestionCircle, FaUser } from "react-icons/fa";
-
+import { FaBriefcase, FaBullhorn, FaQuestionCircle, FaUser } from "react-icons/fa";
+import { FiImage, FiStar } from "react-icons/fi";
 import {
-  FiHome,
+  FiPlayCircle,
   FiUsers,
+  FiCalendar,
+  FiHome,
   FiSettings,
   FiLogOut,
-  FiPlus,
   FiMail,
 } from "react-icons/fi";
-import { MdDashboard, MdRssFeed } from "react-icons/md";
 
+import { MdDashboard, MdRssFeed } from "react-icons/md";
+import { LuMessageCircleMore } from "react-icons/lu";
 
 export const leadSources = [
   { source: "Website", percentage: 45, color: "#28B16D" },
@@ -18,8 +20,6 @@ export const leadSources = [
   { source: "Referrals", percentage: 20, color: "#EE6002" },
   { source: "Direct", percentage: 10, color: "#8E9395" },
 ];
-
-
 
 export const leads = [
   {
@@ -42,66 +42,65 @@ export const leads = [
   },
 ];
 
-
 export const DashBoardMenuItems = [
   {
     title: "Feed",
     icon: MdRssFeed,
     link: `${paths.protected}/feed`,
-    visibility: ["admin","realtor", "engineer", "service", "trader"],
+    visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "",
+  },
+  {
+    title: "Live Chat",
+    icon: LuMessageCircleMore,
+    link: `${paths.protected}/live-chat`,
+    visibility: ["admin"],
+    type: "chat",
   },
   {
     title: "Dashboard",
     icon: MdDashboard,
     link: `${paths.protected}/dashboard`,
-    visibility: ["admin","realtor", "engineer", "service", "trader"],
+    visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "",
   },
   {
     title: "Users",
     icon: FiUsers,
     link: `${paths.protected}/users`,
-    visibility: ["admin",],
+    visibility: ["admin"],
+    type: "",
   },
   {
-    title: "Properties",
+    title: "Listings",
     icon: FiHome,
+    link: `${paths.protected}/properties/all`,
     visibility: ["realtor", "engineer", "service", "trader"],
-    subItems: [
-      {
-        title: "All Properties",
-        link: `${paths.protected}/properties/all`,
-      },
-      {
-        title: " + New Property",
-        link: `${paths.protected}/properties/add`,
-      },
+    type: "",
+  },
 
-    ],
-  },
-   {
-    title: "Make A Posts",
-    icon: FiPlus,
-    link: `${paths.protected}/posts`,
-    visibility: ["admin","realtor", "engineer", "service", "trader"],
-  },
- 
   {
     title: "Leads & Inquiries",
     icon: FiMail,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-     subItems: [
+    type: "message",
+
+    subItems: [
       {
         title: "Inbox",
         link: `${paths.protected}/messages`,
+        type: "message",
       },
       {
         title: "Contacts",
         link: `${paths.protected}/contacts`,
         visibility: ["admin", "realtor", "engineer", "service", "trader"],
+        type: "",
       },
       {
         title: "Messaging",
         link: `${paths.protected}/send-message`,
+        type: "",
       },
     ],
   },
@@ -110,27 +109,95 @@ export const DashBoardMenuItems = [
     icon: FaUser,
     link: `${paths.protected}/profile/:slug`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-    
+    type: "",
   },
   {
     title: "Support Tickets",
     icon: FaQuestionCircle,
     link: `${paths.protected}/tickets`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
-    
+    type: "ticket",
   },
 
+  {
+    title: "Company Page",
+    icon: FaBriefcase,
+    link: `#`,
+    visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "",
+      subItems: [
+      {
+        title: "Create Company Page",
+        link: `${paths.protected}/create-company`,
+        visibility: ["admin","realtor", "engineer", "service", "trader" ],
+        type: "",
+      },
+      {
+        title: "My Pages",
+        link: `${paths.protected}/company-pages`,
+        visibility: ["realtor", "engineer", "service", "trader"],
+        type: "",
+      },
+    ],
+  },
+
+  {
+    title: "Ads Manager",
+    icon: FaBullhorn,
+    link: `${paths.protected}/ads-manager`,
+    visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "ads",
+    subItems: [
+      {
+        title: "Ads Summary",
+        link: `${paths.protected}/ads-manager`,
+        visibility: ["admin"],
+        type: "",
+      },
+      {
+        title: "Get Verified",
+        link: `${paths.protected}/verification`,
+        visibility: ["realtor", "engineer", "service", "trader"],
+        type: "",
+      },
+      {
+        title: "Verified Users",
+        link: `${paths.protected}/verified-list`,
+        visibility: ["admin"],
+        type: "",
+      },
+      {
+        title: "Badges",
+        link: `${paths.protected}/badges`,
+        visibility: ["admin", "realtor", "engineer", "service", "trader"],
+        type: "",
+      },
+      {
+        title: "Tips/Guide",
+        link: `${paths.protected}/ads-tips`,
+        type: "",
+      },
+      { title: "Ad History", link: `${paths.protected}/ads/all`, type: "" },
+      {
+        title: "Promote",
+        link: `${paths.protected}/new-ads`,
+        type: "",
+      },
+    ],
+  },
   {
     title: "Account Setting",
     icon: FiSettings,
     link: `${paths.protected}/settings`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "",
   },
   {
     title: "Logout",
     icon: FiLogOut,
     link: `#`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
+    type: "",
   },
 ];
 
@@ -1600,23 +1667,22 @@ export const PropertyTypes = [
   { label: "Wind Farm", value: "wind-farm", category: "miscellaneous" },
 ];
 
-  export const purposeOptions = [
-    { value: "For Rent", label: "For Rent" },
-    { value: "Lease", label: "Lease" },
-    { value: "For Sale", label: "For Sale" },
-    { value: "Shortlet", label: "Shortlet" },
-    { value: "Mortgage", label: "Mortgage" },
-  ];
+export const purposeOptions = [
+  { value: "For Rent", label: "For Rent" },
+  { value: "Lease", label: "Lease" },
+  { value: "For Sale", label: "For Sale" },
+  { value: "Shortlet", label: "Shortlet" },
+  { value: "Mortgage", label: "Mortgage" },
+  { value: "Joint Venture", label: "Joint Venture" },
+];
 export const currencyOptions = [
-  { label: "₦", value: "₦",  },
-  { label: "£", value: "£",},
-  { label: "$", value: "$",  },
-  { label: "€", value: "€" }
-
+  { label: "₦", value: "₦" },
+  { label: "£", value: "£" },
+  { label: "$", value: "$" },
+  { label: "€", value: "€" },
 ];
 
-
- export const propertySizeOptions = [
+export const propertySizeOptions = [
   { value: "plot", label: "Plot(s)" },
   { value: "acres", label: "Acres" },
   { value: "sqft", label: "Square Feet (SQFT)" },
@@ -1644,6 +1710,7 @@ export const propertyDocumentTypes = [
   { value: "contract of sale", label: "Contract of Sale" },
   { value: "allocation letter", label: "Allocation Letter" },
   { value: "development levy receipt", label: "Development Levy Receipt" },
+  { value: "others", label: "Others" },
 ];
 
 export const frequencyOptions = [
@@ -1653,6 +1720,14 @@ export const frequencyOptions = [
   { value: "hourly", label: "Per Hour" },
   { value: "weekly", label: "Weekly" },
   { value: "Outright Sale", label: "Outright Sale" },
+];
+
+export const categoryOptions = [
+  { value: "commercial", label: "Commercial Property" },
+  { value: "residential", label: "Residential Property" },
+  { value: "land", label: "Land" },
+  { value: "rental", label: "Rental Property" },
+  { value: "others", label: "Others" },
 ];
 export const conditionOptions = [
   { value: "disputed", label: "Disputed" },
@@ -1763,7 +1838,6 @@ export const TitleOptions = [
   { label: "Prof", value: "Prof" },
   { label: "Rev", value: "Rev" },
   { label: "Chief", value: "Chief" },
-
 ];
 
 export const supportPrioritiesOptions = [
@@ -1780,3 +1854,94 @@ export const supportCategoriesOptions = [
   { label: "Other", value: "other" },
 ];
 
+export const promotionTypes = [
+  {
+    id: "feed_Ads",
+    name: "Feed Ad",
+    description: "Appears in the property feed",
+    icon: FiImage,
+    dailyCost: 3000,
+  },
+  {
+    id: "featured",
+    name: "Featured",
+    description: "Top of search results",
+    icon: FiStar,
+    dailyCost: 6000,
+  },
+  {
+    id: "sidebar_widget",
+    name: "Widget",
+    description: "Appears is pages Widgets and Sidebar",
+    icon: FaBullhorn,
+    dailyCost: 5000,
+  },
+];
+
+export const adTypes = [
+  {
+    title: "Feed Ads",
+    description:
+      "Sponsored listings that appear naturally in the main feed, marked as 'Promoted'. Perfect for boosting visibility.",
+    icon: FiImage,
+    className: "text-blue-500 dark:text-blue-400 text-3xl",
+  },
+  {
+    title: "Featured Property Ads",
+    description:
+      "Appear at website homepage and feed stream, enjoys maximum exposure.",
+    icon: FiStar,
+    className: "text-amber-500 dark:text-amber-400 text-3xl",
+  },
+  {
+    title: "Sidebar Widget",
+    description:
+      "Appears in right Sidebar widget stream perfect for desktop views",
+    icon: FiPlayCircle,
+    className: "text-purple-500 dark:text-purple-400 text-3xl",
+  },
+
+  {
+    title: "Event Promotion Ads",
+    description:
+      "Promote open houses, exhibitions, or webinars with date countdowns and CTAs.",
+    icon: FiCalendar,
+    className: "text-red-500 dark:text-red-400 text-3xl",
+  },
+  {
+    title: "Trusted Agent Badge",
+    description:
+      "Appears in all your posts, enforces trust and reliability, this comes with due diligence check",
+    icon: FiUsers,
+    className: "text-indigo-500 dark:text-indigo-400 text-3xl",
+  },
+];
+
+export const companyCategory = [
+  { label: "Real Estate Company", value: "real_estate_company" },
+  { label: "Construction Company", value: "construction_company" },
+  { label: "Luxury Real Estate", value: "luxury_real_estate" },
+  { label: "Interior Decorators", value: "interior_decorators" },
+  { label: "Cleaning Company", value: "cleaning_company" },
+  { label: "Property Management Company", value: "property_management_company" },
+  { label: "Building Material Sales", value: "building_material_sales" },
+  { label: "Mortgage & Financing Services", value: "mortgage_financing_services" },
+  { label: "Real Estate Agency/Brokerage", value: "real_estate_agency" },
+  { label: "Surveying & Land Mapping Services", value: "surveying_land_mapping_services" },
+  { label: "Architectural & Design Firms", value: "architectural_design_firms" },
+  { label: "Property Lawyers", value: "property_lawyers" },
+  { label: "Facility Management Services", value: "facility_management_services" },
+  { label: "Moving & Relocation Services", value: "moving_relocation_services" },
+  { label: "Home Security & Smart Tech Companies", value: "home_security_smart_tech" },
+  { label: "Landscaping & Gardening Services", value: "landscaping_gardening_services" },
+  { label: "Valuation & Appraisal Companies", value: "valuation_appraisal_companies" },
+  { label: "Rental & Leasing Agencies", value: "rental_leasing_agencies" },
+  { label: "Real Estate Investment Firms", value: "real_estate_investment_firms" },
+  { label: "Pest Control Services", value: "pest_control_services" },
+  { label: "Energy & Solar Installation Companies", value: "energy_solar_installation" },
+  { label: "Furniture & Home Accessories Suppliers", value: "furniture_home_accessories" },
+  { label: "Property/Asset Insurance", value: "property_asset_insurance" },
+  { label: "Engineering & Structural Consultants", value: "engineering_structural_consultants" },
+  { label: "Renovation & Remodeling Companies", value: "renovation_remodeling_companies" },
+  { label: "Others", value: "others" },
+];

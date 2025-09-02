@@ -1,23 +1,27 @@
+
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DOMPurify from "dompurify";
-import EnhancedTextarea from "@components/ui/EnhancedTextarea";
 import FileUpload from "@components/ui/FileUpload";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
-import { useState } from "react";
+import {  useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { handleGoBack, useTenMinuteTimeout } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import DeleteModal from "@components/deleteModal/DeleteModal";
-import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";  
+import Avater from "@assets/img/avater.png"
 
-const NewPost = () => {
+
+const NewPost = ({ closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTrashing, setIsTrashing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -35,6 +39,14 @@ const NewPost = () => {
     }));
   };
 
+  const handleEmojiSelect = (emoji) => {
+    setFormData((prev) => ({
+      ...prev,
+      description: prev.description + emoji.native,
+    }));
+    setShowEmojiPicker(false);
+  };
+
   const handleFileUpload = (name, files) => {
     setFormData((prev) => ({
       ...prev,
@@ -45,7 +57,7 @@ const NewPost = () => {
 
   const resetForm = () => {
     setFormData({
-      content: "",
+      description: "",
       media: [],
     });
     setHasUploadedImages(false);
@@ -90,7 +102,7 @@ const NewPost = () => {
       if (res.status === 201) {
         toast.success("Post created successfully!");
         resetForm();
-        setTimeout(() => window.location.reload(), 3000);
+        setTimeout(() => window.location.reload(), 2000);
       }
     } catch (error) {
       toast.error(ErrorFormatter(error));
@@ -104,7 +116,7 @@ const NewPost = () => {
       setOpenModal(true);
     } else {
       resetForm();
-      handleGoBack(navigate, user);
+      closeModal();
     }
   };
 
@@ -122,10 +134,12 @@ const NewPost = () => {
     }
   });
 
+
+
+
   return (
-    <section className=" mx-auto px-4 mb-8 dark:bg-gray-800 dark:text-gray-100">
-      {/* Check If profile is complete */}
-      <CompleteProfileCall />
+    <section className="mx-auto mb-8">
+    <CompleteProfileCall />
 
       <DeleteModal
         isOpen={openModal}
@@ -136,68 +150,79 @@ const NewPost = () => {
         isDeleting={isTrashing}
       />
 
-      <HandleGoBackBtn />
+      <form className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-4 space-y-4" onSubmit={handleSubmit}>
+        {/* Header with profile */}
+        <div className="flex items-center gap-3">
+          <img
+            src={user?.profilePic || Avater}
+            alt={user?.firstName}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <div>
+            <p className="font-semibold text-gray-800 dark:text-gray-100">
+              {user?.firstName} {user?.lastName}
+            </p>
+            <span className="text-xs text-gray-500">Posting publicly</span>
+          </div>
+        </div>
 
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-primary-text mb-2 dark:text-gray-100">
-          Create New Post
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-100 ">
-          Start sharing your ideas, thoughts, or updates.
-        </p>
-      </div>
-
-      <form className="space-y-8 " onSubmit={handleSubmit}  >
-        {/* Content Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-400 shadow-sm p-6 space-y-4">
-          <EnhancedTextarea
+        {/* Post Content */}
+        <div>
+          <textarea
             name="description"
-            label="Post Content"
-            placeholder="Write your post, idea, or announcement here..."
+            placeholder="What do you want to talk about?"
             value={formData.description}
             onChange={handleChange}
-            rows={6}
+            rows={4}
+            className="w-full border-0 focus:ring-0 text-sm resize-none dark:bg-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none "
           />
-          {user?.firstName && user?.lastName && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Upload Media (Images or Videos)
-              </label>
-              <FileUpload
-                value={formData.media}
-                onChange={(files) => handleFileUpload("media", files)}
-                multiple
-                maxFiles={4}
-                accept="image/*,video/*"
-                className="border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-6 hover:border-green-500 transition"
-              />
+          <div className="flex justify-between items-center mt-2">
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker((prev) => !prev)}
+              className="text-gray-500 hover:text-gray-700 text-sm"
+            >
+              😊 Emoji
+            </button>
+          </div>
+          {showEmojiPicker && (
+            <div className="mt-2">
+              <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
             </div>
           )}
         </div>
 
-        {/* Form Actions */}
-        {(user?.firstName && user?.lastName) && (
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-4">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="w-full sm:w-auto px-6 py-3 border border-gray-300 dark:text-gray-200 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 dark:hover:text-gray-600 transition"
-            >
-              Cancel
-            </button>
+        {/* File Upload */}
+        <FileUpload
+          value={formData.media}
+          onChange={(files) => handleFileUpload("media", files)}
+          multiple
+          maxFiles={4}
+          accept="image/*,video/*"
+           innerClass="w-4 h-4 overflow-hidden"
+        />
 
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-6 py-3 rounded-md text-sm font-medium text-white bg-main-green hover:bg-green-hover transition disabled:opacity-60 disabled:cursor-not-allowed"
-              disabled={isLoading}
-            >
-              {isLoading ? "Please wait..." : "Publish"}
-            </button>
-          </div>
-        )}
+        {/* Footer Actions */}
+        <div className="flex justify-end gap-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="px-4 py-2 border rounded-md text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="px-4 py-2 rounded-md text-sm font-medium text-white bg-main-green hover:bg-green-hover transition disabled:opacity-60"
+          >
+            {isLoading ? "Posting..." : "Post"}
+          </button>
+        </div>
       </form>
     </section>
   );
 };
 
 export default NewPost;
+

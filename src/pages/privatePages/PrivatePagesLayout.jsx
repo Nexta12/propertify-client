@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 import MobileHeader from "./dashboard/components/MobileHeader";
-import DesktopSidebar from "./dashboard/components/DesktopSidebar";
 import DesktopTopbar from "./dashboard/components/DesktopTopbar";
 import { ToastContainer } from "react-toastify";
+import SidebarNav from "./dashboard/components/SidebarNav";
 
 const PrivatePagesLayout = () => {
   const notifications = 2;
@@ -52,29 +52,25 @@ const PrivatePagesLayout = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="bg-gray-50 dark:bg-gray-800 font-sans p-0 m-0 min-h-screen">
-          <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
-        {/* Fixed Top Navigation */}
-        <MobileHeader notifications={notifications} />
-        <div className="sticky top-0 z-50 bg-white shadow">
-          <DesktopTopbar notifications={notifications} />
-        </div>
-
-        <div className="flex items-start  max-w-[1440px] mx-auto lg:pl-4  ">
-          {/* Sidebar */}
-          <aside className="hidden lg:block w-[310px] bg-white h-screen shadow-md overflow-y-auto mt-5  max-h-[calc(100vh-80px)] sticky top-[80px]">
-            <DesktopSidebar />
+       <div className="bg-gray-100 p-0 m-0 dark:bg-gray-900">
+        <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+       <MobileHeader notifications={notifications} />
+        <DesktopTopbar notifications={notifications} />
+        <div className="flex items-start gap-4 section-container pt-20 lg:pt-3 relative">
+           <div className="hidden lg:flex min-w-[300px] max-w-[300px] min-h-screen sticky top-5 ">
+             <SidebarNav />
+           </div>
              
-          </aside>
-         
-
-          {/* Main Content */}
-          <main className="flex-1 w-full min-h-screen px-4 mt-20 lg:mt-5">
-            <Outlet />
-          </main>
+             {/* <div className=" overflow-x-auto "> */}
+             <div className="flex-[2] sm:overflow-x-visible overflow-x-auto  scrollbar-hide min-h-screen   ">
+              <Outlet />
+             </div>
         </div>
-        
-      </div>
+      
+    
+    </div>
+
+      
     );
   }
 

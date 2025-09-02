@@ -27,7 +27,8 @@ export default defineConfig({
   },
   preview: {
     port: 3002,
-    allowedHosts: ['propertifynig.com']
+     allowedHosts: ['propertifynig.com']
+
   },
  
 })

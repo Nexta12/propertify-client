@@ -12,6 +12,7 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { Virtuoso } from "react-virtuoso";
 import { PuffLoader } from "react-spinners";
 import TipsCard from "@components/tips/TipsCard";
+import { shufflePostsArray } from "@utils/helper";
 
 const Professionals = () => {
   const [showProfessionalsSearch, setShowProfessionalsSearch] = useState(false);
@@ -121,10 +122,21 @@ const Professionals = () => {
     );
   }, [loading, hasMore]);
 
+   // Shuffle posts Locally
+      useEffect(() => {
+      if (professionals.length === 0) return;
+    
+      const interval = setInterval(() => {
+        setProfessionals((prev) => shufflePostsArray(prev));
+      }, 5 * 60 * 1000); // every 5 minutes
+    
+      return () => clearInterval(interval);
+    }, [professionals.length]);
+
 
   return (
  
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="bg-gray-100  dark:bg-gray-900 min-h-screen">
   {/* <Breadcrumb /> */}
 
   <main className="section-container !pt-2 flex items-start gap-x-4 relative">

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import GeoCoderMarker from './GeoCoderMarker';
 
-const Map = ({address, city, state}) => {
+const Map = ({address, city, state, zoomLevel}) => {
   const position = [51.35, -18.8];
   
   return (
@@ -21,7 +21,7 @@ const Map = ({address, city, state}) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <GeoCoderMarker address = {`${address} ${city} ${state}`} />
+      <GeoCoderMarker zoomLevel={zoomLevel} address = {`${address} ${city} ${state} Nigeria`} />
 
     </MapContainer>
   );

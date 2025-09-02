@@ -14,6 +14,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { Virtuoso } from "react-virtuoso";
+import RightWidgetAdsHandler from "./RightWidgetAdsHandler";
+import { insertAdvertManager, shufflePostsArray } from "@utils/helper";
+import NewPost from "@pages/posts/NewPost";
+import Modal from "@components/modal/Modal";
+import CreatePostToggler from "./CreatePostToggler";
 
 const Feed = () => {
   // State declarations
@@ -38,6 +43,23 @@ const Feed = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const { deskTopSearchTerm, setDeskTopSearchTerm } = useSearchStore();
   const [debouncedSearchEnabled, setDebouncedSearchEnabled] = useState(true);
+  const sponsoredPosts = useRef([]);
+  const globalPostCounter = useRef(0);
+  const [openPostCreator, setopenPostCreator] = useState(false);
+
+  // Fetch sponsored posts separately (only once)
+  useEffect(() => {
+    const fetchSponsoredPosts = async () => {
+      try {
+        const res = await apiClient.get(endpoints.fetchSponsoredPosts);
+        sponsoredPosts.current = res.data.data;
+      } catch (error) {
+        console.error("Failed to fetch sponsored posts", error);
+      }
+    };
+
+    fetchSponsoredPosts();
+  }, []);
 
   const handlePostDelete = (postId) => {
     setProperties((prev) => prev.filter((post) => post._id !== postId));
@@ -106,14 +128,32 @@ const Feed = () => {
           params,
         });
 
+        // Insert ads into the new properties
+        const { mixedPosts, newCounter } = insertAdvertManager(
+          res.data.data.data,
+          sponsoredPosts.current,
+          globalPostCounter.current,
+          currentPage
+        );
+
+        globalPostCounter.current = newCounter;
+
         setProperties((prev) => {
-          const newItems = res.data.data.data;
-          return isInitial
-            ? newItems
-            : [...prev, ...newItems].filter(
-                (p, i, self) =>
-                  i === self.findIndex((item) => item._id === p._id)
-              );
+          const merged = isInitial ? mixedPosts : [...prev, ...mixedPosts];
+
+          // Remove duplicates while preserving order
+          const uniquePosts = [];
+          const ids = new Set();
+
+          for (const post of merged) {
+            const id = post.syntheticId || post._id;
+            if (!ids.has(id)) {
+              ids.add(id);
+              uniquePosts.push(post);
+            }
+          }
+
+          return uniquePosts;
         });
 
         setHasMore(
@@ -136,6 +176,7 @@ const Feed = () => {
     setPage(1);
     setHasMore(true);
     setInitialLoad(true);
+    globalPostCounter.current = 0;
   }, [filters]);
 
   // Fetch data
@@ -163,10 +204,24 @@ const Feed = () => {
     );
   }, [loading, hasMore]);
 
+  // Shuffle posts Locally
+  useEffect(() => {
+    if (properties.length === 0) return;
+
+    const interval = setInterval(() => {
+      setProperties((prev) => shufflePostsArray(prev));
+    }, 5 * 60 * 1000); // every 5 minutes
+
+    return () => clearInterval(interval);
+  }, [properties.length]);
+
   return (
-    <section className="flex relative w-full">
+    <section className="flex w-full relative ">
       {/* Main Container */}
       <div className="flex-[2] lg:mr-4 mb-8">
+        <CreatePostToggler setopenPostCreator={setopenPostCreator}/>
+      
+
         <div>
           {initialLoad && properties.length === 0 ? (
             <div className="flex items-center justify-center py-8 w-full">
@@ -205,7 +260,10 @@ const Feed = () => {
         </div>
       </div>
       {/* Right Sidebar */}
-      <div className="hidden lg:block flex-1 space-y-5 self-start sticky top-0">
+
+      <div className="hidden xl:block w-[300px] space-y-4 self-start sticky top-0">
+        <RightWidgetAdsHandler />
+
         <TipsCard
           title="🔐 Safety Guidelines"
           tips={[
@@ -238,6 +296,10 @@ const Feed = () => {
 
       {/* Mobile Seearch Bar Modal Display made re-usable, */}
 
+      <Modal isOpen={openPostCreator} onClose={() => setopenPostCreator(false)}>
+        <NewPost closeModal={() => setopenPostCreator(false)} />
+      </Modal>
+
       <MobileSearchBar
         showMobileSearch={showMobileSearch}
         setShowMobileSearch={setShowMobileSearch}
@@ -246,10 +308,11 @@ const Feed = () => {
           filters={filters}
           onFilterChange={setFilters}
           onApplyFilters={() => setShowMobileSearch(false)}
+          className="!flex w-full"
         />
       </MobileSearchBar>
 
-      <MobileFootermenu onSearchClick={() => setShowMobileSearch(true)} />
+      <MobileFootermenu onSearchClick={() => setShowMobileSearch(true)} setopenPostCreator={()=> setopenPostCreator(true)} />
     </section>
   );
 };

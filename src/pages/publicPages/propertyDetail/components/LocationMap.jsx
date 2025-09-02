@@ -3,8 +3,8 @@ import Map from "@components/map/Map";
 
 const LocationMap = ({property}) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <h3 className="text-lg font-semibold mb-6">Location</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-lg  p-6 mb-8">
+                <h3 className="text-lg font-semibold mb-6 dark:text-gray-200">Location</h3>
                 <div className="h-80 bg-gray-200 rounded-lg overflow-hidden">
                   {/* Replace with your actual map component */}
                   <Map
@@ -18,8 +18,8 @@ const LocationMap = ({property}) => {
                     <span className="ml-2">Map View of {property.address}</span>
                   </div> */}
                 </div>
-                <div className="mt-4 text-sm text-gray-600">
-                  <MdLocationOn className="inline mr-1" />
+                <div className="mt-4 text-sm text-gray-600 dark:text-gray-200">
+                  <MdLocationOn className="inline mr-1 " />
                   {property.location}, {property.state}
                 </div>
               </div>

@@ -1,6 +1,6 @@
 
 import Hero from "@components/hero/Hero";
-import Recent from "@components/recent/Recent";
+import FeaturedPostsHandler from "./FeaturedPostsHandler";
 
 const Homepage = () => {
   return (
@@ -8,7 +8,7 @@ const Homepage = () => {
       <div style={{width: "inherit"}}>
       <Hero />
       </div>
-      <Recent/>
+      <FeaturedPostsHandler/>
     </>
   );
 };

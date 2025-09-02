@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import useAuthStore from "@store/authStore";
 import Button from "@components/ui/Button";
 import { getLoggedInUserPath } from "@utils/helper";
-import { PuffLoader } from "react-spinners";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import GreenLogo from "@assets/img/green-logo.png"
 import FullPageLoader from "./FullPageLoader";

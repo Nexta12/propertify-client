@@ -61,19 +61,16 @@ const DirectMessage = () => {
    <div className="w-full mx-auto min-h-screen dark:bg-gray-900 dark:text-white transition-colors duration-300">
   <div className="mx-auto mb-8">
     {/* Header */}
-    <div className="flex items-center justify-between mb-4">
-      <HandleGoBackBtn />
-      <HeaderTitle titleText={"Send Messages"} />
-      <div className="w-8"></div> {/* Spacer for alignment */}
-    </div>
 
     {/* Main Card */}
     <div className="bg-white dark:bg-gray-800 shadow-md overflow-hidden p-6 md:p-8 rounded-xl border border-gray-100 dark:border-gray-700">
+      <HandleGoBackBtn />
+      
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Recipient Type Selection */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Message to: {formatTitleCase(slug)}
+            Message to: <span className="text-primary-text font-semibold ml-3" > {formatTitleCase(slug)}</span>
           </label>
         </div>
 
@@ -108,7 +105,9 @@ const DirectMessage = () => {
             placeholder="Write your message here..."
             rows={6}
             required
+            withToolbar
             className="focus:outline-none w-full p-4 bg-white dark:bg-gray-700 dark:text-white"
+           
           />
           <FileUpload
             value={mediaData}
@@ -122,7 +121,7 @@ const DirectMessage = () => {
             multiple={false}
             maxFiles={1}
             accept="image/*"
-            className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 hover:border-green-500 transition-colors"
+            innerClass="w-10 h-10 overflow-hidden"
           />
         </div>
 
@@ -130,7 +129,7 @@ const DirectMessage = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className={`w-full bg-main-green text-white py-2 px-4 rounded-md hover:bg-green-hover transition-colors ${
+            className={` bg-main-green text-white py-2 px-4 rounded-md hover:bg-green-hover transition-colors ${
               isSending ? "disabled cursor-not-allowed opacity-70" : ""
             }`}
           >

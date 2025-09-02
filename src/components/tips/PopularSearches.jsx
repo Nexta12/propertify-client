@@ -6,7 +6,7 @@ const PopularSearches = ({
 }) => {
   return (
     <div
-      className={`bg-white dark:bg-gray-900 p-4 rounded-md shadow-sm ${className}`}
+      className={`bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm ${className}`}
     >
       <h3 className="font-semibold text-primary-text dark:text-gray-100 mb-2 text-sm">
         {title}

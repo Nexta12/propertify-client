@@ -47,8 +47,9 @@ const MyProperties = () => {
           search
         }
       });
+  
       return {
-        data: res.data.data.data.filter(item => item.isProperty),
+        data: res.data.data.data,
         pagination: res.data.data.pagination
       };
     } catch (error) {
@@ -81,7 +82,7 @@ const columns = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <div className="flex-shrink-0 h-10 w-10">
-          <Link to={`${paths.protected}/properties/${row.original.slug}`}>
+          <Link to={`${paths.properties}/${row.original.slug}`}>
             <img
               className="h-10 w-10 rounded"
               src={row.original.media[0]?.url || PropertyPlaceholder}
@@ -90,8 +91,8 @@ const columns = [
           </Link>
         </div>
         <div className="ml-4">
-          <Link to={`${paths.protected}/properties/${row.original.slug}`}>
-            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <Link to={`${paths.properties}/${row.original.slug}`}>
+            <div className="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
               {truncate(row.original.title, { length: 40 })}
             </div>
           </Link>
@@ -143,12 +144,7 @@ const columns = [
     header: "ACTIONS",
     cell: ({ row }) => (
       <div className="flex gap-2">
-        <button
-          onClick={() => handleBoost(row.original)}
-          className="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
-        >
-          Promote
-        </button>
+       
         <button
           onClick={() => handleView(row.original)}
           className="px-2 py-1 text-xs text-main-green rounded hover:bg-green-600 hover:text-white dark:text-white"
@@ -179,10 +175,6 @@ const columns = [
 
   const handleEdit = (data) => {
     navigate(`${paths.protected}/${data.isProperty ? "properties" : "posts"}/edit/${data.slug}`);
-  };
-
-  const handleBoost = (data) => {
-    alert(`Joy is coming to ${data.city} shortly`);
   };
 
   const handleDelete = (data) => {

@@ -18,7 +18,7 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const GeoCoderMarker = ({ address }) => {
+const GeoCoderMarker = ({ address, zoomLevel = 14 }) => {
   const map = useMap();
   const [position, setPosition] = useState(null);
   const [error, setError] = useState(null);
@@ -38,12 +38,12 @@ const GeoCoderMarker = ({ address }) => {
         if (results?.results?.length > 0) {
           const { lat, lng } = results.results[0].latlng;
           setPosition([lat, lng]);
-          map.flyTo([lat, lng], 18); // Increased zoom level for better precision
+          map.flyTo([lat, lng], zoomLevel); // Increased zoom level for better precision
         } else {
           setError('Address not found');
         }
       });
-  }, [address, map]);
+  }, [address, map, zoomLevel]);
 
   if (!position) {
     return null; // Don't render marker if no position

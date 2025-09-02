@@ -4,7 +4,7 @@ import { FiEdit2 } from "react-icons/fi";
 import FileUpload from "@components/ui/FileUpload";
 import DOMPurify from "dompurify";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import { NigerianStates, professions, TitleOptions } from "@utils/data";
+import { NigerianStates, professions} from "@utils/data";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 import { toast } from "react-toastify";
@@ -13,6 +13,8 @@ import { apiClient } from "@api/apiClient";
 import useAuthStore from "@store/authStore";
 import { endpoints } from "@api/endpoints";
 import DeleteModal from "@components/deleteModal/DeleteModal";
+import { useNavigate } from "react-router-dom";
+import { paths } from "@routes/paths";
 
 const ProfileTab = () => {
   const { user } = useAuthStore();
@@ -23,9 +25,8 @@ const ProfileTab = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-
+  const navigate = useNavigate()
   const [profileData, setProfileData] = useState({
-    title: "",
     firstName: "",
     lastName: "",
     state: "",
@@ -39,7 +40,6 @@ const ProfileTab = () => {
   });
 
 
-
   // Get The Current User Details
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -50,7 +50,6 @@ const ProfileTab = () => {
         const { data } = response.data;
 
         setProfileData({
-          title: data.title || "",
           firstName: data.firstName || "",
           lastName: data.lastName || "",
           state: data.state || "",
@@ -165,7 +164,6 @@ const ProfileTab = () => {
   
       // Create FormData
       const formData = new FormData();
-      formData.append("title", profileData.title);
       formData.append("firstName", profileData.firstName);
       formData.append("lastName", profileData.lastName);
       formData.append("state", profileData.state);
@@ -216,7 +214,13 @@ const ProfileTab = () => {
             coverPic: response.data.coverPic,
           }));
         }
+         setTimeout(()=>{
+            navigate(paths.feed)
+
+         },2000)
+    
       }
+
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -263,7 +267,7 @@ const ProfileTab = () => {
     <div className="space-y-8">
       {/* Cover Photo */}
       <div className="relative mb-16">
-        <div className="h-40 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-blue-950 rounded-xl overflow-hidden">
+        <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded-xl overflow-hidden">
           {profileData.coverPic ? (
             <img
               src={getImageSrc(
@@ -343,14 +347,7 @@ const ProfileTab = () => {
       {/* Form Inputs */}
       <div className="mt-16 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <EnhancedSelect
-            name="title"
-            label="Title"
-            value={profileData.title}
-            onChange={handleChange}
-            options={TitleOptions}
-            placeholder="Select Title"
-          />
+        
           <EnhancedSelect
             name="profession"
             label="Profession"
@@ -431,6 +428,7 @@ const ProfileTab = () => {
           value={profileData.description}
           onChange={handleChange}
           rows={6}
+          withToolbar
         />
       </div>
 

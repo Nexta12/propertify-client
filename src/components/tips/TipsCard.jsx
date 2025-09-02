@@ -7,7 +7,7 @@ const TipsCard = ({
   ],
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-sm">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm">
       <h3 className="font-semibold text-primary-text dark:text-gray-100 mb-2 text-sm">
         {title}
       </h3>

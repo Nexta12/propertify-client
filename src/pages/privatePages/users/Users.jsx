@@ -74,7 +74,7 @@ const Users = () => {
         </div>
         <div>
           <div className="text-sm font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
-           {row.original.title} {row.original.firstName || 'NA'} {row.original.lastName}
+           {row.original.title} {row.original.firstName || 'NA'} {row.original.lastName} 
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-200">
             {row.original.role && (

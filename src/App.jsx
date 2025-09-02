@@ -7,13 +7,12 @@ const App = () => {
   const { user } = useAuthStore();
 
   return (
-     
-      <ThemeProvider>
-        <SocketProvider userId={user?.id} >
+    <ThemeProvider>
+      <SocketProvider userId={user?.id}>
         <AppRoutes />
-        </SocketProvider>
-      </ThemeProvider>
-  ) 
+      </SocketProvider>
+    </ThemeProvider>
+  );
 };
 
 export default App;

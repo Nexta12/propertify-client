@@ -3,10 +3,8 @@ import { useState } from 'react';
 import { FiUser, FiLock, FiBriefcase,  } from 'react-icons/fi';
 import ProfileTab from './components/ProfileTab';
 import UpdatePasswordTab from './components/UpdatePasswordTab';
-import CompanyTab from './components/CompanyTab';
 import HandleGoBackBtn from '@components/goBackBtn/HandleGoBackBtn';
 import HeaderTitle from '@components/ui/HeaderTitle';
-
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -40,13 +38,7 @@ const Settings = () => {
             <FiLock className="text-lg" />
             Update Password
           </button>
-          <button
-            onClick={() => setActiveTab('company')}
-            className={`px-6 py-4 font-medium text-sm flex items-center gap-2 ${activeTab === 'company' ? 'text-[#28B16D] border-b-2 border-[#28B16D]' : 'text-gray-500 dark:text-gray-200 hover:text-gray-700'}`}
-          >
-            <FiBriefcase className="text-lg" />
-            My Company
-          </button>
+        
         </div>
 
         {/* Tab Content */}
@@ -59,11 +51,6 @@ const Settings = () => {
           {/* Password Tab */}
           {activeTab === 'password' && (
            <UpdatePasswordTab/>
-          )}
-
-          {/* Company Tab */}
-          {activeTab === 'company' && (
-           <CompanyTab/>
           )}
 
         </div>

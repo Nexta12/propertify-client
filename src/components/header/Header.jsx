@@ -15,8 +15,7 @@ import { FaUser } from "react-icons/fa";
 const HeaderMenu = [
   { title: "Home", link: paths.index },
   { title: "Properties", link: paths.properties },
-  { title: "Construction", link: "#" },
-  { title: "Building Materials", link: "#" },
+  { title: "Companies", link: paths.companies },
   { title: "Professionals", link: paths.professionals },
 ];
 
@@ -95,13 +94,13 @@ const Header = () => {
   return (
  
   <header
-  className={`w-full z-50 transition-transform duration-300 ${
+  className={` w-full z-50 transition-transform duration-300 section-container ${
     sticky ? "fixed top-0" : "relative"
   } ${
-    scrolled ? "bg-bg-green dark:bg-gray-800" : "bg-white dark:bg-gray-900"
+    scrolled ? "bg-white dark:bg-gray-800" : "bg-white dark:bg-gray-900"
   } ${hideOnScroll ? "-translate-y-full" : "translate-y-0"}`}
 >
-  <div className="section-container flex items-center justify-between py-3">
+  <div className=" flex items-center justify-between">
     {/* Left Section */}
     <div className="flex items-center gap-8">
       <button
@@ -219,52 +218,53 @@ const Header = () => {
   </div>
 
   {/* Mobile Sidepanel */}
-  <div
-    className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 transform ${
-      sidepanel ? "translate-x-0" : "-translate-x-full"
-    } transition-transform duration-300 ease-in-out lg:hidden mt-[60px] h-[calc(100vh-60px)]`}
-  >
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto">
-        {HeaderMenu.map((item, index) => (
-          <a
-            key={index}
-            href={item.link}
-            onClick={handleSidepanel}
-            className="block p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800 hover:text-main-green transition-colors duration-200"
-          >
-            {item.title}
-          </a>
-        ))}
+ <div
+  className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 transform ${
+    sidepanel ? "translate-x-0" : "-translate-x-full"
+  } transition-transform duration-300 ease-in-out lg:hidden mt-[60px] h-[calc(100vh-60px)]`}
+>
+  <div className="flex flex-col h-full">
+    <div className="flex-1 overflow-y-auto">
+      {HeaderMenu.map((item, index) => (
+        <a
+          key={index}
+          href={item.link}
+          onClick={handleSidepanel}
+          className="block p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800 hover:text-main-green dark:hover:text-main-green transition-colors duration-200 text-gray-900 dark:text-gray-100"
+        >
+          {item.title}
+        </a>
+      ))}
 
-        {!isAuthenticated ? (
-          <Link
-            to={paths.login}
-            onClick={handleSidepanel}
-            className="flex items-center gap-2 p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800"
-          >
-            <CiLogin className="text-2xl" />
-            <span className="orangeText">Sign In</span>
-          </Link>
-        ) : (
-          <Link
-            to={"#"}
-            onClick={() => logout(navigate)}
-            className="flex items-center gap-2 p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800"
-          >
-            <FiLogOut className="w-5 h-5" />
-            <span className="orangeText">Logout</span>
-          </Link>
-        )}
-      </div>
+      {!isAuthenticated ? (
+        <Link
+          to={paths.login}
+          onClick={handleSidepanel}
+          className="flex items-center gap-2 p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100"
+        >
+          <CiLogin className="text-2xl" />
+          <span className="orangeText">Sign In</span>
+        </Link>
+      ) : (
+        <Link
+          to={"#"}
+          onClick={() => logout(navigate)}
+          className="flex items-center gap-2 p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-bg-green dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100"
+        >
+          <FiLogOut className="w-5 h-5" />
+          <span className="orangeText">Logout</span>
+        </Link>
+      )}
+    </div>
 
-      <div className="p-4 bg-tertiary text-center">
-        <p className="text-white/70 dark:text-white/50 text-xs">
-          © {new Date().getFullYear()} Propertify Nigeria. All rights reserved.
-        </p>
-      </div>
+    <div className="p-4 bg-tertiary dark:bg-gray-800 text-center">
+      <p className="text-gray-600 dark:text-gray-400 text-xs">
+        © {new Date().getFullYear()} Propertify Nigeria. All rights reserved.
+      </p>
     </div>
   </div>
+</div>
+
 </header>
 
   );

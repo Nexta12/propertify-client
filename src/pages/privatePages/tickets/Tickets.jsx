@@ -1,5 +1,4 @@
 
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DeleteModal from "@components/deleteModal/DeleteModal";
@@ -93,11 +92,7 @@ const Tickets = () => {
   }
 
  const columns = [
-  {
-    accessorKey: "serialNo",
-    header: "S/No",
-    cell: ({ row }) => row.index + 1,
-  },
+
   {
     accessorKey: "fullName",
     header: "Name",
@@ -134,9 +129,10 @@ const Tickets = () => {
     header: "Priority",
     cell: ({ row }) => {
       const priority = row.original.priority.toLowerCase();
+      console.log(priority)
       const colors = {
         urgent: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
-        high: "bg-orange-100 text-orange-700 dark:bg-orange-800 dark:text-orange-100",
+        high: "bg-orange text-white dark:bg-orange-800 dark:text-orange-100",
         medium: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
         low: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
       };

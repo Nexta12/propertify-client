@@ -13,12 +13,13 @@ import { removeLocalStorageItem, setLocalStorageItem } from '@utils/localStorage
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
      try {
-
+        setLoading(true)
        const response = await apiClient.post(endpoints.ForgetPassword, {email})
            if (response.status == 200) {
                 setLocalStorageItem('otpEmail', email);
@@ -34,6 +35,8 @@ const ForgotPassword = () => {
       removeLocalStorageItem('userEmail', email);
       removeLocalStorageItem('resetEmail', email);
       removeLocalStorageItem('showOtpPage', true);
+     }finally{
+      setLoading(false)
      }
    
   };
@@ -55,12 +58,12 @@ const ForgotPassword = () => {
           </div>
 
           <h2 className="text-xl font-semibold text-[#122947] dark:text-gray-300 mt-2">
-            {isSubmitted ? 'Check your email' : 'Forgot your password?'}
+            {isSubmitted ? 'Check your email' : ''}
           </h2>
           <p className="text-[#8E9395] text-sm mt-1 dark:text-gray-300">
             {isSubmitted 
               ? 'We sent password reset instructions to your email'
-              : 'Enter your email to reset your password'}
+              : ''}
           </p>
         </div>
 
@@ -85,7 +88,7 @@ const ForgotPassword = () => {
               type="submit"
               className="w-full py-3 bg-[#28B16D] hover:bg-[#09C269] text-white font-semibold rounded-lg transition-colors"
             >
-              Reset Password
+             {loading ? 'Please Wait...' : "Reset Password"} 
             </button>
 
             {/* Back to Login Link */}

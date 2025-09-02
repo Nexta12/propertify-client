@@ -147,9 +147,12 @@ const Footer = ({className}) => {
     {/* Copyright */}
     <div className="border-t border-white/10 dark:border-white/5 pt-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+        <div className="flex flex-col space-y-2">
         <span className="text-secondary dark:text-gray-400 text-xs font-secondary">
           &copy; {new Date().getFullYear()} Propertify Nigeria. All rights reserved.
         </span>
+          <ToggleSwitch />
+          </div>
         <div className="flex gap-4">
           {["Privacy Policy", "Terms of Service", "Sitemap"].map((text, i) => (
             <a
@@ -160,7 +163,7 @@ const Footer = ({className}) => {
               {text}
             </a>
           ))}
-            <ToggleSwitch />
+          
         </div>
       </div>
     </div>

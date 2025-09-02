@@ -135,3 +135,49 @@ export const getPermittedRole = (user, navigate) => {
 
 }
 
+
+export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, currentPage) => {
+  const result = [];
+  let counter = startCounter;
+  const totalAds = sponsoredPosts.length;
+
+  if (totalAds === 0) {
+    return {
+      mixedPosts: regularPosts,
+      newCounter: counter + regularPosts.length
+    };
+  }
+
+  for (let i = 0; i < regularPosts.length; i++) {
+    // Add regular post
+    result.push(regularPosts[i]);
+    counter++;
+    
+    // Add ad after every 2 posts
+    if (counter % 2 === 0) {
+      const adIndex = Math.floor(counter / 2 - 1) % totalAds;
+      const ad = {
+        ...sponsoredPosts[adIndex],
+        syntheticId: `sponsored-${sponsoredPosts[adIndex]._id}-${currentPage}-${counter}`,
+        isSponsored: true,
+        promoType: "Sponsored"
+      };
+      result.push(ad);
+    }
+  }
+
+  return {
+    mixedPosts: result,
+    newCounter: counter
+  };
+};
+
+
+export const shufflePostsArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};

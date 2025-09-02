@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
-import { FiMoreVertical, FiMessageSquare } from "react-icons/fi";
+import { FiMoreVertical, FiMessageSquare, FiGrid, FiBarChart, FiBarChart2 } from "react-icons/fi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { formatDistanceToNow } from "date-fns";
 import { formatLargeNumber, formatTitleCase } from "@utils/helper";
@@ -17,8 +17,9 @@ import FavouriteProperty from "./FavouriteProperty";
 import SocialShare from "./SocialShare";
 import Comments from "./Comments";
 import PropertyPlaceholder from "@assets/img/placeholder.webp";
+import PromotionBadge from "./PromotionBadge";
 
-const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
+const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
   const [showComments, setShowComments] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -46,6 +47,18 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
     fetchPostComments();
   }, [post]);
 
+  useEffect(() => {
+    const handleImpressions = async () => {
+      try {
+        await apiClient.get(`${endpoints.handleImpressions}/${post._id}`);
+      } catch (error) {
+        toast.error(ErrorFormatter(error));
+      }
+    };
+
+    if (post) handleImpressions();
+  }, [post]);
+
   const renderMedia = () => {
     if (!post.media || post.media.length === 0) return null;
 
@@ -57,10 +70,13 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
               <img
                 src={post.media[0]?.url || PropertyPlaceholder}
                 alt="Property"
-                className="w-full h-64 object-cover"
+                className="w-full h-full max-h-[570px] object-contain"
               />
             ) : (
-              <video controls className="w-full h-64 object-cover">
+              <video
+                controls
+                className="w-full h-full max-h-[570px] object-contain"
+              >
                 <source src={post.media[0].url} type="video/mp4" />
               </video>
             )}
@@ -102,7 +118,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
           {post.media.slice(0, 4).map((item, index) => (
             <div
               key={index}
-              className="relative rounded-lg overflow-hidden h-32"
+              className="relative rounded-lg overflow-hidden h-40"
             >
               {item.type === "image" ? (
                 <img
@@ -267,6 +283,12 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
       />
 
       {/* Header */}
+      <div className="w-full text-xs flex justify-end ">
+        {post.promotionType == "feed_Ads" && <PromotionBadge post={post} />}
+        {promoType && (
+          <span className="italic text-[11px] text-orange">{promoType}</span>
+        )}
+      </div>
       <div className="flex justify-between items-start">
         <div className="flex items-center space-x-3">
           <Link
@@ -308,14 +330,14 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
         </div>
 
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-gray-500 capitalize dark:text-gray-200">
+          <span className="text-[11px] text-gray-500 capitalize dark:text-gray-200">
             {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
           </span>
           {user?.id === post.owner._id && (
             <div className="relative">
               <button
                 onClick={() => setShowOptions(!showOptions)}
-                className="p-1 rounded-full hover:bg-gray-100 dark:text-gray-100"
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-500 dark:text-gray-100"
               >
                 <FiMoreVertical />
               </button>
@@ -358,30 +380,33 @@ const PostCard = ({ post, isProperty, onDeleteSuccess }) => {
       {renderPropertyDetails()}
 
       {/* Footer */}
-      <div className="flex justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-500">
-        <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-300 ">
-          <span className="text-xs">{post?.views} views</span>
-        </div>
+      <div className="">
+        <div className="flex justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-500">
+          <div className="flex items-center space-x-4 text-gray-500 dark:text-gray-300 ">
+            <span className="text-xs">{post?.views} views</span>
+            <span className="text-xs flex items-center gap-x-1" title="Impressions"><FiBarChart2 /> {post?.impressions || 0}  </span>
+          </div>
 
-        <div className="flex items-center space-x-4">
-          <FavouriteProperty property={post} className="p-2" />
+          <div className="flex items-center space-x-4">
+            <FavouriteProperty property={post} className="p-2" />
 
-          <button
-            onClick={() => setShowComments(!showComments)}
-            className="flex items-center space-x-1 text-gray-500 dark:text-gray-300"
-          >
-            <FiMessageSquare />
-            <span>{allComments?.length || 0}</span>
-          </button>
-
-          <div className="relative">
-            <Link
-              to={"#"}
-              onClick={() => setShowShareOptions(!showShareOptions)}
-              className="flex items-center space-x-1 text-gray-500"
+            <button
+              onClick={() => setShowComments(!showComments)}
+              className="flex items-center space-x-1 text-gray-500 dark:text-gray-300"
             >
-              <SocialShare />
-            </Link>
+              <FiMessageSquare />
+              <span>{allComments?.length || 0}</span>
+            </button>
+
+            <div className="relative">
+              <Link
+                to={"#"}
+                onClick={() => setShowShareOptions(!showShareOptions)}
+                className="flex items-center space-x-1 text-gray-500"
+              >
+                <SocialShare />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

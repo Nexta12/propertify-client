@@ -75,6 +75,8 @@ export const endpoints = {
   getInquiryStats: "/api/stats/contacts-form",
   getUsersAllContacts: "/api/stats/all-contacts-list",
   getAllTicketsStats: "/api/stats/ticket",
+  getAllRevenueStat: "/api/stats/ads-revenue",
+  getAdsStats: "/api/stats/ads-status",
 
 
   // Notifications
@@ -88,6 +90,39 @@ export const endpoints = {
   updateTicket: "/api/ticket/update",
   fetchAllTickets: "/api/ticket/all",
   getSingleTicket: "/api/ticket/getOne",
-  deleteTicket: "/api/ticket/delete"
+  deleteTicket: "/api/ticket/delete",
+
+  // Adverts and Promotions
+  createAds: "/api/promotion/create",
+  fetchAllAds: "/api/promotion/getAll",
+  fetchUserAllAds: "/api/promotion/all",
+  deleteAds: "/api/promotion/delete",
+  updateAdsStatus: "/api/promotion/update",
+  initializePayment: "/api/promotion/card-payment",
+  ConfirmPayment: '/api/promotion/paystack-callback',
+
+  // Widget Posts
+  fetchWidgetPosts: "/api/property/widget-post",
+  fetchFeaturedPosts: "/api/property/featured-post",
+  fetchSponsoredPosts: "/api/property/spnsored-post",
+  handleImpressions: "/api/property/impressions",
+
+  // Chat
+
+  InitiateChatWithAdmin: "/api/chat-messages/create",
+  fetchUserChatMessages: "/api/chat-messages",
+  sendChatConversation: "/api/chat-conversation/create",
+  fetchAllChats: "/api/chat-messages/all",
+  deleteChatHistory: "/api/chat-messages/delete",
+  fetchCurrentChatById: "/api/chat-messages/current-chat",
+  fetchConversations:"/api/chat-conversation/all",
+
+
+  // Company Manager
+  createCompany: "/api/company/create",
+  fetchUserCompanies: "/api/company/getUserAll",
+  fetchCompanyDetails: "/api/company/getOne",
+  updateCompany: "/api/company/update",
+  getAllCompanies: "/api/company/getAll"
  
 };

@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
-import { paths } from "@routes/paths";
 import { PuffLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
-import { truncate } from "lodash";
 import MessageSeller from "./components/MessageSeller";
 import Disclaimer from "@pages/privatePages/dashboard/components/Disclaimer";
 import OwnerContact from "./components/OwnerContact";
-import BreadcrumbNav from "@pages/privatePages/dashboard/components/BreadcrumbNav";
 import ImageFullScreen from "./components/ImageFullScreen";
 import ImageSlider from "./components/ImageSlider";
 import PropertyMainDetail from "./components/PropertyMainDetail";
@@ -18,8 +15,8 @@ import PropertyAmenities from "./components/PropertyAmenities";
 import LocationMap from "./components/LocationMap";
 import PropertyTitleSection from "./components/PropertyTitleSection";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
-import { formatTitleCase } from "@utils/helper";
 import Comments from "@components/propertyCard/Comments";
+import RightWidgetAdsHandler from "@pages/privatePages/feed/RightWidgetAdsHandler";
 
 const PropertyDetails = () => {
   const { slug } = useParams();
@@ -111,21 +108,16 @@ const PropertyDetails = () => {
   }
 
   return (
-    <div className="section-container bg-gray-50 min-h-screen dark:bg-gray-900">
-      {/* Breadcrumb Navigation */}
-      <BreadcrumbNav
-        baseNave="Home"
-        firstPath={paths.properties}
-        firstPathTitle="Properties"
-        secondPathTitle={truncate(property.title != undefined ? property.title : formatTitleCase(property.slug)  , { length: 20 })}
-      />
-
+    <div className=" bg-gray-100 dark:bg-gray-900 section-container min-h-screen">
+    <div className="">
+     
       <div className=" w-full overflow-x-hidden">
         {/* Main Container */}
-        <div className="container mx-auto px-4 py-8 w-full max-w-7xl box-border">
+        <div className="container mx-auto px-4  w-full max-w-7xl box-border">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6 w-full">
+            <div className="lg:col-span-2 space-y-6 w-full  p-4 rounded-md bg-white dark:bg-gray-800">
+              
               <HandleGoBackBtn />
               {/* Property Title and Actions */}
               <PropertyTitleSection property={property} />
@@ -141,6 +133,7 @@ const PropertyDetails = () => {
                 setShowFullScreen={setShowFullScreen}
                 setCurrentImageIndex={setCurrentImageIndex}
               />
+
 
               {/* Property Main Details */}
               <PropertyMainDetail property={property} />
@@ -160,9 +153,11 @@ const PropertyDetails = () => {
 
               <OwnerContact property={property} />
 
+               <RightWidgetAdsHandler />
+
               {/* Send Message */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold mb-4 dark:text-gray-200">Contact Marketer</h3>
+                <h3 className="text-sm font-semibold mb-4 dark:text-gray-200">Contact This Marketer</h3>
                 <MessageSeller
                   receiverId={property.owner._id}
                   propertyId={property._id}
@@ -206,6 +201,7 @@ const PropertyDetails = () => {
         `}
         </style>
       </div>
+    </div>
     </div>
   );
 };

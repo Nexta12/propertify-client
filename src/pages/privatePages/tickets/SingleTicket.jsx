@@ -8,12 +8,14 @@ import { formatDistanceToNow } from "date-fns";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import DOMPurify from "dompurify";
 
+
 const SingleTicket = () => {
   const { id } = useParams();
   const [ticket, setTicket] = useState(null);
   const [replyMessage, setReplyMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
 
   const fetchTicket = async () => {
     setLoading(true);
@@ -70,7 +72,7 @@ const SingleTicket = () => {
   const priorityColors = {
     low: "bg-green-100 text-green-700",
     medium: "bg-yellow-100 text-yellow-700",
-    high: "bg-orange-100 text-orange-700",
+    high: "bg-orange text-white",
     urgent: "bg-red-100 text-red-700",
   };
 
@@ -145,12 +147,12 @@ const SingleTicket = () => {
   </div>
 
   {/* Replies */}
-  <div className="bg-white dark:bg-gray-800 p-4 shadow rounded">
+  <div className="bg-white dark:bg-gray-800 p-4 shadow rounded ">
     <h3 className="text-lg font-semibold mb-3 dark:text-white">Replies</h3>
     {replies.length === 0 ? (
       <p className="text-gray-500 dark:text-gray-400">No replies yet.</p>
     ) : (
-      <ul className="space-y-4">
+      <ul className="space-y-4 max-h-96 overflow-y-auto ">
         {replies.map((reply, index) => {
           const sender = reply.sender || {};
           const fullName = sender.firstName

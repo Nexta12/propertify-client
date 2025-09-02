@@ -10,52 +10,60 @@ import DeskTopUserMenu from "./DeskTopUserMenu";
 import useSearchStore from "@store/searchStore";
 import ToggleSwitch from "@components/toggleSwitch/ToggleSwitch";
 
-
 const DesktopTopbar = () => {
   const { user } = useAuthStore();
   const location = useLocation();
   const isFeedPage = location.pathname === "/p/feed";
   const { setDeskTopSearchTerm } = useSearchStore();
 
-
   return (
-    <header className="hidden lg:flex bg-white dark:bg-gray-800 dark:text-gray-300 shadow-sm pr-3 justify-between items-center sticky top-0 z-10 ">
-     <div className="hidden p-4 md:flex items-start gap-3">
-  <Link to={paths.index}>
-    <div>
-      {/* Light Mode Logo */}
-      <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
+    <header className="section-container hidden lg:flex bg-white dark:bg-gray-800 dark:text-gray-300 shadow-sm pr-3 justify-between items-center sticky top-0 z-10 ">
+      <div className="hidden  md:flex items-start gap-3">
+        <Link to={paths.index}>
+          <div>
+            {/* Light Mode Logo */}
+            <img
+              src={GreenLogo}
+              alt="Logo"
+              width={130}
+              className="block dark:hidden"
+            />
 
-      {/* Dark Mode Logo */}
-      <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
-    </div>
-  </Link>
-</div>
+            {/* Dark Mode Logo */}
+            <img
+              src={WhiteLogo}
+              alt="Logo"
+              width={130}
+              className="hidden dark:block"
+            />
+          </div>
+        </Link>
+      </div>
 
-
-        {isFeedPage && (
-       <div className="flex items-center bg-gray-100 dark:bg-transparent border dark:border-gray-300 rounded-lg px-4 py-2 w-96">
-  <FiSearch className="text-gray-500 mr-2 dark:text-gray-300" />
-  <input
-    type="text"
-    placeholder="Search Propertify..."
-    className="bg-transparent border-none outline-none w-full text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 dark:placeholder:text-gray-300 "
-    onChange={(e) => setDeskTopSearchTerm(e.target.value)}
-  />
-</div>
-
+      {isFeedPage && (
+        <div className="flex items-center bg-gray-100 dark:bg-transparent border dark:border-gray-300 rounded-lg px-4 py-2 w-96">
+          <FiSearch className="text-gray-500 mr-2 dark:text-gray-300" />
+          <input
+            type="text"
+            placeholder="Search Propertify..."
+            className="bg-transparent border-none outline-none w-full text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 dark:placeholder:text-gray-300 "
+            onChange={(e) => setDeskTopSearchTerm(e.target.value)}
+          />
+        </div>
       )}
 
-
       <div className="flex items-center space-x-4">
-          <ToggleSwitch />
+        <ToggleSwitch />
         <Notification />
 
         <div className="flex items-center space-x-2">
           <div className="text-right">
             <p className="text-sm font-medium">
-              {user?.title} {user?.lastName} {user?.firstName}
+              {user?.firstName && user?.lastName
+                ? `${user.firstName} ${user.lastName}`
+                : "Welcome"}
             </p>
+
             <p className="text-xs text-gray-500 dark:text-gray-300">
               {formatTitleCase(user?.profession)}
             </p>
