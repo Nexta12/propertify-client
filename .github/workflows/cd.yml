@@ -15,12 +15,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
+          name: dist
+          path: dist
 
-      - name: Deploy via SSH
+      - name: Deploy dist folder via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "dist/*"
+          target: "/www/wwwroot/webapps/propertifyNG/client/dist"
+
+      - name: Restart Production server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -28,20 +39,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            set -e
-            echo "Changing directory to /www/wwwroot/webapps/propertifyNG/client"
             cd /www/wwwroot/webapps/propertifyNG/client
-
-            echo "Pulling latest code from origin/main"
-            git pull origin main
-
-            echo "Installing dependencies"
-            npm install
-
-            echo "Building for production"
-            npm run build
-
-            echo "Restarting Production server with pm2"
+            echo "Restarting server..."
             npm run restart
-
-            echo "✅ Deployment successful"
