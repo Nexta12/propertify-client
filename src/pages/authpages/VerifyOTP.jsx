@@ -1,13 +1,18 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { paths } from "@routes/paths";
-import { getLocalStorageItem, removeLocalStorageItem } from "@utils/localStorage";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  setLocalStorageItem,
+} from "@utils/localStorage";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LogoGreen from "@assets/img/green-logo.png";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import FullPageLoader from "./FullPageLoader";
+import { httpError } from "@pages/errorPages/ErrorCodes";
 
 const VerifyOTP = () => {
   const [userId, setUserId] = useState(null);
@@ -125,6 +130,37 @@ const VerifyOTP = () => {
     }
   };
 
+  const handleResendOTP = async () => {
+    const email = getLocalStorageItem("otpEmail");
+    if (!email) return navigate(paths.resendOTP);
+
+    try {
+      const res = await apiClient.post(endpoints.resendOTP, { email });
+
+      if (res.status == 200) {
+        toast.success("A new OTP was sent to your email..");
+        setLocalStorageItem("otpEmail", email);
+        setLocalStorageItem("otp", true);
+        setTimeout(() => {
+          navigate(paths.verifyOTP);
+        }, 3000);
+      }
+    } catch (error) {
+      toast.error(ErrorFormatter(error));
+
+      if (ErrorFormatter(error) == httpError.ValidOtp) {
+        setLocalStorageItem("otpEmail", email);
+        setLocalStorageItem("otp", true);
+        setTimeout(() => {
+          navigate(paths.verifyOTP);
+        }, 3000);
+      } else {
+        removeLocalStorageItem("userEmail", email);
+        removeLocalStorageItem("showOtpPage", true);
+      }
+    }
+  };
+
   if (!showPage) {
     return <FullPageLoader />;
   }
@@ -176,9 +212,13 @@ const VerifyOTP = () => {
       {/* Login Link */}
       <div className="text-center text-sm text-[#1F3E72] my-6 dark:text-gray-300">
         Didn&apos;t receive code?{" "}
-        <Link to={paths.login} className="font-medium text-[#28B16D] hover:text-[#09C269]">
+        <button
+          type="button"
+          onClick={() => handleResendOTP()}
+          className="font-medium text-[#28B16D] hover:text-[#09C269]"
+        >
           Resend otp
-        </Link>
+        </button>
       </div>
     </div>
   );

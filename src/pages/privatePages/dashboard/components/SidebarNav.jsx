@@ -180,7 +180,7 @@ function SubMenu({ item, pathname, onClick }) {
       >
         <Icon className="text-green-600 dark:text-green-400 text-xl" />
 
-        <div className="flex items-center justify-between flex-1 text-[14px]">
+        <div className="flex items-center justify-between flex-1 text-[18px]">
           <span>{item.title}</span>
           <div className="flex items-center gap-x-2">
             {item.notificationCount > 0 && (
@@ -210,7 +210,7 @@ function SubMenu({ item, pathname, onClick }) {
                   key={index}
                   to={subItem.link}
                   onClick={onClick}
-                  className={`flex items-center justify-between px-3 py-1.5 mb-1 text-[14px] rounded-sm transition-colors
+                  className={`flex items-center justify-between px-3 py-1.5 mb-1 text-[18px] rounded-sm transition-colors
                     ${
                       isSubActive
                         ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -244,7 +244,7 @@ function SideBarLink({ item, pathname, onClick }) {
   return (
     <Link
       to={item.link}
-      className={`flex items-center justify-between px-3 gap-x-3 text-[14px] mb-2 py-2 group transition-all duration-300 ease-in-out rounded-md 
+      className={`flex items-center justify-between px-3 gap-x-3 text-[18px] mb-2 py-2 group transition-all duration-300 ease-in-out rounded-md 
         ${
           isActive
             ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"

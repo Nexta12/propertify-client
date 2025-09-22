@@ -72,7 +72,7 @@ const EnhancedInput = ({
 
   const inputType = type === "password" && showPassword ? "text" : type;
   const baseClasses =
-    "w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#28B16D] focus:border-transparent text-sm font-medium placeholder:text-neutral-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400";
+    "w-full p-4  sm:py-3 !text-[16px] rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#28B16D] focus:border-transparent text-sm font-medium placeholder:text-neutral-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400";
 
   return (
     <div className={`input-group relative ${className} w-full`}>
@@ -94,7 +94,7 @@ const EnhancedInput = ({
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
+              className="absolute inset-y-0 right-0 px-3 flex items-center text-lg leading-5"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {!showPassword ? (

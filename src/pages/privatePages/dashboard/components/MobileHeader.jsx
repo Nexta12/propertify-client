@@ -72,10 +72,12 @@ const MobileHeader = () => {
           </button>
 
           {/* Light Mode Logo */}
-          <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
+          <Link to={paths.index}>
+            <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
 
-          {/* Dark Mode Logo */}
-          <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
+            {/* Dark Mode Logo */}
+            <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
+          </Link>
         </div>
 
         <div className="flex items-center space-x-3">
