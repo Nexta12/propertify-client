@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const EnhancedSelect = ({
   name,
@@ -16,21 +16,22 @@ const EnhancedSelect = ({
   const [touched, setTouched] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
+
+  const containerRef = useRef(null);
 
   const validateInput = useCallback(
     (val) => {
       let isValid = true;
-
       if (required && (!val || val === "")) {
         isValid = false;
       } else if (validate) {
         isValid = validate(val);
       }
-
       setError(!isValid);
       return isValid;
     },
-    [required, validate] // 👈 dependencies
+    [required, validate]
   );
 
   useEffect(() => {
@@ -38,11 +39,6 @@ const EnhancedSelect = ({
       validateInput(value);
     }
   }, [value, touched, forceValidate, validateInput]);
-
-  const handleBlur = () => {
-    setTouched(true);
-    validateInput(value);
-  };
 
   const handleSelect = (val) => {
     onChange({ target: { name, value: val } });
@@ -55,13 +51,45 @@ const EnhancedSelect = ({
     return "This field is required";
   };
 
-  // Filter options based on search
+  // Decide upward/downward position
+  useEffect(() => {
+    if (isOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      if (spaceBelow < 300 && spaceAbove > spaceBelow) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
+    }
+  }, [isOpen]);
+
+  // 👇 Close on outside click
+  // 👇 Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+        setTouched(true); // ✅ mark as touched when user clicks away
+        validateInput(value); // ✅ run validation immediately
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, value, validateInput]);
+
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="input-group relative">
+    <div className="input-group relative" ref={containerRef}>
       {label && (
         <label
           htmlFor={name}
@@ -78,8 +106,6 @@ const EnhancedSelect = ({
           error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
         } px-4 py-3 text-sm font-medium text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-800 cursor-pointer`}
         onClick={() => setIsOpen((prev) => !prev)}
-        onBlur={handleBlur}
-        tabIndex={0}
       >
         {value
           ? options.find((opt) => opt.value === value)?.label
@@ -87,7 +113,11 @@ const EnhancedSelect = ({
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div
+          className={`absolute z-50 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto ${
+            openUpward ? "bottom-full mb-1" : "top-full mt-1"
+          }`}
+        >
           {/* Search box */}
           <div className="p-2">
             <input

@@ -84,25 +84,24 @@ const DataTable = ({
 
   return (
     <div className="mx-auto w-[calc(100vw-10px)] sm:w-[calc(100vw-100px)]  lg:w-[calc(100vw-420px)] ">
+      <HandleGoBackBtn />
       {/* Global Search */}
-      <div className="bg-white dark:bg-gray-800 flex flex-col md:flex-row items-center md:items-center justify-between gap-4 p-4 w-full relative mb-2 rounded-lg shadow-sm">
-        <div className="absolute top-2 left-5 m">
-          <HandleGoBackBtn />
-        </div>
+      <div className="bg-white dark:bg-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-3 p-4 w-full relative mb-2 rounded-lg shadow-sm">
         {/* Title */}
-        <h2 className="w-full mt-5 md:w-auto text-center md:text-left text-xl font-semibold dark:text-white">
+        <h2 className="text-lg md:text-xl font-semibold text-center md:text-left text-gray-800 dark:text-white">
           {tableTitle}
         </h2>
-        <div className="flex items-center gap-x-4">
-          {/* Global Search */}
+
+        {/* Right side: search + button */}
+        <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto md:ml-auto">
           {enableSearch && (
-            <div className="relative  max-w-[300px] ">
+            <div className="relative w-full md:w-64">
               <input
                 type="text"
                 value={globalFilter ?? ""}
                 onChange={(e) => setGlobalFilter(e.target.value)}
                 placeholder="Search..."
-                className=" px-4 py-2 border border-gray-200 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8F5E9] dark:focus:ring-gray-600 focus:border-[#C8E6C9] dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-300 transition-all duration-200 text-xs"
+                className="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 dark:focus:ring-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 text-sm"
               />
               <span className="absolute right-3 top-2.5 text-gray-400">
                 <FiSearch className="h-4 w-4" />
@@ -110,13 +109,12 @@ const DataTable = ({
             </div>
           )}
 
-          {/* Add New Button */}
           {addNewLink && (
             <Link
               to={addNewLink}
-              className="w-full md:w-auto text-center p-2 bg-main-green text-white font-medium rounded-lg hover:bg-green-hover transition-colors duration-200 text-xs"
+              className="w-full md:w-auto text-center px-4 py-2 bg-main-green text-white font-medium rounded-lg hover:bg-green-hover transition-colors duration-200 text-sm"
             >
-              {addNewText || "+ Add New "}
+              {addNewText || "+ Add New"}
             </Link>
           )}
         </div>

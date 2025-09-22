@@ -10,10 +10,8 @@ const Settings = () => {
 
   return (
     <section className="bg-neutral-100 dark:bg-gray-800  max-w-7xl mx-auto">
+      <HandleGoBackBtn />
       <div className="bg-white dark:bg-gray-800 overflow-hidden border border-gray-100 dark:border-gray-400">
-        <div className="pt-2 pl-3">
-          <HandleGoBackBtn />
-        </div>
         {/* Header */}
         <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-400">
           <HeaderTitle titleText={"Account Settings"} />

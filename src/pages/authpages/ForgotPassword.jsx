@@ -9,6 +9,7 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { removeLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
+import { httpError } from "@pages/errorPages/ErrorCodes";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -32,9 +33,15 @@ const ForgotPassword = () => {
       setIsSubmitted(true);
     } catch (error) {
       toast.error(ErrorFormatter(error));
-      removeLocalStorageItem("userEmail", email);
-      removeLocalStorageItem("resetEmail", email);
-      removeLocalStorageItem("showOtpPage", true);
+      if (ErrorFormatter(error) === httpError.UnverifiedAccount) {
+        setTimeout(() => {
+          navigate(paths.resendOTP);
+        }, 2000);
+      } else {
+        removeLocalStorageItem("userEmail", email);
+        removeLocalStorageItem("resetEmail", email);
+        removeLocalStorageItem("showOtpPage", true);
+      }
     } finally {
       setLoading(false);
     }
