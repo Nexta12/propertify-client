@@ -5,7 +5,7 @@ import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { toast } from "react-toastify";
 import AllChatList from "./AllChatList";
-import ChatInput from "@components/chatBox/chatInput";
+import ChatInput from "@components/chatBox/ChatInput";
 import ChatMsgsContainer from "./ChatMsgsContainer";
 import useSocket from "@context/useSocket";
 import useAuthStore from "@store/authStore";
