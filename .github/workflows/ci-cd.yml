@@ -1,82 +1,82 @@
-# name: CI/CD
+name: CI/CD
 
-# on:
-#   pull_request:
-#   push:
-#     branches: [main]
+on:
+  pull_request:
+  push:
+    branches: [main]
 
-# jobs:
-#   build-and-test:
-#     runs-on: ubuntu-latest
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20
-#           cache: npm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-#       - name: Install dependencies
-#         run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-#       - name: Run ESLint
-#         run: npm run lint
+      - name: Run ESLint
+        run: npm run lint
 
-#       - name: Run Prettier check
-#         run: npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
+      - name: Run Prettier check
+        run: npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
 
-#       - name: Run tests
-#         run: npm test --if-present
+      - name: Run tests
+        run: npm test --if-present
 
-#       - name: Build app (CI only, not deployed)
-#         run: npm run build
+      - name: Build app (CI only, not deployed)
+        run: npm run build
 
-#   deploy:
-#     runs-on: ubuntu-latest
-#     needs: build-and-test
-#     if: github.ref == 'refs/heads/main'
-#     steps:
-#       - name: Deploy and restart app on server
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: ${{ secrets.SERVER_IP }}
-#           username: ${{ secrets.USER_NAME }}
-#           key: ${{ secrets.SERVER_SSH_KEY }}
-#           port: ${{ secrets.PORT }}
-#           script: |
-#            if ! cd /www/wwwroot/webapps/propertifyNG/client; then
-#               echo "Failed to change directory"
-#               exit 1
-#             fi
-#             echo "Reseting Local Changes"
-#               if ! git reset --hard; then
-#                   echo "Failed to reset local changes"
-#                   exit 1;
-#               fi
-#             echo "Pulling latest code from origin/main"
-#             if ! git pull origin main; then
-#               echo "Failed to pull latest code"
-#               exit 1
-#             fi
-#             echo "Removing every built files and cache"
-#             if ! npm run cleanup; then
-#                 echo "Couldn't run cleanup"
-#                 exit 1
-#             fi
-#             echo "Installing dependencies with npm ci..."
-#             npm ci || { echo "Dependency install failed"; exit 1; }
-#             echo "Building for production "
-#             if ! npm run build; then
-#               echo "Couldn't rebuild"
-#               exit 1
-#             fi
-#             echo "Start Production server with pm2"
-#             if ! npm run restart; then
-#               echo "Couldn't Start production with pm2"
-#               exit 1
-#             fi
-#             echo "Deployment successful"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy and restart app on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+           if ! cd /www/wwwroot/webapps/propertifyNG/client; then
+              echo "Failed to change directory"
+              exit 1
+            fi
+            # echo "Reseting Local Changes"
+            #   if ! git reset --hard; then
+            #       echo "Failed to reset local changes"
+            #       exit 1;
+            #   fi
+            echo "Pulling latest code from origin/main"
+            if ! git pull origin main; then
+              echo "Failed to pull latest code"
+              exit 1
+            fi
+            # echo "Removing every built files and cache"
+            # if ! npm run cleanup; then
+            #     echo "Couldn't run cleanup"
+            #     exit 1
+            # fi
+            echo "Installing dependencies with npm ci..."
+            npm ci || { echo "Dependency install failed"; exit 1; }
+            echo "Building for production "
+            if ! npm run build; then
+              echo "Couldn't rebuild"
+              exit 1
+            fi
+            echo "Start Production server with pm2"
+            if ! npm run restart; then
+              echo "Couldn't Start production with pm2"
+              exit 1
+            fi
+            echo "Deployment successful"
 
