@@ -5,7 +5,6 @@ import DOMPurify from "dompurify";
 import EnhancedCheckbox from "@components/ui/EnhancedCheckBox";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import EnhancedTextarea from "@components/ui/EnhancedTextarea";
 import FileUpload from "@components/ui/FileUpload";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import CollapsableBox from "@pages/privatePages/dashboard/components/CollapsableBox";
@@ -32,6 +31,7 @@ import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 import HeaderTitle from "@components/ui/HeaderTitle";
 import useCompanyStore from "@store/userCompaniesStore";
+import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const NewProperty = () => {
   const [isLoading, setIsLoading] = useState(false);

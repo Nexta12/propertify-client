@@ -5,7 +5,6 @@ import DOMPurify from "dompurify";
 import EnhancedCheckbox from "@components/ui/EnhancedCheckBox";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import EnhancedTextarea from "@components/ui/EnhancedTextarea";
 import FileUpload from "@components/ui/FileUpload";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import CollapsableBox from "@pages/privatePages/dashboard/components/CollapsableBox";
@@ -32,6 +31,7 @@ import { handleGoBack } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import useCompanyStore from "@store/userCompaniesStore";
+import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const EditProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
