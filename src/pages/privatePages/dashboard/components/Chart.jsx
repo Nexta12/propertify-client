@@ -17,6 +17,19 @@ const Chart = ({ title, data, XdataKey, BarKey1, BarKey2, fill1, fill2 }) => {
 
   const [year, setYear] = useState(startYear);
 
+  const SafeLegend = ({ payload }) => {
+    if (!payload) return null;
+    return (
+      <ul className="flex space-x-4 text-sm">
+        {payload.map((entry, i) => (
+          <li key={i} style={{ color: entry.color }}>
+            {entry.value}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
       <div className="flex items-center justify-between">
@@ -42,7 +55,7 @@ const Chart = ({ title, data, XdataKey, BarKey1, BarKey2, fill1, fill2 }) => {
 
       <div className="h-64 sm:h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={data || []} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
             <XAxis dataKey={XdataKey} stroke="#8884d8" />
             <YAxis stroke="#8884d8" />
@@ -56,7 +69,8 @@ const Chart = ({ title, data, XdataKey, BarKey1, BarKey2, fill1, fill2 }) => {
                 zIndex: 1000,
               }}
             />
-            <Legend />
+            {/* ✅ Use custom legend safely */}
+            <Legend content={<SafeLegend />} />
             <Bar dataKey={BarKey1} fill={fill1} />
             <Bar dataKey={BarKey2} fill={fill2} />
           </BarChart>

@@ -186,7 +186,7 @@ const FileUpload = forwardRef(
       if (onChange) {
         onChange(multiple ? files : files[0] || null);
       }
-    }, [files, multiple, onChange]);
+    }, [files, multiple]);
 
     const handleRemove = async (index) => {
       setOpenModal(true);

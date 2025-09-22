@@ -32,21 +32,17 @@ const FooterLinkSection = ({ title, links }) => (
 const Footer = ({ className }) => {
   const exploreLinks = [
     { to: "#", label: "Apartments" },
-    { to: "#", label: "Villas" },
     { to: "#", label: "Commercial" },
     { to: "#", label: "Short Lets" },
-    { to: "#", label: "Luxury Homes" },
   ];
 
   const companyLinks = [
     { to: "#", label: "About Us" },
     { to: "#", label: "Careers" },
     { to: "#", label: "Blog" },
-    { to: "#", label: "Press" },
   ];
 
   const supportLinks = [
-    { to: "#", label: "Contact Us" },
     { to: "#", label: "FAQs" },
     { to: "#", label: "Privacy Policy" },
     { to: "#", label: "Terms of Service" },
@@ -106,19 +102,19 @@ const Footer = ({ className }) => {
               <li className="flex items-start gap-3">
                 <FaMapMarkerAlt className="text-white mt-1 flex-shrink-0" size={14} />
                 <span className="text-secondary dark:text-gray-400 font-secondary text-sm">
-                  1st Floor, Aquarius block, Eleganza Buildings, Apapa Wharf Lagos
+                  Aquarius block, Eleganza Plaza, Apapa Wharf Lagos
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <FaPhone className="text-white" size={14} />
                 <span className="text-secondary dark:text-gray-400 font-secondary text-sm">
-                  +234 708 731 7988
+                  +234 813-4728097
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <FaEnvelope className="text-white" size={14} />
                 <span className="text-secondary dark:text-gray-400 font-secondary text-sm">
-                  info@yourdomain.com
+                  info@propertifynigeria.com
                 </span>
               </li>
             </ul>

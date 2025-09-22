@@ -70,17 +70,23 @@ const Dashboard = () => {
       )}
 
       {/* Responsive Charts */}
-      {user.role !== UserRole.ADMIN && (
+      {user.role !== UserRole.ADMIN && performanceData && Array.isArray(performanceData) && (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-          <Chart
-            title="Your Listings Performance"
-            data={performanceData}
-            XdataKey="month"
-            BarKey1="views"
-            BarKey2="clicks"
-            fill1="gray"
-            fill2="orange"
-          />
+          {performanceData === null ? (
+            <div className="h-64 sm:h-80 flex items-center justify-center text-gray-400">
+              Loading chart...
+            </div>
+          ) : (
+            <Chart
+              title="Your Listings Performance"
+              data={performanceData}
+              XdataKey="month"
+              BarKey1="views"
+              BarKey2="clicks"
+              fill1="gray"
+              fill2="orange"
+            />
+          )}
 
           <PieChart title="Lead Sources" />
         </div>

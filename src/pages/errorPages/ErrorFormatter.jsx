@@ -6,7 +6,7 @@ export const ErrorFormatter = (error) => {
   const errorMessage =
     axiosError && typeof axiosError.response?.data?.message === "string"
       ? axiosError.response.data.message
-      : "Something went wrong !";
+      : null;
 
   return errorMessage;
 };

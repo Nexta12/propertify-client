@@ -206,7 +206,7 @@ const Header = () => {
                 to={paths.register}
                 className="btn btn-primary btn-sm !text-[14px] hover:scale-105 transition-transform duration-200"
               >
-                Get Started
+                Sign up
               </Link>
             </>
           )}
