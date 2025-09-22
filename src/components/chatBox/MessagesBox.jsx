@@ -5,7 +5,7 @@ import { getLocalStorageItem } from "@utils/localStorage";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import useAuthStore from "@store/authStore";
-import ChatInput from "./chatInput";
+import ChatInput from "./ChatInput";
 import useSocket from "@context/useSocket";
 
 const MessagesBox = () => {
