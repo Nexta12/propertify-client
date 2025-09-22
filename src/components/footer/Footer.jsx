@@ -102,7 +102,7 @@ const Footer = ({ className }) => {
               <li className="flex items-start gap-3">
                 <FaMapMarkerAlt className="text-white mt-1 flex-shrink-0" size={14} />
                 <span className="text-secondary dark:text-gray-400 font-secondary text-sm">
-                  Aquarius block,
+                  Aquarius block, Enugu
                 </span>
               </li>
               <li className="flex items-center gap-3">

@@ -8,7 +8,7 @@
     "build": "vite build",
     "prepare": "husky",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "cleanup": "rm -rf dist node_modules package-lock.json .vite .cache",
+    "cleanup": "rm -rf dist node_modules .vite .cache",
     "lint": "eslint .",
     "preview": "vite preview --host",
     "start": "pm2 start npm --name 'propertify-client' -- run preview -- --host 0.0.0.0",
