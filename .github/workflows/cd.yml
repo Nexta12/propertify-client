@@ -1,0 +1,47 @@
+name: Deployment Workflow
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            set -e
+            echo "Changing directory to /www/wwwroot/webapps/propertifyNG/client"
+            cd /www/wwwroot/webapps/propertifyNG/client
+
+            echo "Pulling latest code from origin/main"
+            git pull origin main
+
+            echo "Installing dependencies"
+            npm install
+
+            echo "Building for production"
+            npm run build
+
+            echo "Restarting Production server with pm2"
+            npm run restart
+
+            echo "✅ Deployment successful"
