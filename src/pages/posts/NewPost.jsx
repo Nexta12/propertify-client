@@ -160,15 +160,10 @@ const NewPost = ({ closeModal }) => {
           <div>
             <p className="font-semibold text-gray-800 dark:text-gray-100 flex items-center">
               {user?.firstName} {user?.lastName}
-              
-                 {user?.isVerifiedUser && (
-              <RiVerifiedBadgeFill
-                className="ml-1 text-blue-500"
-                title="Duly Verified user"
-              />
-            )}
+              {user?.isVerifiedUser && (
+                <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
+              )}
             </p>
-         
 
             <span className="text-xs text-gray-500">Posting publicly</span>
           </div>
@@ -195,11 +190,7 @@ const NewPost = ({ closeModal }) => {
           </div>
           {showEmojiPicker && (
             <div className="mt-2">
-              <Picker
-                data={data}
-                onEmojiSelect={handleEmojiSelect}
-                theme="light"
-              />
+              <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
             </div>
           )}
         </div>

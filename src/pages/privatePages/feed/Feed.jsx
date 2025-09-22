@@ -208,9 +208,12 @@ const Feed = () => {
   useEffect(() => {
     if (properties.length === 0) return;
 
-    const interval = setInterval(() => {
-      setProperties((prev) => shufflePostsArray(prev));
-    }, 5 * 60 * 1000); // every 5 minutes
+    const interval = setInterval(
+      () => {
+        setProperties((prev) => shufflePostsArray(prev));
+      },
+      5 * 60 * 1000
+    ); // every 5 minutes
 
     return () => clearInterval(interval);
   }, [properties.length]);
@@ -219,8 +222,7 @@ const Feed = () => {
     <section className="flex w-full relative ">
       {/* Main Container */}
       <div className="flex-[2] lg:mr-4 mb-8">
-        <CreatePostToggler setopenPostCreator={setopenPostCreator}/>
-      
+        <CreatePostToggler setopenPostCreator={setopenPostCreator} />
 
         <div>
           {initialLoad && properties.length === 0 ? (
@@ -275,14 +277,7 @@ const Feed = () => {
         />
 
         <PopularSearches
-          tags={[
-            "Lekki",
-            "Self-Contain",
-            "3 Bedroom",
-            "Shortlet",
-            "Abuja",
-            "Verified Only",
-          ]}
+          tags={["Lekki", "Self-Contain", "3 Bedroom", "Shortlet", "Abuja", "Verified Only"]}
           onTagClick={(tag) => {
             setDebouncedSearchEnabled(false);
             setDeskTopSearchTerm(tag);
@@ -312,7 +307,10 @@ const Feed = () => {
         />
       </MobileSearchBar>
 
-      <MobileFootermenu onSearchClick={() => setShowMobileSearch(true)} setopenPostCreator={()=> setopenPostCreator(true)} />
+      <MobileFootermenu
+        onSearchClick={() => setShowMobileSearch(true)}
+        setopenPostCreator={() => setopenPostCreator(true)}
+      />
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion as Motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { apiClient } from "@api/apiClient";
@@ -6,7 +6,6 @@ import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import Placeholder from "@assets/img/placeholder.webp";
 import { Link } from "react-router-dom";
-import Button from "@components/ui/Button";
 
 const PropertiesTab = ({ activeTab, company }) => {
   const [companyProducts, setCompanyProducts] = useState([]);
@@ -16,37 +15,36 @@ const PropertiesTab = ({ activeTab, company }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const fetchCoyProducts = async (page = 1) => {
-    if (!company?.slug) return;
+  const fetchCoyProducts = useCallback(
+    async (page = 1) => {
+      if (!company?.slug) return;
 
-    try {
-      setLoading(true);
-      const res = await apiClient.get(
-        `${endpoints.getCompanyProperties}/${company.slug}?page=${page}`
-      );
+      try {
+        setLoading(true);
+        const res = await apiClient.get(
+          `${endpoints.getCompanyProperties}/${company.slug}?page=${page}`
+        );
 
-      setCompanyProducts(res.data.data.data); // backend -> { data, pagination }
-      setPagination(res.data.data.pagination);
-    } catch (error) {
-      toast.error(ErrorFormatter(error));
-    } finally {
-      setLoading(false);
-    }
-  };
+        setCompanyProducts(res.data.data.data); // backend -> { data, pagination }
+        setPagination(res.data.data.pagination);
+      } catch (error) {
+        toast.error(ErrorFormatter(error));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [company?.slug]
+  );
 
   // initial fetch
   useEffect(() => {
     fetchCoyProducts(1);
-  }, [company?.slug]);
+  }, [fetchCoyProducts]);
 
   return (
     <>
       {activeTab === "properties" && (
-        <Motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="space-y-6"
-        >
+        <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
           {loading ? (
             <p className="text-center text-gray-500">Loading...</p>
           ) : (
@@ -71,30 +69,24 @@ const PropertiesTab = ({ activeTab, company }) => {
                         </div>
 
                         <div className="p-4">
-                          <h3 className="font-semibold text-lg">
-                            {property?.title}
-                          </h3>
+                          <h3 className="font-semibold text-lg">{property?.title}</h3>
 
                           {/* Location */}
                           <p className="text-gray-500 dark:text-gray-400 text-sm capitalize">
-                            {property?.location}, {property?.city},{" "}
-                            {property?.state}
+                            {property?.location}, {property?.city}, {property?.state}
                           </p>
 
                           {/* Price */}
                           <p className="text-blue-600 font-bold mt-2">
-                            ₦{property?.price?.toLocaleString()} /{" "}
-                            {property?.frequency}
+                            ₦{property?.price?.toLocaleString()} / {property?.frequency}
                           </p>
 
                           {/* Extra Info Section */}
                           <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-300">
                             {(property?.beds || property?.baths) && (
                               <p>
-                                <span className="font-medium">Beds:</span>{" "}
-                                {property?.beds || 0},{" "}
-                                <span className="font-medium">Baths:</span>{" "}
-                                {property?.baths || 0}
+                                <span className="font-medium">Beds:</span> {property?.beds || 0},{" "}
+                                <span className="font-medium">Baths:</span> {property?.baths || 0}
                               </p>
                             )}
                           </div>
@@ -103,9 +95,7 @@ const PropertiesTab = ({ activeTab, company }) => {
                     </div>
                   ))
                 ) : (
-                  <p className="col-span-3 text-center text-gray-500">
-                    No properties found
-                  </p>
+                  <p className="col-span-3 text-center text-gray-500">No properties found</p>
                 )}
               </div>
 

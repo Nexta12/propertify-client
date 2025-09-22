@@ -48,9 +48,7 @@ const UpdateCompany = () => {
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.fetchCompanyDetails}/${slug}`
-        );
+        const res = await apiClient.get(`${endpoints.fetchCompanyDetails}/${slug}`);
 
         const normalized = {
           ...res.data.data,
@@ -93,9 +91,7 @@ const UpdateCompany = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     setCityOptions(
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -107,9 +103,7 @@ const UpdateCompany = () => {
   // Initialize city options when component mounts or state changes
   useEffect(() => {
     if (companyData.state) {
-      const selectedStateData = NigerianStates.find(
-        (s) => s.state === companyData.state
-      );
+      const selectedStateData = NigerianStates.find((s) => s.state === companyData.state);
       setCityOptions(
         selectedStateData?.lgas.map((lga) => ({
           label: lga,
@@ -241,27 +235,24 @@ const UpdateCompany = () => {
   };
 
   const removeCertificateField = (index) => {
-     const choice = companyData.certificates[index]
-     if(choice.url || choice.file){
-       setOpenModal(true);
-         setItemToDelete({
-      type: "certificate",
-      index,
-      certificate: companyData.certificates[index],
-    });
-     }else{
-        // empty cert → remove directly
-    setCompanyData((prev) => {
-      const certificates = [...prev.certificates];
-      certificates.splice(index, 1);
-      return { ...prev, certificates };
-    });
+    const choice = companyData.certificates[index];
+    if (choice.url || choice.file) {
+      setOpenModal(true);
+      setItemToDelete({
+        type: "certificate",
+        index,
+        certificate: companyData.certificates[index],
+      });
+    } else {
+      // empty cert → remove directly
+      setCompanyData((prev) => {
+        const certificates = [...prev.certificates];
+        certificates.splice(index, 1);
+        return { ...prev, certificates };
+      });
 
-    certificateRefs.current.splice(index, 1);
-
-     }
-    
-  
+      certificateRefs.current.splice(index, 1);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -294,7 +285,6 @@ const UpdateCompany = () => {
         category: companyData.category,
         companyWebsite: companyData.companyWebsite,
         isVerified: companyData.isVerified,
-      
 
         certificates: companyData.certificates.map((c) => ({
           title: c.title,
@@ -302,10 +292,7 @@ const UpdateCompany = () => {
         })),
       };
 
-      const response = await apiClient.put(
-        `${endpoints.updateCompany}/${slug}`,
-        sanitizedData
-      );
+      const response = await apiClient.put(`${endpoints.updateCompany}/${slug}`, sanitizedData);
       if (response.status === 200) {
         toast.success("Company updated successfully!");
       }
@@ -336,9 +323,7 @@ const UpdateCompany = () => {
               {companyData.companyLogo ? (
                 <img
                   src={getImageSrc(
-                    companyData.companyLogo?.url ||
-                      companyData.companyLogo ||
-                      LogoPlaceholder
+                    companyData.companyLogo?.url || companyData.companyLogo || LogoPlaceholder
                   )}
                   alt="Company Logo"
                   className="w-full h-full object-cover"
@@ -373,11 +358,7 @@ const UpdateCompany = () => {
             <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden object-cover">
               {companyData.coverPic && (
                 <img
-                  src={getImageSrc(
-                    companyData.coverPic.url ||
-                      companyData.coverPic ||
-                      Placeholder
-                  )}
+                  src={getImageSrc(companyData.coverPic.url || companyData.coverPic || Placeholder)}
                   alt="Cover Pic"
                   className="w-full h-full object-cover"
                 />
@@ -455,9 +436,7 @@ const UpdateCompany = () => {
             value={companyData.city}
             onChange={handleChange}
             options={cityOptions}
-            placeholder={
-              companyData.state ? "Select city" : "Select state first"
-            }
+            placeholder={companyData.state ? "Select city" : "Select state first"}
             disabled={!companyData.state}
           />
           <EnhancedInput
@@ -530,23 +509,16 @@ const UpdateCompany = () => {
               className="flex flex-col md:flex-row items-start md:items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
             >
               {/* File Upload */}
-            
+
               {cert.url ? (
                 <div className="">
-                  <img
-                    className="w-14 h-14"
-                    src={cert.url}
-                    alt={cert.title || "certificate"}
-                  />
+                  <img className="w-14 h-14" src={cert.url} alt={cert.title || "certificate"} />
                 </div>
               ) : (
-                
                 <FileUpload
                   ref={(el) => (certificateRefs.current[idx] = el)}
                   value={cert.file}
-                  onChange={(file) =>
-                    handleCertificateChange(idx, "file", file)
-                  }
+                  onChange={(file) => handleCertificateChange(idx, "file", file)}
                   accept="image/*"
                   multiple={false}
                   className="w-full md:w-1/3"
@@ -558,9 +530,7 @@ const UpdateCompany = () => {
               <EnhancedInput
                 name={`certificate-title-${idx}`}
                 value={cert.title}
-                onChange={(e) =>
-                  handleCertificateChange(idx, "title", e.target.value)
-                }
+                onChange={(e) => handleCertificateChange(idx, "title", e.target.value)}
                 placeholder="Certificate name"
                 className="flex-1"
               />

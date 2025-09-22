@@ -76,18 +76,12 @@ const AllAds = () => {
   if (authLoading || !user) {
     return (
       <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
-        <PuffLoader
-          height="80"
-          width="80"
-          radius={1}
-          color="#4866ff"
-          aria-label="puff-loading"
-        />
+        <PuffLoader height="80" width="80" radius={1} color="#4866ff" aria-label="puff-loading" />
       </div>
     );
   }
 
-    const isAdmin = user.role === UserRole.ADMIN;
+  const isAdmin = user.role === UserRole.ADMIN;
 
   const columns = [
     // {
@@ -100,70 +94,64 @@ const AllAds = () => {
       header: "Type",
       cell: ({ row }) => {
         const type = row.original.promotionType || "N/A";
-        return (
-          <span className="whitespace-nowrap capitalize">
-            {formatTitleCase(type)}
-          </span>
-        );
+        return <span className="whitespace-nowrap capitalize">{formatTitleCase(type)}</span>;
       },
     },
 
-      // Only include the actions column if user is NOT an admin
-  ...(isAdmin
-    ? [
-           {
-      accessorKey: "userName",
-      header: "Advertiser",
-      cell: ({ row }) => {
-        const { userId } = row.original;
-        return (
-          <span className="whitespace-nowrap capitalize">
-            {userId?.firstName || "N/A"} {userId?.lastName || ""}
-          </span>
-        );
-      },
-    },
-      ]
-    : []),
+    // Only include the actions column if user is NOT an admin
+    ...(isAdmin
+      ? [
+          {
+            accessorKey: "userName",
+            header: "Advertiser",
+            cell: ({ row }) => {
+              const { userId } = row.original;
+              return (
+                <span className="whitespace-nowrap capitalize">
+                  {userId?.firstName || "N/A"} {userId?.lastName || ""}
+                </span>
+              );
+            },
+          },
+        ]
+      : []),
 
-  
     {
       accessorKey: "duration",
       header: "Duration",
-      cell: ({ row }) => <span>{row.original.duration || 0} days</span> 
+      cell: ({ row }) => <span>{row.original.duration || 0} days</span>,
     },
     {
       accessorKey: "cost",
       header: "Cost",
-      cell: ({ row }) => <span>₦{ formatLargeNumber(row.original.cost) || 0}</span> 
+      cell: ({ row }) => <span>₦{formatLargeNumber(row.original.cost) || 0}</span>,
     },
- 
-{
-  accessorKey: "createdAt",
-  header: "Posted",
-  cell: ({ row }) => <span className="whitespace-nowrap text-[11px]">{formatDistanceStrict(new Date(row.original.createdAt), new Date(), {addSuffix: true})}</span> ,
-},
-  
+
+    {
+      accessorKey: "createdAt",
+      header: "Posted",
+      cell: ({ row }) => (
+        <span className="whitespace-nowrap text-[11px]">
+          {formatDistanceStrict(new Date(row.original.createdAt), new Date(), { addSuffix: true })}
+        </span>
+      ),
+    },
+
     {
       accessorKey: "paymentStatus",
       header: "Payment",
       cell: ({ row }) => {
         const status = row.original.paymentStatus?.toLowerCase();
         const colors = {
-          pending:
-            "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
-          completed:
-            "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+          pending: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+          completed: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
           failed: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
           successful: "bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-100",
         };
         const colorClass =
-          colors[status] ||
-          "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+          colors[status] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
         return (
-          <span
-            className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}
-          >
+          <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}>
             {formatTitleCase(status)}
           </span>
         );
@@ -175,17 +163,13 @@ const AllAds = () => {
       cell: ({ row }) => {
         const status = row.original.promotionStatus?.toLowerCase();
         const colors = {
-          pending_approval:
-            "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
-          active:
-            "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
-          completed:
-            "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100",
+          pending_approval: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+          active: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+          completed: "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100",
           rejected: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
         };
         const colorClass =
-          colors[status] ||
-          "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+          colors[status] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
         return (
           <div className="flex items-center justify-between gap-2 whitespace-nowrap">
             <span
@@ -194,7 +178,7 @@ const AllAds = () => {
               {formatTitleCase(status)}
             </span>
 
-            {(user.role === UserRole.ADMIN && status !== "completed" && status !== 'active') && (
+            {user.role === UserRole.ADMIN && status !== "completed" && status !== "active" && (
               <button
                 onClick={() => takeAction(row.original._id)}
                 className="px-2 py-1 text-xs font-medium text-blue-500 bg-transparent border border-blue-500 rounded-full hover:bg-blue-500 hover:text-white dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-400 dark:hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -210,9 +194,7 @@ const AllAds = () => {
       accessorKey: "endDate",
       header: "End Date",
       cell: ({ row }) =>
-        row.original.endDate
-          ? new Date(row.original.endDate).toLocaleDateString()
-          : "N/A",
+        row.original.endDate ? new Date(row.original.endDate).toLocaleDateString() : "N/A",
     },
     {
       id: "actions",
@@ -262,8 +244,8 @@ const AllAds = () => {
   };
 
   const takeAction = (id) => {
-    setAdToUpdate(id)
-    setIsGenModalOpen(true)
+    setAdToUpdate(id);
+    setIsGenModalOpen(true);
   };
 
   return (
@@ -295,9 +277,9 @@ const AllAds = () => {
         />
       )}
 
-         <Modal isOpen={isGenModalOpen} onClose={() => setIsGenModalOpen(false)}>
-             <UpdatePromoStatus promo={adToUpdate} onFinish={ () => setIsGenModalOpen(false)} />
-        </Modal>
+      <Modal isOpen={isGenModalOpen} onClose={() => setIsGenModalOpen(false)}>
+        <UpdatePromoStatus promo={adToUpdate} onFinish={() => setIsGenModalOpen(false)} />
+      </Modal>
     </section>
   );
 };

@@ -11,7 +11,6 @@ import EnhancedInput from "@components/ui/EnhancedInput";
 import { useParams } from "react-router-dom";
 import useAuthStore from "@store/authStore";
 import { formatTitleCase } from "@utils/helper";
-import HeaderTitle from "@components/ui/HeaderTitle";
 
 const DirectMessage = () => {
   const { slug } = useParams();
@@ -26,30 +25,25 @@ const DirectMessage = () => {
     setIsSending(true);
     const messageData = {
       senderId: user.id,
-      message:DOMPurify.sanitize(message.trim(), {
-                ALLOWED_TAGS: [],
-                ALLOWED_ATTR: [],
-                KEEP_CONTENT: true,
-              }),
+      message: DOMPurify.sanitize(message.trim(), {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+        KEEP_CONTENT: true,
+      }),
       mediaData,
-      subject
+      subject,
     };
 
     try {
-      const response = await apiClient.post(
-        `${endpoints.sendDirectMessage}/${slug}`,
-        messageData
-      );
+      const response = await apiClient.post(`${endpoints.sendDirectMessage}/${slug}`, messageData);
 
       if (response.status === 201) {
         toast.success("Message Sent");
       }
 
-      setMessage("")
-      setSubject("")
-      setMediaData("")
-
-    
+      setMessage("");
+      setSubject("");
+      setMediaData("");
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -58,89 +52,91 @@ const DirectMessage = () => {
   };
 
   return (
-   <div className="w-full mx-auto min-h-screen dark:bg-gray-900 dark:text-white transition-colors duration-300">
-  <div className="mx-auto mb-8">
-    {/* Header */}
+    <div className="w-full mx-auto min-h-screen dark:bg-gray-900 dark:text-white transition-colors duration-300">
+      <div className="mx-auto mb-8">
+        {/* Header */}
 
-    {/* Main Card */}
-    <div className="bg-white dark:bg-gray-800 shadow-md overflow-hidden p-6 md:p-8 rounded-xl border border-gray-100 dark:border-gray-700">
-      <HandleGoBackBtn />
-      
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Recipient Type Selection */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Message to: <span className="text-primary-text font-semibold ml-3" > {formatTitleCase(slug)}</span>
-          </label>
-        </div>
+        {/* Main Card */}
+        <div className="bg-white dark:bg-gray-800 shadow-md overflow-hidden p-6 md:p-8 rounded-xl border border-gray-100 dark:border-gray-700">
+          <HandleGoBackBtn />
 
-        {/* Message Input */}
-        <div>
-          <label
-            htmlFor="subject"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Subject
-          </label>
-          <EnhancedInput
-            id="subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            placeholder="Write your message subject here..."
-            rows={6}
-            className="focus:outline-none w-full p-4 bg-white dark:bg-gray-700 dark:text-white"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="message"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Your Message
-          </label>
-          <EnhancedTextarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Write your message here..."
-            rows={6}
-            required
-            withToolbar
-            className="focus:outline-none w-full p-4 bg-white dark:bg-gray-700 dark:text-white"
-           
-          />
-          <FileUpload
-            value={mediaData}
-            onChange={(file) => {
-              if (file && file.url) {
-                setMediaData(file.url);
-              } else {
-                setMediaData(null);
-              }
-            }}
-            multiple={false}
-            maxFiles={1}
-            accept="image/*"
-            innerClass="w-10 h-10 overflow-hidden"
-          />
-        </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Recipient Type Selection */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Message to:{" "}
+                <span className="text-primary-text font-semibold ml-3">
+                  {" "}
+                  {formatTitleCase(slug)}
+                </span>
+              </label>
+            </div>
 
-        {/* Send Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className={` bg-main-green text-white py-2 px-4 rounded-md hover:bg-green-hover transition-colors ${
-              isSending ? "disabled cursor-not-allowed opacity-70" : ""
-            }`}
-          >
-            {isSending ? "Please wait..." : "Send Message"}
-          </button>
+            {/* Message Input */}
+            <div>
+              <label
+                htmlFor="subject"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Subject
+              </label>
+              <EnhancedInput
+                id="subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Write your message subject here..."
+                rows={6}
+                className="focus:outline-none w-full p-4 bg-white dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                Your Message
+              </label>
+              <EnhancedTextarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write your message here..."
+                rows={6}
+                required
+                withToolbar
+                className="focus:outline-none w-full p-4 bg-white dark:bg-gray-700 dark:text-white"
+              />
+              <FileUpload
+                value={mediaData}
+                onChange={(file) => {
+                  if (file && file.url) {
+                    setMediaData(file.url);
+                  } else {
+                    setMediaData(null);
+                  }
+                }}
+                multiple={false}
+                maxFiles={1}
+                accept="image/*"
+                innerClass="w-10 h-10 overflow-hidden"
+              />
+            </div>
+
+            {/* Send Button */}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className={` bg-main-green text-white py-2 px-4 rounded-md hover:bg-green-hover transition-colors ${
+                  isSending ? "disabled cursor-not-allowed opacity-70" : ""
+                }`}
+              >
+                {isSending ? "Please wait..." : "Send Message"}
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-</div>
-
   );
 };
 

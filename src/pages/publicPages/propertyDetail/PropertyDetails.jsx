@@ -60,9 +60,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const loadProperty = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.fetchProperty}/${slug}`
-        );
+        const response = await apiClient.get(`${endpoints.fetchProperty}/${slug}`);
 
         setProperty(response.data.data);
       } catch (error) {
@@ -75,31 +73,24 @@ const PropertyDetails = () => {
   }, [slug]);
 
   const nextImage = () =>
-    setCurrentImageIndex((prev) =>
-      prev === property?.media?.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImageIndex((prev) => (prev === property?.media?.length - 1 ? 0 : prev + 1));
   const prevImage = () =>
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? property?.media?.length - 1 : prev - 1
-    );
+    setCurrentImageIndex((prev) => (prev === 0 ? property?.media?.length - 1 : prev - 1));
 
+  // FetCh Post Comment.
+  useEffect(() => {
+    const fetchPostComments = async () => {
+      try {
+        const response = await apiClient.get(`${endpoints.fetchPostComment}/${property?._id}`);
 
-      // FetCh Post Comment.
-     useEffect(() => {
-       const fetchPostComments = async () => {
-         try {
-           const response = await apiClient.get(
-             `${endpoints.fetchPostComment}/${property?._id}`
-           );
-   
-           setAllComments(response.data.data);
-         } catch (error) {
-           toast(ErrorFormatter(error));
-         }
-       };
-   
-      if(property._id) fetchPostComments();
-     }, [property]);
+        setAllComments(response.data.data);
+      } catch (error) {
+        toast(ErrorFormatter(error));
+      }
+    };
+
+    if (property._id) fetchPostComments();
+  }, [property]);
 
   if (!isLoading) {
     <section className="flex bg-gray-50 items-center justify-center w-full min-h-screen">
@@ -109,88 +100,88 @@ const PropertyDetails = () => {
 
   return (
     <div className=" bg-gray-100 dark:bg-gray-900 section-container min-h-screen">
-    <div className="">
-     
-      <div className=" w-full overflow-x-hidden">
-        {/* Main Container */}
-        <div className="container mx-auto w-full max-w-7xl box-border">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6 w-full  p-4 rounded-md bg-white dark:bg-gray-800">
-              
-              <HandleGoBackBtn />
-              {/* Property Title and Actions */}
-              <PropertyTitleSection property={property} />
-              {/* {property.isProperty && (
+      <div className="">
+        <div className=" w-full overflow-x-hidden">
+          {/* Main Container */}
+          <div className="container mx-auto w-full max-w-7xl box-border">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-6 w-full  p-4 rounded-md bg-white dark:bg-gray-800">
+                <HandleGoBackBtn />
+                {/* Property Title and Actions */}
+                <PropertyTitleSection property={property} />
+                {/* {property.isProperty && (
               )} */}
 
-              {/* Image Slider */}
-              <ImageSlider
-                property={property}
-                nextImage={nextImage}
-                currentImageIndex={currentImageIndex}
-                prevImage={prevImage}
-                setShowFullScreen={setShowFullScreen}
-                setCurrentImageIndex={setCurrentImageIndex}
-              />
+                {/* Image Slider */}
+                <ImageSlider
+                  property={property}
+                  nextImage={nextImage}
+                  currentImageIndex={currentImageIndex}
+                  prevImage={prevImage}
+                  setShowFullScreen={setShowFullScreen}
+                  setCurrentImageIndex={setCurrentImageIndex}
+                />
 
+                {/* Property Main Details */}
+                <PropertyMainDetail property={property} />
 
-              {/* Property Main Details */}
-              <PropertyMainDetail property={property} />
+                {/* Amenities */}
+                {property.isProperty && <PropertyAmenities property={property} />}
+                {/* Map Preview */}
+                {property.isProperty && <LocationMap property={property} />}
 
-              {/* Amenities */}
-              {property.isProperty && <PropertyAmenities property={property} />}
-              {/* Map Preview */}
-              {property.isProperty && <LocationMap property={property} />}
-
-              {/* Comments */}
-              <Comments post={property} allComments={allComments} setAllComments={setAllComments} />
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-6 w-full">
-              {/* Owner Details & Contact */}
-
-              <OwnerContact property={property} />
-
-               <RightWidgetAdsHandler />
-
-              {/* Send Message */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                <h3 className="text-sm font-semibold mb-4 dark:text-gray-200">Contact This Marketer</h3>
-                <MessageSeller
-                  receiverId={property.owner._id}
-                  propertyId={property._id}
+                {/* Comments */}
+                <Comments
+                  post={property}
+                  allComments={allComments}
+                  setAllComments={setAllComments}
                 />
               </div>
 
-              {/* Schedule a Visit */}
-              {/* <ScheduleAVisist /> */}
+              {/* Sidebar */}
+              <div className="space-y-6 w-full">
+                {/* Owner Details & Contact */}
 
-              {/* Advanced Search Filter */}
-              {/* <SimilarPropertySearch property={property} /> */}
+                <OwnerContact property={property} />
 
-              {/* Disclaimer */}
-              {property.isProperty && <Disclaimer />}
+                <RightWidgetAdsHandler />
+
+                {/* Send Message */}
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                  <h3 className="text-sm font-semibold mb-4 dark:text-gray-200">
+                    Contact This Marketer
+                  </h3>
+                  <MessageSeller receiverId={property.owner._id} propertyId={property._id} />
+                </div>
+
+                {/* Schedule a Visit */}
+                {/* <ScheduleAVisist /> */}
+
+                {/* Advanced Search Filter */}
+                {/* <SimilarPropertySearch property={property} /> */}
+
+                {/* Disclaimer */}
+                {property.isProperty && <Disclaimer />}
+              </div>
             </div>
+
+            {/* Related Properties */}
           </div>
 
-          {/* Related Properties */}
-        </div>
+          {/* Full Screen Image Preview */}
+          <ImageFullScreen
+            property={property}
+            currentImageIndex={currentImageIndex}
+            nextImage={nextImage}
+            prevImage={prevImage}
+            showFullScreen={showFullScreen}
+            setShowFullScreen={setShowFullScreen}
+          />
 
-        {/* Full Screen Image Preview */}
-        <ImageFullScreen
-          property={property}
-          currentImageIndex={currentImageIndex}
-          nextImage={nextImage}
-          prevImage={prevImage}
-          showFullScreen={showFullScreen}
-          setShowFullScreen={setShowFullScreen}
-        />
-
-        {/* Inline CSS to hide scrollbar */}
-        <style>
-          {`
+          {/* Inline CSS to hide scrollbar */}
+          <style>
+            {`
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
           }
@@ -199,9 +190,9 @@ const PropertyDetails = () => {
             scrollbar-width: none;
           }
         `}
-        </style>
+          </style>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

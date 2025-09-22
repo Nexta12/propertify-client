@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 const FeaturedProperties = ({ featuredProperties }) => {
   return (
     <div className="bg-white rounded-xl shadow-sm p-2">
-      <h3 className="text-lg font-semibold mb-4 border-b pb-2">
-        Latest Listings
-      </h3>
+      <h3 className="text-lg font-semibold mb-4 border-b pb-2">Latest Listings</h3>
       <div className="space-y-4">
         {featuredProperties.slice(0, 2).map((property) => {
           if (property.isProperty) {
@@ -39,7 +37,7 @@ const FeaturedProperties = ({ featuredProperties }) => {
               </Link>
             );
           } else {
-            return null; 
+            return null;
           }
         })}
       </div>

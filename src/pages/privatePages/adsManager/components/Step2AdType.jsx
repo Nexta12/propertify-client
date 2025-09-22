@@ -1,5 +1,4 @@
 import { promotionTypes } from "@utils/data";
-import React from "react";
 
 const Step2AdType = ({ formData, setFormData }) => {
   const isProperty = formData.post.isProperty;
@@ -9,9 +8,7 @@ const Step2AdType = ({ formData, setFormData }) => {
   };
 
   // filter: if not property, remove "featured"
-  const availableTypes = promotionTypes.filter(
-    (type) => isProperty || type.id !== "featured"
-  );
+  const availableTypes = promotionTypes.filter((type) => isProperty || type.id !== "featured");
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -28,12 +25,8 @@ const Step2AdType = ({ formData, setFormData }) => {
           <div className="text-2xl mb-2 text-blue-500">
             <type.icon />
           </div>
-          <h3 className="font-medium text-gray-800 dark:text-white">
-            {type.name}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {type.description}
-          </p>
+          <h3 className="font-medium text-gray-800 dark:text-white">{type.name}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{type.description}</p>
         </div>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DashBoardMenuItems } from "@utils/data";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "@store/authStore";
@@ -18,77 +18,69 @@ const SidebarNav = ({ handleSidepanel }) => {
   const [notificationCounts, setNotificationCounts] = useState({});
   const socket = useSocket();
 
+  useEffect(() => {
+    if (!socket || !user?.id) return;
 
- useEffect(() => {
-  if (!socket || !user?.id) return;
+    const handleNewNotification = (newNotif) => {
+      // Merge with current counts
+      setNotificationCounts((prevCounts) => {
+        const newCounts = getNotificationCounts([newNotif]);
+        return {
+          ...prevCounts,
+          ...Object.keys(newCounts).reduce((acc, key) => {
+            acc[key] = (prevCounts[key] || 0) + newCounts[key];
+            return acc;
+          }, {}),
+        };
+      });
+    };
 
-  const handleNewNotification = (newNotif) => {
-    // Merge with current counts
-    setNotificationCounts((prevCounts) => {
-      const newCounts = getNotificationCounts([newNotif]);
-      return {
-        ...prevCounts,
-        ...Object.keys(newCounts).reduce((acc, key) => {
-          acc[key] = (prevCounts[key] || 0) + newCounts[key];
-          return acc;
-        }, {}),
-      };
-    });
-  };
+    // Handle seen notifications (decrement counts)
+    const handleNotificationSeen = async (seenNotif) => {
+      await apiClient.put(`${endpoints.markNotificationAsSeen}/${seenNotif._id}`);
+      setNotificationCounts((prevCounts) => {
+        const type = seenNotif.type;
+        if (!prevCounts[type]) return prevCounts;
 
-   // Handle seen notifications (decrement counts)
-const handleNotificationSeen = async(seenNotif) => {
-   await apiClient.put(`${endpoints.markNotificationAsSeen}/${seenNotif._id}`);
-    setNotificationCounts((prevCounts) => {
-      const type = seenNotif.type;
-      if (!prevCounts[type]) return prevCounts;
+        const updatedCount = prevCounts[type] - 1;
+        return {
+          ...prevCounts,
+          [type]: updatedCount > 0 ? updatedCount : 0,
+        };
+      });
+    };
 
-      const updatedCount = prevCounts[type] - 1;
-      return {
-        ...prevCounts,
-        [type]: updatedCount > 0 ? updatedCount : 0,
-      };
-    });
+    const handleNotificationDelete = async (seenNotif) => {
+      setNotificationCounts((prevCounts) => {
+        const type = seenNotif.type;
+        if (!prevCounts[type]) return prevCounts;
 
-  };
+        const updatedCount = prevCounts[type] - 1;
+        return {
+          ...prevCounts,
+          [type]: updatedCount > 0 ? updatedCount : 0,
+        };
+      });
+    };
 
-const handleNotificationDelete = async(seenNotif) => {
-    setNotificationCounts((prevCounts) => {
-      const type = seenNotif.type;
-      if (!prevCounts[type]) return prevCounts;
+    socket.on("newNotification", handleNewNotification);
+    socket.on("notificationSeen", handleNotificationSeen);
+    socket.on("deletedNotice", handleNotificationDelete);
 
-      const updatedCount = prevCounts[type] - 1;
-      return {
-        ...prevCounts,
-        [type]: updatedCount > 0 ? updatedCount : 0,
-      };
-    });
-  };
-
-  socket.on("newNotification", handleNewNotification);
-  socket.on("notificationSeen", handleNotificationSeen);
-  socket.on("deletedNotice", handleNotificationDelete);
-  
-
-  return () => {
-    socket.off("newNotification", handleNewNotification);
-     socket.off("notificationSeen", handleNotificationSeen);
-     socket.off("deletedNotice", handleNotificationDelete);
-  };
-}, [socket, user?.id]);
-
-
-
+    return () => {
+      socket.off("newNotification", handleNewNotification);
+      socket.off("notificationSeen", handleNotificationSeen);
+      socket.off("deletedNotice", handleNotificationDelete);
+    };
+  }, [socket, user?.id]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.getUserNotifications}/${user?.id}`
-        );
+        const response = await apiClient.get(`${endpoints.getUserNotifications}/${user?.id}`);
 
         const notifs = response.data.data;
-      
+
         // Convert to counts
         setNotificationCounts(getNotificationCounts(notifs));
       } catch (error) {
@@ -141,22 +133,12 @@ const handleNotificationDelete = async(seenNotif) => {
 
         if (item.title === "Logout") {
           return (
-            <SideBarLink
-              key={i}
-              item={resolvedItem}
-              pathname={pathname}
-              onClick={handleLogout}
-            />
+            <SideBarLink key={i} item={resolvedItem} pathname={pathname} onClick={handleLogout} />
           );
         }
 
         return (
-          <SideBarLink
-            key={i}
-            item={resolvedItem}
-            pathname={pathname}
-            onClick={handleSidepanel}
-          />
+          <SideBarLink key={i} item={resolvedItem} pathname={pathname} onClick={handleSidepanel} />
         );
       })}
       <div className="lg:hidden flex justify-end px-3 py-2">
@@ -206,9 +188,7 @@ function SubMenu({ item, pathname, onClick }) {
                 {item.notificationCount}
               </span>
             )}
-            <BsChevronDown
-              className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-            />
+            <BsChevronDown className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
           </div>
         </div>
       </div>
@@ -224,8 +204,7 @@ function SubMenu({ item, pathname, onClick }) {
             className="ml-8 mt-1 overflow-hidden"
           >
             {visibleSubItems.map((subItem, index) => {
-              const isSubActive =
-                pathname === subItem.link || pathname.includes(subItem.link);
+              const isSubActive = pathname === subItem.link || pathname.includes(subItem.link);
               return (
                 <Link
                   key={index}

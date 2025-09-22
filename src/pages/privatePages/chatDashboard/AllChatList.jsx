@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from "react";
 import { FiSearch, FiTrash2 } from "react-icons/fi";
 import Avater from "@assets/img/avater.png";
@@ -14,9 +13,6 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
   const [openModal, setOpenModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
 
-
-
-
   const filteredUsers = useMemo(() => {
     if (!search.trim()) return allChats;
 
@@ -28,34 +24,30 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
     );
   }, [allChats, search]);
 
-
-    const onDelete = (data) => {
+  const onDelete = (data) => {
     setOpenModal(true);
     setItemToDelete(data);
   };
 
-  const confirmDelete = async() => {
-     if (!itemToDelete) return;
-     try {
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    try {
+      const res = await apiClient.delete(`${endpoints.deleteChatHistory}/${itemToDelete}`);
 
-     const res =   await apiClient.delete(`${endpoints.deleteChatHistory}/${itemToDelete}`);
-
-      if(res.status == 200){
-        toast.success('Chat History Deleted')
+      if (res.status == 200) {
+        toast.success("Chat History Deleted");
       }
       window.location.reload();
-      
-     } catch (error) {
-      toast.error(ErrorFormatter(error))
-     }finally {
+    } catch (error) {
+      toast.error(ErrorFormatter(error));
+    } finally {
       setOpenModal(false);
       setItemToDelete(null);
     }
-  }
+  };
 
   return (
     <>
-
       <DeleteModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
@@ -81,19 +73,13 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
           <li
             key={chat._id}
             className={`group p-4 flex items-center gap-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 ${
-              selectedChat?._id === chat._id
-                ? "bg-gray-100 dark:bg-gray-800/70"
-                : ""
+              selectedChat?._id === chat._id ? "bg-gray-100 dark:bg-gray-800/70" : ""
             }`}
           >
             {/* Avatar */}
             <div className="relative" onClick={() => setSelectedChat(chat)}>
               <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-400">
-                <img
-                  src={Avater}
-                  className="w-full h-full rounded-full"
-                  alt="profile"
-                />
+                <img src={Avater} className="w-full h-full rounded-full" alt="profile" />
               </div>
               <span
                 className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white dark:border-gray-900 ${
@@ -107,9 +93,7 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
               <p className="font-medium truncate">
                 {chat.senderFirstName} {chat.senderLastName}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {chat.email}
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{chat.email}</p>
             </div>
 
             {/* Unread */}
@@ -130,9 +114,7 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
         ))}
 
         {filteredUsers.length === 0 && (
-          <p className="p-4 text-sm text-gray-500 dark:text-gray-400">
-            No users found
-          </p>
+          <p className="p-4 text-sm text-gray-500 dark:text-gray-400">No users found</p>
         )}
       </ul>
     </>
@@ -140,4 +122,3 @@ const AllChatList = ({ allChats, selectedChat, setSelectedChat }) => {
 };
 
 export default AllChatList;
-

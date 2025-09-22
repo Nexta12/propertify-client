@@ -7,7 +7,7 @@ import useAuthStore from "@store/authStore";
 import Button from "@components/ui/Button";
 import { getLoggedInUserPath } from "@utils/helper";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
-import GreenLogo from "@assets/img/green-logo.png"
+import GreenLogo from "@assets/img/green-logo.png";
 import FullPageLoader from "./FullPageLoader";
 
 const Login = () => {
@@ -17,14 +17,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
-  const {
-    login,
-    isLoading,
-    setError,
-    user,
-    isAuthenticated,
-    validateAuth,
-  } = useAuthStore();
+  const { login, isLoading, setError, user, isAuthenticated, validateAuth } = useAuthStore();
 
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -37,16 +30,14 @@ const Login = () => {
     setError(null);
   };
 
-    const validateForm = () => {
-   
-      if (!formData.email || !formData.password ) {
-        toast.error("Please fill all required fields");
-        return false;
-      }
-  
-      return true;
-    };
+  const validateForm = () => {
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill all required fields");
+      return false;
+    }
 
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,8 +45,7 @@ const Login = () => {
       return;
     }
 
-   await login(formData, navigate);
-
+    await login(formData, navigate);
   };
 
   useEffect(() => {
@@ -77,17 +67,15 @@ const Login = () => {
     }
   }, [user, isAuthenticated, navigate]);
 
- if (authLoading) {
-  return <FullPageLoader />;
-}
+  if (authLoading) {
+    return <FullPageLoader />;
+  }
 
-  if(!isAuthenticated){
-  return (
-  
-           
+  if (!isAuthenticated) {
+    return (
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden relative">
-         <div className="absolute top-4 left-5">
-        <HandleGoBackBtn/>
+        <div className="absolute top-4 left-5">
+          <HandleGoBackBtn />
         </div>
         {/* Logo Section */}
         <div className="mt-5 text-center">
@@ -144,30 +132,21 @@ const Login = () => {
 
           {/* Login Button */}
 
-          <Button
-            variant="success"
-            type="submit"
-            className="w-full"
-            disabled={isLoading}
-          >
+          <Button variant="success" type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "  Signing In..." : "Sign In"}
           </Button>
 
           {/* Register Link */}
           <div className="text-center text-sm text-[#1F3E72] dark:text-gray-400">
-            Don't have an account?{" "}
-            <Link
-              to={paths.register}
-              className="font-medium text-[#28B16D] hover:text-[#09C269]"
-            >
+            Don&apos;t have an account?{" "}
+            <Link to={paths.register} className="font-medium text-[#28B16D] hover:text-[#09C269]">
               Register
             </Link>
           </div>
         </form>
       </div>
- 
-  );
-    }
+    );
+  }
 };
 
 export default Login;

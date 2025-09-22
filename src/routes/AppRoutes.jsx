@@ -32,7 +32,7 @@ import NewTicket from "@pages/privatePages/tickets/NewTicket";
 import Tickets from "@pages/privatePages/tickets/Tickets";
 import SingleTicket from "@pages/privatePages/tickets/SingleTicket";
 import Professionals from "@pages/publicPages/professionals/Professionals";
-import AuthLayout from "@pages/authpages/authLayout";
+import AuthLayout from "@pages/authpages/AuthLayout";
 import ResendOTP from "@pages/authpages/ResendOTP";
 import ResetPassword from "@pages/authpages/ResetPassword";
 import AdsDashboard from "@pages/privatePages/adsManager/AdsDashboard";
@@ -52,14 +52,10 @@ import UpdateCompany from "@pages/privatePages/companyPageSettings/UpdateCompany
 import VerificationDetails from "@pages/privatePages/adsManager/VerificationDetails";
 import UserProfilePublic from "@pages/publicPages/userPublicProfile/UserProfilePublic";
 
-
-
-
 const AppRoutes = () => (
   <Routes>
-
-        {/* Auth Pages */}
-     <Route path={paths.auth} element={<AuthLayout />}>
+    {/* Auth Pages */}
+    <Route path={paths.auth} element={<AuthLayout />}>
       <Route path={paths.register} element={<Register />} />
       <Route path={paths.login} element={<Login />} />
       <Route path={paths.verifyOTP} element={<VerifyOTP />} />
@@ -67,7 +63,7 @@ const AppRoutes = () => (
       <Route path={paths.forgotPassword} element={<ForgotPassword />} />
       <Route path={paths.SetNewPassword} element={<ResetPassword />} />
       <Route path={paths.paymentSuccess} element={<PaymentSuccess />} />
-     </Route>
+    </Route>
 
     {/* Public Routes */}
     <Route path={paths.index} element={<PublicLayout />}>
@@ -78,68 +74,68 @@ const AppRoutes = () => (
       <Route path={paths.companies} element={<Companies />} />
       <Route path={`${paths.companies}/:slug`} element={<SingleCompany />} />
       <Route path={`${paths.user}/:slug`} element={<UserProfilePublic />} />
-     
     </Route>
-    
+
     {/* Protected Pages */}
 
-      <Route path={paths.protected} element={<PrivatePagesLayout />}>
-       
-       <Route path={`${paths.protected}/feed`} element={<Feed />} />
-       <Route path={`${paths.protected}/dashboard`} element={<Dashboard />} />
-       <Route path={`${paths.protected}/live-chat`} element={<ChatDashBoard />} />
+    <Route path={paths.protected} element={<PrivatePagesLayout />}>
+      <Route path={`${paths.protected}/feed`} element={<Feed />} />
+      <Route path={`${paths.protected}/dashboard`} element={<Dashboard />} />
+      <Route path={`${paths.protected}/live-chat`} element={<ChatDashBoard />} />
 
-        {/* Properties */}
-       <Route path={`${paths.protected}/properties/all`} element={<MyProperties />} />
-       <Route path={`${paths.protected}/properties/add`} element={<NewProperty/>} />
-       <Route path={`${paths.protected}/properties/edit/:slug`} element={<EditProperty/>} />
+      {/* Properties */}
+      <Route path={`${paths.protected}/properties/all`} element={<MyProperties />} />
+      <Route path={`${paths.protected}/properties/add`} element={<NewProperty />} />
+      <Route path={`${paths.protected}/properties/edit/:slug`} element={<EditProperty />} />
 
-       {/* Posts */}
+      {/* Posts */}
       <Route path={`${paths.protected}/posts`} element={<NewPost />} />
       <Route path={`${paths.protected}/posts/edit/:slug`} element={<EditPost />} />
 
-       {/* Users */}
-       <Route path={`${paths.protected}/users`} element={<Users />} />
-       <Route path={`${paths.protected}/users/add`} element={<AddUsers />} />
-      
-        {/* Lead, Inquiries and Messages */}
-       <Route path={`${paths.protected}/messages`} element={<Messages />} />
-       <Route path={`${paths.protected}/messages/:id`} element={<ViewMessage />} />
-       <Route path={`${paths.protected}/messages/dm/:slug`} element={<DirectMessage />} />
+      {/* Users */}
+      <Route path={`${paths.protected}/users`} element={<Users />} />
+      <Route path={`${paths.protected}/users/add`} element={<AddUsers />} />
 
-       {/* Analytics */}
-     
-         <Route path={`${paths.protected}/profile/:slug`} element={<Profile />} />
+      {/* Lead, Inquiries and Messages */}
+      <Route path={`${paths.protected}/messages`} element={<Messages />} />
+      <Route path={`${paths.protected}/messages/:id`} element={<ViewMessage />} />
+      <Route path={`${paths.protected}/messages/dm/:slug`} element={<DirectMessage />} />
 
-         <Route path={`${paths.protected}/settings`} element={<Settings />} />
-         <Route path={`${paths.protected}/contacts`} element={<Contacts />} />
-         <Route path={`${paths.protected}/contacts/new`} element={<NewContact />} />
-         <Route path={`${paths.protected}/contacts/:id`} element={<ViewContact />} />
-         <Route path={`${paths.protected}/send-message`} element={<BulkMessage />} />
+      {/* Analytics */}
 
-         {/* Tickets */}
-          <Route path={`${paths.protected}/tickets/create`} element={<NewTicket />} />
-          <Route path={`${paths.protected}/tickets`} element={<Tickets />} />
-          <Route path={`${paths.protected}/tickets/:id`} element={<SingleTicket />} />
+      <Route path={`${paths.protected}/profile/:slug`} element={<Profile />} />
 
-        {/* Ads Zone */}
-         <Route path={`${paths.protected}/ads-manager`} element={<AdsDashboard />} />
-         <Route path={`${paths.protected}/ads/all`} element={<AllAds />} />
-         <Route path={`${paths.protected}/ads-tips`} element={<AdsTips />} />
-         <Route path={`${paths.protected}/new-ads`} element={<NewAds />} />
-         <Route path={`${paths.protected}/verification`} element={<GetVerifiedPage />} />
-         <Route path={`${paths.protected}/badges`} element={<Badges />} />
-         <Route path={`${paths.protected}/verified-list`} element={<Verifications />} />
-         <Route path={`${paths.protected}/verification-details/:id`} element={<VerificationDetails />} />
-       
-        {/* Company Settings */}
-         <Route path={`${paths.protected}/create-company`} element={<CreateCompany />} />
-         <Route path={`${paths.protected}/company-pages`} element={<MyCompanies />} />
-         <Route path={`${paths.protected}/companies/:slug`} element={<SingleCompany />} />
-         <Route path={`${paths.protected}/companies/update/:slug`} element={<UpdateCompany />} />
-      </Route>
+      <Route path={`${paths.protected}/settings`} element={<Settings />} />
+      <Route path={`${paths.protected}/contacts`} element={<Contacts />} />
+      <Route path={`${paths.protected}/contacts/new`} element={<NewContact />} />
+      <Route path={`${paths.protected}/contacts/:id`} element={<ViewContact />} />
+      <Route path={`${paths.protected}/send-message`} element={<BulkMessage />} />
 
-   
+      {/* Tickets */}
+      <Route path={`${paths.protected}/tickets/create`} element={<NewTicket />} />
+      <Route path={`${paths.protected}/tickets`} element={<Tickets />} />
+      <Route path={`${paths.protected}/tickets/:id`} element={<SingleTicket />} />
+
+      {/* Ads Zone */}
+      <Route path={`${paths.protected}/ads-manager`} element={<AdsDashboard />} />
+      <Route path={`${paths.protected}/ads/all`} element={<AllAds />} />
+      <Route path={`${paths.protected}/ads-tips`} element={<AdsTips />} />
+      <Route path={`${paths.protected}/new-ads`} element={<NewAds />} />
+      <Route path={`${paths.protected}/verification`} element={<GetVerifiedPage />} />
+      <Route path={`${paths.protected}/badges`} element={<Badges />} />
+      <Route path={`${paths.protected}/verified-list`} element={<Verifications />} />
+      <Route
+        path={`${paths.protected}/verification-details/:id`}
+        element={<VerificationDetails />}
+      />
+
+      {/* Company Settings */}
+      <Route path={`${paths.protected}/create-company`} element={<CreateCompany />} />
+      <Route path={`${paths.protected}/company-pages`} element={<MyCompanies />} />
+      <Route path={`${paths.protected}/companies/:slug`} element={<SingleCompany />} />
+      <Route path={`${paths.protected}/companies/update/:slug`} element={<UpdateCompany />} />
+    </Route>
+
     {/* NOT FOUND ROUTE */}
     <Route path="*" element={<NotFound />} />
   </Routes>

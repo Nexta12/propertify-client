@@ -65,9 +65,7 @@ const Verifications = () => {
       accessorKey: "fullName",
       header: "Name",
       cell: ({ row }) => (
-        <span className="whitespace-nowrap capitalize">
-          {row.original.fullName || "N/A"}
-        </span>
+        <span className="whitespace-nowrap capitalize">{row.original.fullName || "N/A"}</span>
       ),
     },
     {

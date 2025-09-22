@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdminChatHeader from "./AdminChatHeader";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { apiClient } from "@api/apiClient";
@@ -9,7 +9,6 @@ import ChatInput from "@components/chatBox/chatInput";
 import ChatMsgsContainer from "./ChatMsgsContainer";
 import useSocket from "@context/useSocket";
 import useAuthStore from "@store/authStore";
-
 
 const ChatDashBoard = () => {
   // Auto-scroll
@@ -44,17 +43,13 @@ const ChatDashBoard = () => {
       socket.off("typing");
       socket.off("stopTyping");
       socket.off("newMessage");
-    
     };
   }, [socket]);
 
   //  Fetch All Chats
 
-
-
   useEffect(() => {
-
-      const fetchAllChats = async () => {
+    const fetchAllChats = async () => {
       try {
         const res = await apiClient.post(endpoints.fetchAllChats);
 
@@ -65,7 +60,6 @@ const ChatDashBoard = () => {
     };
 
     fetchAllChats();
-
   }, []);
 
   useEffect(() => {
@@ -120,9 +114,7 @@ const ChatDashBoard = () => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.fetchConversations}/${selectedChat._id}`
-        );
+        const res = await apiClient.get(`${endpoints.fetchConversations}/${selectedChat._id}`);
         const data = res.data.data;
         setChatMessages([selectedChat, ...data]);
       } catch (error) {
@@ -161,9 +153,7 @@ const ChatDashBoard = () => {
           selectedChat ? "hidden md:flex" : "flex"
         } w-full md:w-1/3 flex-col border-r border-l border-gray-300 dark:border-gray-700 bg-white h-screen overflow-y-auto dark:bg-gray-950 `}
       >
-        <h2 className="p-4 font-semibold text-lg border-b dark:border-gray-700">
-          Conversations
-        </h2>
+        <h2 className="p-4 font-semibold text-lg border-b dark:border-gray-700">Conversations</h2>
 
         {/* User List */}
         <AllChatList
@@ -178,17 +168,11 @@ const ChatDashBoard = () => {
         {selectedChat ? (
           <>
             {/* Chat Header */}
-            <AdminChatHeader
-              selectedChat={selectedChat}
-              setSelectedChat={setSelectedChat}
-            />
+            <AdminChatHeader selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
 
             {/* Messages Body */}
             <div className="flex-grow overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-900">
-              <ChatMsgsContainer
-                chatMessages={chatMessages}
-                typing={typingUser}
-              />
+              <ChatMsgsContainer chatMessages={chatMessages} typing={typingUser} />
             </div>
 
             {/* Input */}

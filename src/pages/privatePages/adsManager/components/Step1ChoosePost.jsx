@@ -2,7 +2,7 @@ import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import useAuthStore from "@store/authStore";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { PuffLoader } from "react-spinners"; // Assuming you already have this
 import { truncate } from "lodash";
@@ -17,7 +17,7 @@ const Step1ChoosePost = ({ formData, setFormData }) => {
   const [pagination, setPagination] = useState({ total: 0 });
   const [loading, setLoading] = useState(false);
 
-   const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   // Debounce search to avoid excessive API calls
@@ -47,18 +47,15 @@ const Step1ChoosePost = ({ formData, setFormData }) => {
 
       setLoading(true);
       try {
-        const res = await apiClient.get(
-          `${endpoints.fetchUserProperties}/${user.slug}`,
-          {
-            params: {
-              promo: true,
-              page,
-              limit: perPage,
-              search: debouncedSearch || undefined,
-            },
-          }
-        );
-        const filtered = res.data.data.data
+        const res = await apiClient.get(`${endpoints.fetchUserProperties}/${user.slug}`, {
+          params: {
+            promo: true,
+            page,
+            limit: perPage,
+            search: debouncedSearch || undefined,
+          },
+        });
+        const filtered = res.data.data.data;
 
         setPosts(filtered);
         setPagination(res.data.data.pagination);
@@ -72,17 +69,10 @@ const Step1ChoosePost = ({ formData, setFormData }) => {
     fetchProperties();
   }, [user?.slug, page, debouncedSearch]);
 
-
   if (authLoading || !user) {
     return (
       <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
-        <PuffLoader
-          height="80"
-          width="80"
-          radius={1}
-          color="#4866ff"
-          aria-label="puff-loading"
-        />
+        <PuffLoader height="80" width="80" radius={1} color="#4866ff" aria-label="puff-loading" />
       </div>
     );
   }
@@ -95,13 +85,13 @@ const Step1ChoosePost = ({ formData, setFormData }) => {
     <div>
       {/* Search Bar */}
       <div className="flex">
-      <input
-        type="text"
-        placeholder="Search posts..."
-        className="border dark:border-gray-700 dark:focus:outline-none rounded px-3 py-2 mb-4 w-full lg:w-[50%] ml-auto focus:outline-none text-sm dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+        <input
+          type="text"
+          placeholder="Search posts..."
+          className="border dark:border-gray-700 dark:focus:outline-none rounded px-3 py-2 mb-4 w-full lg:w-[50%] ml-auto focus:outline-none text-sm dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {/* Posts Grid */}
@@ -135,12 +125,10 @@ const Step1ChoosePost = ({ formData, setFormData }) => {
                   </video>
                 ))}
 
-              <h3 className="mt-2 text-gray-800 dark:text-white font-medium">
-                {post.title}
-              </h3>
+              <h3 className="mt-2 text-gray-800 dark:text-white font-medium">{post.title}</h3>
 
               <h3 className="mt-4 text-gray-800 dark:text-white text-center text-sm">
-                { truncate(post.description, {length: 120})}
+                {truncate(post.description, { length: 120 })}
               </h3>
             </div>
           ))}

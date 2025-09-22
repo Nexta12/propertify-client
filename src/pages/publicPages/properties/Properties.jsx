@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 import { Virtuoso } from "react-virtuoso";
 import SearchAndFilterBar from "./components/filters/SearchAndFilterBar";
@@ -162,13 +162,16 @@ const Properties = () => {
   }, [loading, hasMore]);
 
   // Shuffle posts Locally
-    useEffect(() => {
+  useEffect(() => {
     if (properties.length === 0) return;
-  
-    const interval = setInterval(() => {
-      setProperties((prev) => shufflePostsArray(prev));
-    }, 5 * 60 * 1000); // every 5 minutes
-  
+
+    const interval = setInterval(
+      () => {
+        setProperties((prev) => shufflePostsArray(prev));
+      },
+      5 * 60 * 1000
+    ); // every 5 minutes
+
     return () => clearInterval(interval);
   }, [properties.length]);
 
@@ -199,9 +202,7 @@ const Properties = () => {
                 itemContent={(index) => (
                   <div className="mb-4">
                     <PostCard
-                      key={
-                        properties[index].syntheticId || properties[index]._id
-                      }
+                      key={properties[index].syntheticId || properties[index]._id}
                       post={properties[index]}
                       isProperty={properties[index].isProperty}
                       onDeleteSuccess={handlePostDelete}

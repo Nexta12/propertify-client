@@ -1,13 +1,9 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { paths } from "@routes/paths";
-import {
-  getLocalStorageItem,
-  removeLocalStorageItem,
-} from "@utils/localStorage";
+import { getLocalStorageItem, removeLocalStorageItem } from "@utils/localStorage";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { PuffLoader } from "react-spinners";
 import LogoGreen from "@assets/img/green-logo.png";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
@@ -36,13 +32,12 @@ const VerifyOTP = () => {
       const fetchUserId = async () => {
         try {
           const res = await apiClient.post(endpoints.getUserId, {
-            email
+            email,
           });
-         if(res.status == 200) {
+          if (res.status == 200) {
             setUserId(res.data.data?._id);
-         }
+          }
         } catch (error) {
-          console.log(error)
           toast.error(ErrorFormatter(error));
         }
       };
@@ -100,7 +95,6 @@ const VerifyOTP = () => {
     }
 
     const otpCode = otp.join("");
-   
 
     try {
       setIsLoading(true);
@@ -112,14 +106,14 @@ const VerifyOTP = () => {
       removeLocalStorageItem("otp");
       removeLocalStorageItem("otpEmail");
 
-       const resetPage = getLocalStorageItem("resetEmail");
+      const resetPage = getLocalStorageItem("resetEmail");
 
       toast.success("Otp Verified");
 
       setTimeout(() => {
-        if(resetPage ){
-          navigate(paths.SetNewPassword)
-        }else{
+        if (resetPage) {
+          navigate(paths.SetNewPassword);
+        } else {
           navigate(paths.login);
         }
       }, 3000);
@@ -131,10 +125,9 @@ const VerifyOTP = () => {
     }
   };
 
-
-   if (!showPage) {
-  return <FullPageLoader />;
-}
+  if (!showPage) {
+    return <FullPageLoader />;
+  }
 
   return (
     <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
@@ -147,9 +140,7 @@ const VerifyOTP = () => {
         </div>
 
         <header className="mb-8">
-          <p className="text-[15px] text-green">
-            Enter the 4-digit code sent to your email
-          </p>
+          <p className="text-[15px] text-green">Enter the 4-digit code sent to your email</p>
         </header>
       </div>
 
@@ -185,10 +176,7 @@ const VerifyOTP = () => {
       {/* Login Link */}
       <div className="text-center text-sm text-[#1F3E72] my-6 dark:text-gray-300">
         Didn&apos;t receive code?{" "}
-        <Link
-          to={paths.login}
-          className="font-medium text-[#28B16D] hover:text-[#09C269]"
-        >
+        <Link to={paths.login} className="font-medium text-[#28B16D] hover:text-[#09C269]">
           Resend otp
         </Link>
       </div>

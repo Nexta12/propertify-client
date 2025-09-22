@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CATEGORY_COLORS, DEFAULT_BADGES } from "@utils/data";
 
@@ -124,18 +124,14 @@ export default function BadgesMarketplace({
 
             <div className="mt-4 flex items-center justify-between">
               <div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Cost
-                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Cost</div>
                 <div className="text-base font-semibold text-gray-900 dark:text-gray-100">
                   {currencySymbol}
                   {badge.cost.toLocaleString()}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 text-right">
-                  Duration
-                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 text-right">Duration</div>
                 <div className="text-base font-semibold text-gray-900 dark:text-gray-100">
                   {badge.durationDays} days
                 </div>
@@ -211,25 +207,19 @@ export default function BadgesMarketplace({
                       </div>
 
                       <div className="mt-4">
-                        <p className="text-gray-700 dark:text-gray-300">
-                          {selected.description}
-                        </p>
+                        <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
                       </div>
 
                       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
-                            Cost
-                          </div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">Cost</div>
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {currencySymbol}
                             {selected.cost.toLocaleString()}
                           </div>
                         </div>
                         <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
-                            Duration
-                          </div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">Duration</div>
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {selected.durationDays} days
                           </div>

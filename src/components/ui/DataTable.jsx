@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -17,9 +16,8 @@ const DataTable = ({
   enableSearch = true,
   tableTitle,
   addNewLink,
-  addNewText
+  addNewText,
 }) => {
- 
   const [sorting, setSorting] = useState([{ id: "createdAt", desc: true }]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({
@@ -34,17 +32,17 @@ const DataTable = ({
     const loadData = async () => {
       setIsLoading(true);
       try {
-        const sortField = sorting[0]?.id || 'createdAt';
-        const sortOrder = sorting[0]?.desc ? 'desc' : 'asc';
-        
+        const sortField = sorting[0]?.id || "createdAt";
+        const sortOrder = sorting[0]?.desc ? "desc" : "asc";
+
         const response = await fetchData({
           page: pagination.pageIndex + 1,
           limit: pagination.pageSize,
           sortField,
           sortOrder,
-          search: globalFilter
+          search: globalFilter,
         });
-        
+
         setData(response.data);
         setTotalCount(response.pagination?.total || 0);
       } catch (error) {
@@ -55,9 +53,12 @@ const DataTable = ({
     };
 
     // Add debounce to search
-    const timer = setTimeout(() => {
-      loadData();
-    }, globalFilter ? 500 : 0);
+    const timer = setTimeout(
+      () => {
+        loadData();
+      },
+      globalFilter ? 500 : 0
+    );
 
     return () => clearTimeout(timer);
   }, [pagination.pageIndex, pagination.pageSize, sorting, globalFilter, fetchData]);
@@ -82,44 +83,43 @@ const DataTable = ({
   });
 
   return (
-  <div className="mx-auto w-[calc(100vw-10px)] sm:w-[calc(100vw-100px)]  lg:w-[calc(100vw-420px)] ">
+    <div className="mx-auto w-[calc(100vw-10px)] sm:w-[calc(100vw-100px)]  lg:w-[calc(100vw-420px)] ">
       {/* Global Search */}
       <div className="bg-white dark:bg-gray-800 flex flex-col md:flex-row items-center md:items-center justify-between gap-4 p-4 w-full relative mb-2 rounded-lg shadow-sm">
         <div className="absolute top-2 left-5 m">
-          <HandleGoBackBtn /> 
+          <HandleGoBackBtn />
         </div>
         {/* Title */}
         <h2 className="w-full mt-5 md:w-auto text-center md:text-left text-xl font-semibold dark:text-white">
           {tableTitle}
         </h2>
-       <div className="flex items-center gap-x-4">
-        {/* Global Search */}
-        {enableSearch && (
-          <div className="relative  max-w-[300px] ">
-            <input
-              type="text"
-              value={globalFilter ?? ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="Search..."
-              className=" px-4 py-2 border border-gray-200 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8F5E9] dark:focus:ring-gray-600 focus:border-[#C8E6C9] dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-300 transition-all duration-200 text-xs"
-            />
-            <span className="absolute right-3 top-2.5 text-gray-400">
-              <FiSearch className="h-4 w-4" />
-            </span>
-          </div>
-        )}
+        <div className="flex items-center gap-x-4">
+          {/* Global Search */}
+          {enableSearch && (
+            <div className="relative  max-w-[300px] ">
+              <input
+                type="text"
+                value={globalFilter ?? ""}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                placeholder="Search..."
+                className=" px-4 py-2 border border-gray-200 dark:border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8F5E9] dark:focus:ring-gray-600 focus:border-[#C8E6C9] dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-300 transition-all duration-200 text-xs"
+              />
+              <span className="absolute right-3 top-2.5 text-gray-400">
+                <FiSearch className="h-4 w-4" />
+              </span>
+            </div>
+          )}
 
-        {/* Add New Button */}
-        {addNewLink && (
-          <Link
-            to={addNewLink}
-            className="w-full md:w-auto text-center p-2 bg-main-green text-white font-medium rounded-lg hover:bg-green-hover transition-colors duration-200 text-xs"
-          >
-           { addNewText || "+ Add New "} 
-          </Link>
-        )}
+          {/* Add New Button */}
+          {addNewLink && (
+            <Link
+              to={addNewLink}
+              className="w-full md:w-auto text-center p-2 bg-main-green text-white font-medium rounded-lg hover:bg-green-hover transition-colors duration-200 text-xs"
+            >
+              {addNewText || "+ Add New "}
+            </Link>
+          )}
         </div>
-
       </div>
 
       {/* Table */}
@@ -131,20 +131,13 @@ const DataTable = ({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    onClick={
-                      enableSorting
-                        ? header.column.getToggleSortingHandler()
-                        : undefined
-                    }
+                    onClick={enableSorting ? header.column.getToggleSortingHandler() : undefined}
                     className={`px-6 py-4 text-left text-[12px] font-bold text-primary-text dark:text-gray-300 uppercase tracking-wider whitespace-nowrap md:whitespace-normal ${
                       enableSorting ? "cursor-pointer select-none" : ""
                     }`}
                   >
                     <div className="flex items-center">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      {flexRender(header.column.columnDef.header, header.getContext())}
                       {enableSorting && (
                         <span className="ml-1">
                           {{
@@ -168,15 +161,12 @@ const DataTable = ({
               </tr>
             ) : table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
-                <tr 
-                  key={row.id} 
+                <tr
+                  key={row.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td 
-                      key={cell.id} 
-                      className="px-6 py-3 text-primary-text dark:text-gray-300"
-                    >
+                    <td key={cell.id} className="px-6 py-3 text-primary-text dark:text-gray-300">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
@@ -216,8 +206,7 @@ const DataTable = ({
           <span className="text-sm text-gray-600 dark:text-gray-300">
             Page{" "}
             <strong>
-              {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
+              {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
             </strong>
             {" | "}
             <span>Total: {totalCount} items</span>
@@ -228,10 +217,10 @@ const DataTable = ({
             <select
               value={pagination.pageSize}
               onChange={(e) => {
-                setPagination(prev => ({
+                setPagination((prev) => ({
                   ...prev,
                   pageSize: Number(e.target.value),
-                  pageIndex: 0 // Reset to first page
+                  pageIndex: 0, // Reset to first page
                 }));
               }}
               className="px-3 py-2 rounded-md bg-[#E8F5E9] dark:bg-gray-700 dark:text-white text-primary-text"

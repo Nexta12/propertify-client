@@ -26,8 +26,8 @@ export default defineConfig({
     },
   },
   preview: {
-    port: 3002,
-     allowedHosts: ['propertifynig.com']
+    port: 4003,
+     allowedHosts: ['propertifynigeria.com', 'www.propertifynigeria.com']
 
   },
  

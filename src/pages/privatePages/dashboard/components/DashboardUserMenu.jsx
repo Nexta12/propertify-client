@@ -1,4 +1,3 @@
-
 // import {
 //   FiUser,
 //   FiHome,
@@ -13,10 +12,6 @@
 // import useAuthStore from "@store/authStore";
 // import { useEffect, useRef, useState } from "react";
 
-
-
-
-
 // const DashboardUserMenu = () => {
 
 //  const { user, logout } = useAuthStore();
@@ -29,23 +24,22 @@
 //     setUserMenuDropdown(!userMenuDropdown);
 //   };
 
-  
 //     useEffect(() => {
 //       const handleClickOutside = (e) => {
 //         if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
 //           setUserMenuDropdown(false);
 //         }
 //       };
-  
+
 //       document.addEventListener("mousedown", handleClickOutside);
-  
+
 //       return () => {
 //         document.removeEventListener("mousedown", handleClickOutside);
 //       };
 //     }, []);
 
 //   return (
-   
+
 //           <div className="w-8 h-8 rounded-full bg-[#28B16D] flex items-center justify-center text-white">
 //             <div ref={userMenuRef} className="relative  ">
 //               <div

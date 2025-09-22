@@ -1,4 +1,3 @@
-
 import { paths } from "@routes/paths";
 import useAuthStore from "@store/authStore";
 import { useEffect, useState } from "react";
@@ -14,7 +13,6 @@ const PrivatePagesLayout = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, validateAuth } = useAuthStore();
   const [authLoading, setAuthLoading] = useState(false);
-
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -47,30 +45,23 @@ const PrivatePagesLayout = () => {
     );
   }
 
-
-
-
   if (isAuthenticated) {
     return (
-       <div className="bg-gray-100 p-0 m-0 dark:bg-gray-900">
+      <div className="bg-gray-100 p-0 m-0 dark:bg-gray-900">
         <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
-       <MobileHeader notifications={notifications} />
+        <MobileHeader notifications={notifications} />
         <DesktopTopbar notifications={notifications} />
         <div className="flex items-start gap-4 section-container pt-20 lg:pt-3 relative">
-           <div className="hidden lg:flex min-w-[300px] max-w-[300px] min-h-screen sticky top-5 ">
-             <SidebarNav />
-           </div>
-             
-             {/* <div className=" overflow-x-auto "> */}
-             <div className="flex-[2] sm:overflow-x-visible overflow-x-auto  scrollbar-hide min-h-screen   ">
-              <Outlet />
-             </div>
-        </div>
-      
-    
-    </div>
+          <div className="hidden lg:flex min-w-[300px] max-w-[300px] min-h-screen sticky top-5 ">
+            <SidebarNav />
+          </div>
 
-      
+          {/* <div className=" overflow-x-auto "> */}
+          <div className="flex-[2] sm:overflow-x-visible overflow-x-auto  scrollbar-hide min-h-screen   ">
+            <Outlet />
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -78,4 +69,3 @@ const PrivatePagesLayout = () => {
 };
 
 export default PrivatePagesLayout;
-

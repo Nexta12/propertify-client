@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
@@ -26,51 +26,49 @@ const Companies = () => {
   }));
 
   // Fetch companies from API
-  const fetchCompanies = async (pageNum, reset = false) => {
-    try {
-      setLoading(true);
-      const res = await apiClient.get(endpoints.getAllCompanies, {
-        params: {
-          page: pageNum,
-          limit,
-          search,
-          state: filterState,
-          category: filterCategory,
-          isVerified: filterVerified || undefined, // only send if true
-        },
-      });
+  const fetchCompanies = useCallback(
+    async (pageNum, reset = false) => {
+      try {
+        setLoading(true);
+        const res = await apiClient.get(endpoints.getAllCompanies, {
+          params: {
+            page: pageNum,
+            limit,
+            search,
+            state: filterState,
+            category: filterCategory,
+            isVerified: filterVerified || undefined,
+          },
+        });
 
-      const { data, pagination } = res.data.data;
-
-      setCompanies((prev) => (reset ? data : [...prev, ...data]));
-
-      // Check if more pages are available
-      setHasMore(pagination.page < pagination.totalPages);
-    } catch (error) {
-      toast.error(ErrorFormatter(error));
-    } finally {
-      setLoading(false);
-    }
-  };
+        const { data, pagination } = res.data.data;
+        setCompanies((prev) => (reset ? data : [...prev, ...data]));
+        setHasMore(pagination.page < pagination.totalPages);
+      } catch (error) {
+        toast.error(ErrorFormatter(error));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [search, filterState, filterCategory, filterVerified] // 👈 include filter deps
+  );
 
   // First load + whenever filters/search change
   useEffect(() => {
     setPage(1);
-    fetchCompanies(1, true); // reset list
-  }, [search, filterState, filterCategory, filterVerified]);
+    fetchCompanies(1, true);
+  }, [fetchCompanies]);
 
   // Load more when page changes
   useEffect(() => {
     if (page > 1) fetchCompanies(page);
-  }, [page]);
+  }, [page, fetchCompanies]);
 
   return (
     <div className=" section-container mx-auto bg-gray-100  flex flex-col lg:flex-row gap-6">
       {/* Left Sidebar */}
       <div className="w-full lg:w-1/4  bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md self-start lg:sticky top-5 space-y-3 ">
-        <h3 className="font-semibold text-lg mb-4 dark:text-gray-300 ">
-          Search & Filters
-        </h3>
+        <h3 className="font-semibold text-lg mb-4 dark:text-gray-300 ">Search & Filters</h3>
 
         {/* Search */}
         <EnhancedInput

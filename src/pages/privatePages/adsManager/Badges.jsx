@@ -1,11 +1,10 @@
-import React from "react";
 import BadgesMarketplace from "./BadgesMarket";
-
 
 const Badges = () => {
   // Handle badge purchase (integrate your API/checkout here)
   const handlePurchase = (badge) => {
-    console.log("Purchasing badge:", badge);
+    if (!badge) return;
+    // console.log("Purchasing badge:", badge);
     // TODO: Call backend or payment API
   };
 

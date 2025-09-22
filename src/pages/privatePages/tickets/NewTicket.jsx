@@ -12,7 +12,6 @@ import HeaderTitle from "@components/ui/HeaderTitle";
 import EnhancedEditor from "@components/ui/EnhancedTextarea";
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 
-
 const NewTicket = () => {
   const [subject, setSubject] = useState("");
   const [category, setCategory] = useState("");
@@ -35,24 +34,22 @@ const NewTicket = () => {
         subject,
         category,
         priority,
-        message : DOMPurify.sanitize(message.trim(), {
-                  ALLOWED_TAGS: [],
-                  ALLOWED_ATTR: [],
-                  KEEP_CONTENT: true,
-                }),
+        message: DOMPurify.sanitize(message.trim(), {
+          ALLOWED_TAGS: [],
+          ALLOWED_ATTR: [],
+          KEEP_CONTENT: true,
+        }),
       };
 
-      await apiClient.post(endpoints.createTicket, formData); 
+      await apiClient.post(endpoints.createTicket, formData);
       toast.success("Ticket submitted successfully!");
 
       setCategory("");
       setSubject("");
       setMessage("");
       setPriority("");
-      
     } catch (error) {
-      toast.error( ErrorFormatter(error) || "Failed to create support ticket."
-      );
+      toast.error(ErrorFormatter(error) || "Failed to create support ticket.");
     } finally {
       setIsLoading(false);
     }
@@ -60,9 +57,9 @@ const NewTicket = () => {
 
   return (
     <div className="max-w-6xl mx-auto  px-4 sm:px-6 lg:px-8">
-          <CompleteProfileCall />
-        <HandleGoBackBtn/>
-    
+      <CompleteProfileCall />
+      <HandleGoBackBtn />
+
       <HeaderTitle titleText="Submit a Support Ticket" />
 
       <form
@@ -84,7 +81,6 @@ const NewTicket = () => {
             value={category}
             options={supportCategoriesOptions}
             onChange={(e) => setCategory(e.target.value)}
-            
           />
         </div>
 
@@ -110,7 +106,7 @@ const NewTicket = () => {
         />
 
         {/* Optional file upload (replace with your FileUpload component if needed) */}
-     
+
         <div className="flex justify-end">
           <button
             type="submit"

@@ -52,11 +52,11 @@ const NewContact = () => {
       email: contactData.email,
       phone: contactData.phone,
       preferredContactMethod: contactData.preferredContactMethod,
-       notes: DOMPurify.sanitize(contactData.notes.trim(), {
-                ALLOWED_TAGS: [],
-                ALLOWED_ATTR: [],
-                KEEP_CONTENT: true,
-              }),
+      notes: DOMPurify.sanitize(contactData.notes.trim(), {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+        KEEP_CONTENT: true,
+      }),
     };
 
     try {
@@ -94,8 +94,8 @@ const NewContact = () => {
         <div className="w-full mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-           <HandleGoBackBtn/>
-             <HeaderTitle titleText="Add New Contact"/>
+            <HandleGoBackBtn />
+            <HeaderTitle titleText="Add New Contact" />
             <div className="w-8"></div> {/* Spacer for alignment */}
           </div>
 

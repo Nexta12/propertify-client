@@ -1,12 +1,6 @@
-
 import useAuthStore from "@store/authStore";
 import { useEffect, useRef, useState } from "react";
-import {
-  FiUser,
-  FiHome,
-  FiInbox,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiUser, FiHome, FiInbox, FiLogOut } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import Avater from "@assets/img/avater.png";
 import { paths } from "@routes/paths";
@@ -77,23 +71,19 @@ const MobileHeader = () => {
             {sidepanel ? <MdOutlineClose size={24} /> : <MdMenu size={24} />}
           </button>
 
-              {/* Light Mode Logo */}
-                <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
-          
-                {/* Dark Mode Logo */}
-                <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
+          {/* Light Mode Logo */}
+          <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
 
+          {/* Dark Mode Logo */}
+          <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
         </div>
 
         <div className="flex items-center space-x-3">
-         <Notification/>
+          <Notification />
 
           <div className="w-8 h-8 rounded-full bg-[#28B16D] flex items-center justify-center text-white">
             <div ref={userMenuRef} className="relative">
-              <div
-                className="relative cursor-pointer"
-                onClick={handleUserMenuToggle}
-              >
+              <div className="relative cursor-pointer" onClick={handleUserMenuToggle}>
                 <img
                   src={user?.profilePic || Avater}
                   alt="user"
@@ -113,7 +103,7 @@ const MobileHeader = () => {
               >
                 <div className="flex flex-col gap-1 py-1">
                   <Link
-                     to={`${paths.protected}/dashboard`}
+                    to={`${paths.protected}/dashboard`}
                     onClick={() => setUserMenuDropdown(false)}
                     className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
                   >

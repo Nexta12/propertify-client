@@ -1,32 +1,32 @@
-
-import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { FaBuilding, FaUsers, FaLightbulb } from "react-icons/fa";
 // import b2 from "@assets/img/b2.ppg"
 
-const TopVerifiedProfessionals = () => (
-  <div className="bg-bg-green p-4 rounded-lg shadow">
-    <h2 className="text-lg font-semibold mb-3 text-primary-text">Top Verified Professionals</h2>
-    {[1, 2, 3].map((i) => (
-      <div key={i} className="flex items-center gap-3 mb-3">
-        <img
-          src={`https://randomuser.me/api/portraits/men/${i + 30}.jpg`}
-          alt="Professional"
-          className="w-12 h-12 rounded-full object-cover"
-        />
-        <div>
-          <p className="font-medium text-primary-text">Dr. John Doe</p>
-          <p className="text-sm text-secondary">Medical Doctor - Lagos</p>
-        </div>
-        <RiVerifiedBadgeFill className="text-blue-500 text-lg ml-auto" />
-      </div>
-    ))}
-  </div>
-);
+// const TopVerifiedProfessionals = () => (
+//   <div className="bg-bg-green p-4 rounded-lg shadow">
+//     <h2 className="text-lg font-semibold mb-3 text-primary-text">Top Verified Professionals</h2>
+//     {[1, 2, 3].map((i) => (
+//       <div key={i} className="flex items-center gap-3 mb-3">
+//         <img
+//           src={`https://randomuser.me/api/portraits/men/${i + 30}.jpg`}
+//           alt="Professional"
+//           className="w-12 h-12 rounded-full object-cover"
+//         />
+//         <div>
+//           <p className="font-medium text-primary-text">Dr. John Doe</p>
+//           <p className="text-sm text-secondary">Medical Doctor - Lagos</p>
+//         </div>
+//         <RiVerifiedBadgeFill className="text-blue-500 text-lg ml-auto" />
+//       </div>
+//     ))}
+//   </div>
+// );
 
 const PromotedCompanies = () => (
   <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
-    <h2 className="text-lg font-semibold mb-3 text-primary-text dark:text-gray-300">Promoted Companies</h2>
+    <h2 className="text-lg font-semibold mb-3 text-primary-text dark:text-gray-300">
+      Promoted Companies
+    </h2>
     {["Zenith Consulting", "Innova Tech", "Justice & Co"].map((name) => (
       <div key={name} className="flex items-center gap-3 mb-2">
         <FaBuilding className="text-orange text-lg" />
@@ -49,7 +49,9 @@ const TipOfTheDay = () => (
 
 const PlatformStats = () => (
   <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
-    <h2 className="text-lg font-semibold mb-3 text-primary-text dark:text-gray-300">Platform Stats</h2>
+    <h2 className="text-lg font-semibold mb-3 text-primary-text dark:text-gray-300">
+      Platform Stats
+    </h2>
     <ul className="text-sm text-secondary space-y-1">
       <li>
         <FaUsers className="inline mr-1 text-main-green" /> 12,400+ Professionals

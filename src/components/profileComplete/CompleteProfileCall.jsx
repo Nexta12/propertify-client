@@ -33,9 +33,9 @@ const CompleteProfileCall = () => {
           Complete Your Profile
         </h2>
         <p className="text-gray-600 mb-4 text-sm dark:text-gray-100">
-          We noticed your profile is missing some important information.
-          Completing your profile helps you interact better with the platform,
-          like listing properties, posts, posting comments, messages and more.
+          We noticed your profile is missing some important information. Completing your profile
+          helps you interact better with the platform, like listing properties, posts, posting
+          comments, messages and more.
         </p>
         <div className="flex justify-center gap-4">
           <button

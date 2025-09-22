@@ -1,5 +1,5 @@
-import UserProfile from "@components/userProfile/UserProfile"
+import UserProfile from "@components/userProfile/UserProfile";
 
-const Profile = () => <UserProfile/>
+const Profile = () => <UserProfile />;
 
-export default Profile
+export default Profile;

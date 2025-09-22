@@ -52,9 +52,7 @@ const CreatePostToggler = ({ setopenPostCreator }) => {
           className="flex items-center gap-2 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-lg transition"
         >
           <FaPlus className="w-5 h-5 text-orange hidden md:block" />
-          <span className="text-sm font-medium whitespace-nowrap text-orange ">
-            List Property
-          </span>
+          <span className="text-sm font-medium whitespace-nowrap text-orange ">List Property</span>
         </button>
       </div>
     </div>

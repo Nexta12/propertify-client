@@ -10,12 +10,8 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { toast } from "react-toastify";
 import { getLoggedInUserPath } from "@utils/helper";
 import useAuthStore from "@store/authStore";
-import { PuffLoader } from "react-spinners";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
-import {
-  removeLocalStorageItem,
-  setLocalStorageItem,
-} from "@utils/localStorage";
+import { removeLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import GreenLogo from "@assets/img/green-logo.png";
 import { httpError } from "@pages/errorPages/ErrorCodes";
 import FullPageLoader from "./FullPageLoader";
@@ -60,20 +56,17 @@ const ResendOTP = () => {
       }
     } catch (error) {
       toast.error(ErrorFormatter(error));
-     
 
-      if(ErrorFormatter(error) == httpError.ValidOtp){
-          setLocalStorageItem("otpEmail", email);
+      if (ErrorFormatter(error) == httpError.ValidOtp) {
+        setLocalStorageItem("otpEmail", email);
         setLocalStorageItem("otp", true);
         setTimeout(() => {
           navigate(paths.verifyOTP);
         }, 3000);
-      }else{
+      } else {
         removeLocalStorageItem("userEmail", email);
-      removeLocalStorageItem("showOtpPage", true);
+        removeLocalStorageItem("showOtpPage", true);
       }
-
-
     } finally {
       setIsSubmitting(false);
     }
@@ -98,9 +91,9 @@ const ResendOTP = () => {
     }
   }, [user, isAuthenticated, navigate]);
 
- if (authLoading) {
-  return <FullPageLoader />;
-}
+  if (authLoading) {
+    return <FullPageLoader />;
+  }
 
   if (!isAuthenticated) {
     return (
@@ -115,9 +108,7 @@ const ResendOTP = () => {
               <img src={GreenLogo} alt="" width={140} />
             </Link>
           </div>
-          <p className="text-[#8E9395] mt-1">
-            Enter your Email to receive new OTP
-          </p>
+          <p className="text-[#8E9395] mt-1">Enter your Email to receive new OTP</p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -139,12 +130,7 @@ const ResendOTP = () => {
 
           {/* Register Button */}
 
-          <Button
-            variant="success"
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-          >
+          <Button variant="success" type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Please Wait..." : "Submit"}
           </Button>
         </form>

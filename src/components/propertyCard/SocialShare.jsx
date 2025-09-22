@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
-import {
-  FiShare2,
-} from "react-icons/fi";
+import { FiShare2 } from "react-icons/fi";
 
 const SocialShare = () => {
   // Social Share handler
@@ -26,45 +24,43 @@ const SocialShare = () => {
   };
 
   return (
-
     <div className="relative">
-  <button
-    onClick={handleShareButtons}
-    className="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400 rounded-full hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-x-1 text-sm"
-  >
-    <FiShare2 />
-    Share
-  </button>
+      <button
+        onClick={handleShareButtons}
+        className="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400 rounded-full hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-x-1 text-sm"
+      >
+        <FiShare2 />
+        Share
+      </button>
 
-  {/* Simple share options dropdown */}
-  <div
-    className={`flex gap-6 bg-white dark:bg-gray-800 dark:border-gray-600 border p-2 absolute right-0 bottom-full mb-2 w-48 rounded-md shadow-lg py-2 transform ${
-      showShareButtons ? "translate-x-0" : "hidden"
-    } transition-transform duration-300 ease-in-out`}
-  >
-    <div className="flex flex-wrap gap-3">
-      <button
-        onClick={() => handleShare("facebook")}
-        className="p-2 text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+      {/* Simple share options dropdown */}
+      <div
+        className={`flex gap-6 bg-white dark:bg-gray-800 dark:border-gray-600 border p-2 absolute right-0 bottom-full mb-2 w-48 rounded-md shadow-lg py-2 transform ${
+          showShareButtons ? "translate-x-0" : "hidden"
+        } transition-transform duration-300 ease-in-out`}
       >
-        <FaFacebook />
-      </button>
-      <button
-        onClick={() => handleShare("twitter")}
-        className="p-2 text-blue-400 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
-      >
-        <FaTwitter />
-      </button>
-      <button
-        onClick={() => handleShare("linkedin")}
-        className="p-2 text-blue-700 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
-      >
-        <FaLinkedin />
-      </button>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => handleShare("facebook")}
+            className="p-2 text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+          >
+            <FaFacebook />
+          </button>
+          <button
+            onClick={() => handleShare("twitter")}
+            className="p-2 text-blue-400 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+          >
+            <FaTwitter />
+          </button>
+          <button
+            onClick={() => handleShare("linkedin")}
+            className="p-2 text-blue-700 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+          >
+            <FaLinkedin />
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
   );
 };
 

@@ -1,4 +1,3 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DeleteModal from "@components/deleteModal/DeleteModal";
@@ -34,14 +33,7 @@ const Tickets = () => {
     verifyAuth();
   }, [validateAuth]);
 
-
-  const fetchTickets = async ({
-    page,
-    limit,
-    sortField,
-    sortOrder,
-    search,
-  }) => {
+  const fetchTickets = async ({ page, limit, sortField, sortOrder, search }) => {
     if (!user?.id) return { data: [], pagination: { total: 0 } };
 
     try {
@@ -80,115 +72,108 @@ const Tickets = () => {
   if (authLoading || !user) {
     return (
       <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
-        <PuffLoader
-          height="80"
-          width="80"
-          radius={1}
-          color="#4866ff"
-          aria-label="puff-loading"
-        />
+        <PuffLoader height="80" width="80" radius={1} color="#4866ff" aria-label="puff-loading" />
       </div>
     );
   }
 
- const columns = [
-
-  {
-    accessorKey: "fullName",
-    header: "Name",
-    cell: ({ row }) => {
-      const { userId } = row.original;
-      return (
+  const columns = [
+    {
+      accessorKey: "fullName",
+      header: "Name",
+      cell: ({ row }) => {
+        const { userId } = row.original;
+        return (
+          <span className="whitespace-nowrap capitalize">
+            {userId?.firstName || "NA"} {userId?.lastName || ""}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "subject",
+      header: "Subject",
+      cell: ({ row }) => (
         <span className="whitespace-nowrap capitalize">
-          {userId?.firstName || "NA"} {userId?.lastName || ""}
+          {truncate(row.original.subject, { length: 15 })}
         </span>
-      );
+      ),
     },
-  },
-  {
-    accessorKey: "subject",
-    header: "Subject",
-    cell: ({ row }) => (
-      <span className="whitespace-nowrap capitalize">
-        {truncate(row.original.subject, { length: 15 })}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => row.original.userId?.email || "N/A",
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => formatTitleCase(row.original.category),
-  },
-  {
-    accessorKey: "priority",
-    header: "Priority",
-    cell: ({ row }) => {
-      const priority = row.original.priority.toLowerCase();
-      console.log(priority)
-      const colors = {
-        urgent: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
-        high: "bg-orange text-white dark:bg-orange-800 dark:text-orange-100",
-        medium: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
-        low: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
-      };
-      const colorClass = colors[priority] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
-      return (
-        <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}>
-          {priority}
-        </span>
-      );
+    {
+      accessorKey: "email",
+      header: "Email",
+      cell: ({ row }) => row.original.userId?.email || "N/A",
     },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.original.status.toLowerCase();
-      const colors = {
-        closed: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
-        "in-progress": "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100",
-        open: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
-        resolved: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
-      };
-      const colorClass = colors[status] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
-      return (
-        <span
-          className={`text-xs px-2 py-1 rounded-full font-medium capitalize whitespace-nowrap ${colorClass}`}
-        >
-          {status}
-        </span>
-      );
+    {
+      accessorKey: "category",
+      header: "Category",
+      cell: ({ row }) => formatTitleCase(row.original.category),
     },
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => (
-      <div className="flex gap-2">
-        <button
-          onClick={() => handleView(row.original)}
-          className="px-2 py-1 text-xs text-main-green bg-green-100 dark:bg-green-900 dark:text-green-300 rounded hover:bg-green-200 dark:hover:bg-green-800"
-        >
-          View
-        </button>
-        {user.role === "admin" && (
-          <button
-            onClick={() => handleDelete(row.original)}
-            className="px-2 py-1 text-xs text-red-500 dark:text-red-300 rounded hover:bg-red-100 dark:hover:bg-red-800"
+    {
+      accessorKey: "priority",
+      header: "Priority",
+      cell: ({ row }) => {
+        const priority = row.original.priority.toLowerCase();
+        const colors = {
+          urgent: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
+          high: "bg-orange text-white dark:bg-orange-800 dark:text-orange-100",
+          medium: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+          low: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+        };
+        const colorClass =
+          colors[priority] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+        return (
+          <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${colorClass}`}>
+            {priority}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.original.status.toLowerCase();
+        const colors = {
+          closed: "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-100",
+          "in-progress": "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100",
+          open: "bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-100",
+          resolved: "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-100",
+        };
+        const colorClass =
+          colors[status] || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-100";
+        return (
+          <span
+            className={`text-xs px-2 py-1 rounded-full font-medium capitalize whitespace-nowrap ${colorClass}`}
           >
-            <FiTrash2 />
+            {status}
+          </span>
+        );
+      },
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleView(row.original)}
+            className="px-2 py-1 text-xs text-main-green bg-green-100 dark:bg-green-900 dark:text-green-300 rounded hover:bg-green-200 dark:hover:bg-green-800"
+          >
+            View
           </button>
-        )}
-      </div>
-    ),
-  },
-];
-
+          {user.role === "admin" && (
+            <button
+              onClick={() => handleDelete(row.original)}
+              className="px-2 py-1 text-xs text-red-500 dark:text-red-300 rounded hover:bg-red-100 dark:hover:bg-red-800"
+            >
+              <FiTrash2 />
+            </button>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const handleView = (data) => {
     navigate(`${paths.protected}/tickets/${data._id}`);
@@ -222,29 +207,27 @@ const Tickets = () => {
         message="Are you sure you want to delete this ticket?"
       />
 
-      {user.role !== 'admin' ? (
-
-           <DataTable
-        columns={columns}
-        fetchData={fetchTickets}
-        enableSorting={true}
-        enableSearch={true}
-        tableTitle="Support Tickets"
-        addNewLink={`${paths.protected}/tickets/create`}
-         addNewText="Create New Ticket"
-      />
-       ): ( <DataTable
-        columns={columns}
-        fetchData={fetchTickets}
-        enableSorting={true}
-        enableSearch={true}
-        tableTitle="Support Tickets"
-     
-      /> )}
-   
+      {user.role !== "admin" ? (
+        <DataTable
+          columns={columns}
+          fetchData={fetchTickets}
+          enableSorting={true}
+          enableSearch={true}
+          tableTitle="Support Tickets"
+          addNewLink={`${paths.protected}/tickets/create`}
+          addNewText="Create New Ticket"
+        />
+      ) : (
+        <DataTable
+          columns={columns}
+          fetchData={fetchTickets}
+          enableSorting={true}
+          enableSearch={true}
+          tableTitle="Support Tickets"
+        />
+      )}
     </section>
   );
 };
 
 export default Tickets;
-

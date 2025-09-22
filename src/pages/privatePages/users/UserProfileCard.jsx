@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  FiMapPin,
-  FiMail,
-  FiPhone,
-  FiMessageSquare,
-  FiGlobe,
-  FiUser,
-} from "react-icons/fi";
+import { FiMapPin, FiMail, FiPhone, FiMessageSquare, FiGlobe, FiUser } from "react-icons/fi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
@@ -23,9 +16,7 @@ const UserProfileCard = ({ currentUser }) => {
   useEffect(() => {
     const fetchUProperties = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.fetchUserProperties}/${currentUser.slug}`
-        );
+        const res = await apiClient.get(`${endpoints.fetchUserProperties}/${currentUser.slug}`);
         setPropertyData(res.data.data);
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -57,10 +48,10 @@ const UserProfileCard = ({ currentUser }) => {
                 currentUser.accountStatus === "active"
                   ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                   : currentUser.userStatus === "suspended"
-                  ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                  : currentUser.userStatus === "inactive"
-                  ? "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                  : ""
+                    ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                    : currentUser.userStatus === "inactive"
+                      ? "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                      : ""
               }`}
             >
               {currentUser.accountStatus}
@@ -152,19 +143,17 @@ const UserProfileCard = ({ currentUser }) => {
       <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
         <div className="grid grid-cols-3 divide-x divide-gray-200 dark:divide-gray-700 text-center w-full overflow-x-auto">
           <div className="px-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Total Posts
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total Posts</p>
             <p className="font-semibold text-gray-800 dark:text-white">
               {propertyData.length || 0}
             </p>
           </div>
           <div className="px-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Last Login
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Last Login</p>
             <p className="font-semibold text-gray-800 dark:text-white capitalize text-[12px] ">
-               {currentUser.lastLogin ? formatDistanceToNow(new Date(currentUser.lastLogin), { addSuffix: true }) : "NA"}
+              {currentUser.lastLogin
+                ? formatDistanceToNow(new Date(currentUser.lastLogin), { addSuffix: true })
+                : "NA"}
             </p>
           </div>
           <div className="px-2">

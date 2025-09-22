@@ -1,4 +1,3 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
@@ -31,12 +30,10 @@ const PaymentSuccess = () => {
         );
         setPaymentStatus(res.data.data.data);
 
-         if (res.data.data.data === 'success') {
-          
-           setTimeout(()=>{
-               navigate(`${paths.protected}/ads/all`);
-           }, 3000)
-        
+        if (res.data.data.data === "success") {
+          setTimeout(() => {
+            navigate(`${paths.protected}/ads/all`);
+          }, 3000);
         }
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -56,22 +53,18 @@ const PaymentSuccess = () => {
   if (loading) return <PuffLoader />;
 
   // Render failed transaction page if payment is not successful
-  if (paymentStatus !== 'success') {
+  if (paymentStatus !== "success") {
     return (
       <section className="">
         <div className="h-screen flex justify-center items-center bg-gradient-to-br from-black to-red-500 ">
           {/* Overlay */}
           <div className="absolute w-full h-full bg-black/50"></div>
-          
+
           {/* Failed Transaction Card */}
           <div className="relative z-10 bg-white bg-opacity-90 backdrop-blur-lg shadow-2xl p-8 rounded-2xl text-center max-w-md w-full">
             <FaTimesCircle className="text-red-500 text-6xl mx-auto animate-pulse" />
-            <h2 className="text-2xl font-semibold text-gray-800 mt-4">
-              Transaction Failed
-            </h2>
-            <p className="text-gray-600 mt-2">
-              Your payment was not successful. Please try again.
-            </p>
+            <h2 className="text-2xl font-semibold text-gray-800 mt-4">Transaction Failed</h2>
+            <p className="text-gray-600 mt-2">Your payment was not successful. Please try again.</p>
 
             {/* Additional Info */}
             <div className="mt-6 border-t border-gray-300 pt-4">
@@ -91,13 +84,11 @@ const PaymentSuccess = () => {
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-black to-accent ">
         {/* Overlay */}
         <div className="absolute w-full h-full bg-black/50"></div>
-        
+
         {/* Success Card */}
         <div className="relative z-10 bg-white bg-opacity-90 backdrop-blur-lg shadow-2xl p-8 rounded-2xl text-center max-w-md w-full">
           <FaCheckCircle className="text-green-500 text-6xl mx-auto animate-bounce" />
-          <h2 className="text-2xl font-semibold text-gray-800 mt-4">
-            Reservation Successful
-          </h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mt-4">Reservation Successful</h2>
           <p className="text-gray-600 mt-2">
             Your booking has been confirmed. Thank you for choosing us!
           </p>
@@ -112,6 +103,6 @@ const PaymentSuccess = () => {
       </div>
     </section>
   );
-}
+};
 
 export default PaymentSuccess;

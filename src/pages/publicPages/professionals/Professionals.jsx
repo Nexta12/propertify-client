@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ProfessionalCard from "./ProfessionalCard";
 import ProfessionalFilters from "./ProfessionalFilters";
 import RightSidebar from "./ProfRightSidebar";
-import { MiniTips, PopularTags } from "./PopularTags";
+import { MiniTips } from "./PopularTags";
 import MobileFootermenu from "../properties/components/mobileFooterMenu/MobileFootermenu";
 import MobileSearchBar from "../properties/components/filters/MobileSearchBar";
 import { apiClient } from "@api/apiClient";
@@ -31,14 +31,12 @@ const Professionals = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const containerRef = useRef(null);
 
-
   // Handle window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
 
   // Fetch properties
   const fetchProfessionals = useCallback(
@@ -48,14 +46,13 @@ const Professionals = () => {
       setLoading(true);
       try {
         const params = {
-         currentPage,
+          currentPage,
+        };
 
-        }
-
-      // if (filters.name) params.name = filters.name;
-      if (filters.profession) params.profession = filters.profession;
-      if (filters.state) params.state = filters.state;
-      if (filters.searchTerm) params.searchTerm = filters.searchTerm;
+        // if (filters.name) params.name = filters.name;
+        if (filters.profession) params.profession = filters.profession;
+        if (filters.state) params.state = filters.state;
+        if (filters.searchTerm) params.searchTerm = filters.searchTerm;
 
         const res = await apiClient.get(endpoints.fetchAllProfessionals, { params });
         setProfessionals((prev) => {
@@ -63,11 +60,10 @@ const Professionals = () => {
           return isInitial
             ? newItems
             : [...prev, ...newItems].filter(
-                (p, i, self) =>
-                  i === self.findIndex((item) => item._id === p._id)
+                (p, i, self) => i === self.findIndex((item) => item._id === p._id)
               );
         });
-        
+
         setHasMore(
           res.data.data.pagination.currentPage * res.data.data.pagination.limit <
             res.data.data.pagination.total
@@ -122,95 +118,98 @@ const Professionals = () => {
     );
   }, [loading, hasMore]);
 
-   // Shuffle posts Locally
-      useEffect(() => {
-      if (professionals.length === 0) return;
-    
-      const interval = setInterval(() => {
-        setProfessionals((prev) => shufflePostsArray(prev));
-      }, 5 * 60 * 1000); // every 5 minutes
-    
-      return () => clearInterval(interval);
-    }, [professionals.length]);
+  // Shuffle posts Locally
+  useEffect(() => {
+    if (professionals.length === 0) return;
 
+    const interval = setInterval(
+      () => {
+        setProfessionals((prev) => shufflePostsArray(prev));
+      },
+      5 * 60 * 1000
+    ); // every 5 minutes
+
+    return () => clearInterval(interval);
+  }, [professionals.length]);
 
   return (
- 
     <div className="bg-gray-100  dark:bg-gray-900 min-h-screen">
-  {/* <Breadcrumb /> */}
+      {/* <Breadcrumb /> */}
 
-  <main className="section-container !pt-2 flex items-start gap-x-4 relative">
-    {/* Left sidebar */}
-    <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white dark:bg-gray-800 p-4 space-y-6">
-      <ProfessionalFilters filters={filters} setFilters={setFilters} />
-      {/* <PopularTags /> */}
-      <TipsCard title={`👍 Search Tips`} tips={[
-        "Use specific names to narrow results.",
-        "Filter by state if you know the location.",
-      ]}/>
-    </div>
-
-    {/* Professionals Card */}
-    <div className="w-full lg:w-[calc(100%-512px)] mb-16">
-      {initialLoad && professionals.length === 0 ? (
-        <div className="flex items-center justify-center py-8 w-full">
-          <PuffLoader color="#3B82F6" size={60} />
-        </div>
-      ) : professionals.length > 0 ? (
-        <div ref={containerRef}>
-          <Virtuoso
-            data={professionals}
-            totalCount={professionals.length}
-            itemContent={(index) => (
-              <div className="mb-4">
-                <ProfessionalCard key={index} user={professionals[index]} />
-              </div>
-            )}
-            endReached={loadMore}
-            overscan={isMobile ? 200 : 800}
-            components={{ Footer: CustomFooter }}
-            useWindowScroll
-            style={{ overflow: "visible" }}
-            scrollSeekConfiguration={{
-              enter: (velocity) => velocity > 1000,
-              exit: (velocity) => velocity < 100,
-            }}
+      <main className="section-container !pt-2 flex items-start gap-x-4 relative">
+        {/* Left sidebar */}
+        <div className="hidden lg:block w-1/4 sticky top-20 h-[calc(100vh-7rem)] overflow-y-auto pr-2 bg-white dark:bg-gray-800 p-4 space-y-6">
+          <ProfessionalFilters filters={filters} setFilters={setFilters} />
+          {/* <PopularTags /> */}
+          <TipsCard
+            title={`👍 Search Tips`}
+            tips={[
+              "Use specific names to narrow results.",
+              "Filter by state if you know the location.",
+            ]}
           />
         </div>
-      ) : (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-          No properties found matching your criteria
+
+        {/* Professionals Card */}
+        <div className="w-full lg:w-[calc(100%-512px)] mb-16">
+          {initialLoad && professionals.length === 0 ? (
+            <div className="flex items-center justify-center py-8 w-full">
+              <PuffLoader color="#3B82F6" size={60} />
+            </div>
+          ) : professionals.length > 0 ? (
+            <div ref={containerRef}>
+              <Virtuoso
+                data={professionals}
+                totalCount={professionals.length}
+                itemContent={(index) => (
+                  <div className="mb-4">
+                    <ProfessionalCard key={index} user={professionals[index]} />
+                  </div>
+                )}
+                endReached={loadMore}
+                overscan={isMobile ? 200 : 800}
+                components={{ Footer: CustomFooter }}
+                useWindowScroll
+                style={{ overflow: "visible" }}
+                scrollSeekConfiguration={{
+                  enter: (velocity) => velocity > 1000,
+                  exit: (velocity) => velocity < 100,
+                }}
+              />
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              No properties found matching your criteria
+            </div>
+          )}
         </div>
-      )}
-    </div>
 
-    {/* Right sidebar */}
-    <div className="hidden lg:block w-1/4 sticky top-20">
-      <div className="relative">
-        <div className="w-full space-y-6 sticky top-0">
-          <RightSidebar />
+        {/* Right sidebar */}
+        <div className="hidden lg:block w-1/4 sticky top-20">
+          <div className="relative">
+            <div className="w-full space-y-6 sticky top-0">
+              <RightSidebar />
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
+
+      <MobileSearchBar
+        showMobileSearch={showProfessionalsSearch}
+        setShowMobileSearch={setShowProfessionalsSearch}
+      >
+        <ProfessionalFilters
+          filters={filters}
+          setFilters={setFilters}
+          hideModal={setShowProfessionalsSearch}
+        />
+        <div className="mt-6">
+          <MiniTips />
+        </div>
+      </MobileSearchBar>
+
+      <MobileFootermenu onSearchClick={() => setShowProfessionalsSearch(true)} />
     </div>
-  </main>
-
-  <MobileSearchBar
-    showMobileSearch={showProfessionalsSearch}
-    setShowMobileSearch={setShowProfessionalsSearch}
-  >
-    <ProfessionalFilters
-      filters={filters}
-      setFilters={setFilters}
-      hideModal={setShowProfessionalsSearch}
-    />
-    <div className="mt-6">
-      <MiniTips />
-    </div>
-  </MobileSearchBar>
-
-  <MobileFootermenu onSearchClick={() => setShowProfessionalsSearch(true)} />
-</div>
-
   );
 };
 

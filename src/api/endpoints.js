@@ -31,10 +31,9 @@ export const endpoints = {
   recentlyViewdProperties: "/api/property/recentlyViewed",
   fetchAllProperties: "/api/property/getAll",
   deleteListing: "/api/property/deleteProperty",
-  deleteMediaFileFromCloud: '/api/property/deleteFromCloud',
+  deleteMediaFileFromCloud: "/api/property/deleteFromCloud",
   trackViewNoClicks: "/api/property/trackViewNoClicks",
   getCompanyProperties: "/api/property/companyProperties",
-
 
   // Messaging
   //  contact from
@@ -42,15 +41,14 @@ export const endpoints = {
   replyContactFormMessage: "/api/contact-form/reply-message",
   deleteContactFormMessage: "/api/contact-form/delete-message",
 
-   //  Direct Message (DM)
+  //  Direct Message (DM)
   sendDirectMessage: "/api/direct-message/send-message",
   deleteDirectMessage: "/api/direct-message/delete-message",
   replyDirectMessage: "/api/direct-message/reply-message",
-  
+
   // Bulk Message
   sendBulkMessage: "/api/bulk-message/send-bulk-message",
   deleteBulkMessage: "/api/bulk-message/delete",
-
 
   fetchUserMessages: "/api/direct-message/user-message",
   getSentMessages: "/api/direct-message/sent-messages",
@@ -84,7 +82,6 @@ export const endpoints = {
   getAllRevenueStat: "/api/stats/ads-revenue",
   getAdsStats: "/api/stats/ads-status",
 
-
   // Notifications
   getUserNotifications: "/api/notification",
   markNotificationAsSeen: "/api/notification/read",
@@ -105,7 +102,7 @@ export const endpoints = {
   deleteAds: "/api/promotion/delete",
   updateAdsStatus: "/api/promotion/update",
   initializePayment: "/api/promotion/card-payment",
-  ConfirmPayment: '/api/promotion/paystack-callback',
+  ConfirmPayment: "/api/promotion/paystack-callback",
 
   // Widget Posts
   fetchWidgetPosts: "/api/property/widget-post",
@@ -121,8 +118,7 @@ export const endpoints = {
   fetchAllChats: "/api/chat-messages/all",
   deleteChatHistory: "/api/chat-messages/delete",
   fetchCurrentChatById: "/api/chat-messages/current-chat",
-  fetchConversations:"/api/chat-conversation/all",
-
+  fetchConversations: "/api/chat-conversation/all",
 
   // Company Manager
   createCompany: "/api/company/create",
@@ -131,13 +127,11 @@ export const endpoints = {
   updateCompany: "/api/company/update",
   getAllCompanies: "/api/company/getAll",
 
-
-  // Verification 
+  // Verification
 
   verificationRequest: "/api/verify/user",
   getVerificaionStatus: "/api/verify/status",
   getAllVerificationRequests: "/api/verify/getAll",
   getVerificationById: "/api/verify/getOne",
   verifyUser: "/api/verify/admin-verify",
- 
 };

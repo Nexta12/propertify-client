@@ -6,11 +6,9 @@ import { paths } from "@routes/paths";
 import { formatTitleCase, MessageEncoder } from "@utils/helper";
 import LogoPlaceHolder from "@assets/img/your-logo.webp";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import useAuthStore from "@store/authStore";
 
 const OwnerContact = ({ property }) => {
   const isCompany = !!property?.postAs; // check if postAs is set
-  const { user } = useAuthStore()
 
   const profileImage = isCompany
     ? property.postAs.companyLogo || LogoPlaceHolder
@@ -20,16 +18,11 @@ const OwnerContact = ({ property }) => {
     ? property.postAs.companyName
     : ` ${property?.owner?.firstName || ""} ${property?.owner?.lastName || ""} `;
 
-  const isVerified = isCompany
-    ? property?.postAs?.isVerified
-    : property?.owner?.isVerifiedUser;
+  const isVerified = isCompany ? property?.postAs?.isVerified : property?.owner?.isVerifiedUser;
 
   const displaySubText = isCompany
     ? formatTitleCase(property?.postAs?.category)
     : formatTitleCase(property?.owner?.profession);
-
-     
-
 
   const profileLink = isCompany
     ? `${paths.companies}/${property.postAs.slug}`
@@ -37,9 +30,7 @@ const OwnerContact = ({ property }) => {
 
   const phone = isCompany ? property?.postAs?.phones[0] : property.owner.phone;
   const email = isCompany ? property.postAs.email : property.owner?.email;
-  const whatsapp = isCompany
-    ? property.postAs.whatsapp
-    : property.owner.whatsapp;
+  const whatsapp = isCompany ? property.postAs.whatsapp : property.owner.whatsapp;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
@@ -55,15 +46,10 @@ const OwnerContact = ({ property }) => {
           <h4 className="font-medium text-gray-800 dark:text-gray-100 flex items-center">
             {displayName}
             {isVerified && (
-              <RiVerifiedBadgeFill
-                className="ml-1 text-blue-500"
-                title="Duly Verified user"
-              />
+              <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
             )}
           </h4>
-          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
-            {displaySubText}
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{displaySubText}</p>
           <Link
             to={profileLink}
             className="text-[12px] text-blue-500 dark:text-blue-400 capitalize italic"
@@ -86,9 +72,7 @@ const OwnerContact = ({ property }) => {
         )}
 
         <a
-          href={`mailto:${
-            email || import.meta.env.VITE_OFFICIAL_EMAIL
-          }?subject=Regarding ${
+          href={`mailto:${email || import.meta.env.VITE_OFFICIAL_EMAIL}?subject=Regarding ${
             property.title
           }&body=Hello, I'm interested in...`}
           className="flex items-center justify-center p-2 bg-yellow-50 dark:bg-yellow-800 text-orange dark:text-yellow-200 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-700 transition-colors text-sm"

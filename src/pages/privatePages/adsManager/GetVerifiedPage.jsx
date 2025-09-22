@@ -27,9 +27,7 @@ const GetVerifiedPage = () => {
   useState(() => {
     const fetchVerifyStatus = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.getVerificaionStatus}/${user.id}`
-        );
+        const res = await apiClient.get(`${endpoints.getVerificaionStatus}/${user.id}`);
         setVerificationStatus(res.data.data);
         setVerfying(false);
       } catch (error) {
@@ -64,9 +62,7 @@ const GetVerifiedPage = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     setCityOptions(
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -235,8 +231,8 @@ const GetVerifiedPage = () => {
               🎉 Application Received!
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 max-w-lg mx-auto">
-              Your application for verification has been received and is under
-              review. You will be notified once the status changes.
+              Your application for verification has been received and is under review. You will be
+              notified once the status changes.
             </p>
           </div>
         ) : verificationStatus?.status == "pending" ? (
@@ -245,8 +241,8 @@ const GetVerifiedPage = () => {
               🎉 Application Under Review!
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 max-w-lg mx-auto">
-              Your application for verification is still under review. You will
-              be notified once a decision has been made about your request.
+              Your application for verification is still under review. You will be notified once a
+              decision has been made about your request.
             </p>
           </div>
         ) : verificationStatus?.status == "approved" ? (
@@ -255,14 +251,13 @@ const GetVerifiedPage = () => {
               🎉 Congratulations!
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 max-w-lg mx-auto">
-              You have been successfully verified. Please note that this
-              verification may be revoked if we detect suspicious activity on
-              your account or if multiple users consistently report your posts
-              or properties as fraudulent.
+              You have been successfully verified. Please note that this verification may be revoked
+              if we detect suspicious activity on your account or if multiple users consistently
+              report your posts or properties as fraudulent.
             </p>
             <p className="text-gray-600 dark:text-gray-300 mt-3 max-w-lg mx-auto">
-              You can also explore and purchase badges to add extra trust to
-              your posts and properties.
+              You can also explore and purchase badges to add extra trust to your posts and
+              properties.
             </p>
           </div>
         ) : (
@@ -273,8 +268,8 @@ const GetVerifiedPage = () => {
                 Submit Your Documents for Verification
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                Please provide valid information and upload clear copies of your
-                documents. Your details will be reviewed for approval.
+                Please provide valid information and upload clear copies of your documents. Your
+                details will be reviewed for approval.
               </p>
             </div>
 
@@ -314,38 +309,26 @@ const GetVerifiedPage = () => {
                   value={verificationData.city}
                   onChange={handleChange}
                   options={cityOptions}
-                  placeholder={
-                    verificationData.state
-                      ? "Select city"
-                      : "Select state first"
-                  }
+                  placeholder={verificationData.state ? "Select city" : "Select state first"}
                   disabled={!verificationData.state}
                 />
               </div>
 
               {/* Documents */}
               <div className="space-y-2">
-                <p className="font-medium dark:text-gray-200">
-                  Identification*
-                </p>
+                <p className="font-medium dark:text-gray-200">Identification*</p>
                 {verificationData.documents.map((doc, idx) => (
                   <div
                     key={idx}
                     className="flex flex-col md:flex-row items-start md:items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
                   >
                     {doc.url ? (
-                      <img
-                        className="w-14 h-14"
-                        src={doc.url}
-                        alt={doc.title || "document"}
-                      />
+                      <img className="w-14 h-14" src={doc.url} alt={doc.title || "document"} />
                     ) : (
                       <FileUpload
                         ref={(el) => (certificateRefs.current[idx] = el)}
                         value={doc.file}
-                        onChange={(file) =>
-                          handleDocumentsChange(idx, "file", file)
-                        }
+                        onChange={(file) => handleDocumentsChange(idx, "file", file)}
                         accept="image/*,application/pdf"
                         multiple={false}
                         className="w-full md:w-1/3"
@@ -356,9 +339,7 @@ const GetVerifiedPage = () => {
                     <EnhancedInput
                       name={`document-title-${idx}`}
                       value={doc.title}
-                      onChange={(e) =>
-                        handleDocumentsChange(idx, "title", e.target.value)
-                      }
+                      onChange={(e) => handleDocumentsChange(idx, "title", e.target.value)}
                       placeholder="Document title (e.g., Passport, National ID)"
                       className="flex-1"
                     />

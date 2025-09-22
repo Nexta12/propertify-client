@@ -7,9 +7,9 @@ import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const UpdatePromoStatus = ({promo, onFinish}) => {
+const UpdatePromoStatus = ({ promo, onFinish }) => {
   const [promotionStatus, setPromotionStatus] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const options = [
     {
@@ -24,29 +24,25 @@ const UpdatePromoStatus = ({promo, onFinish}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     try {
+      await apiClient.post(`${endpoints.updateAdsStatus}/${promo}`, { promotionStatus });
 
-       await apiClient.post(`${endpoints.updateAdsStatus}/${promo}`, {promotionStatus});
-      
-        toast.success("Ads status updated")
+      toast.success("Ads status updated");
 
-        onFinish()
-        
+      onFinish();
     } catch (error) {
-        toast.error(ErrorFormatter(error))
-    }finally{
-        setLoading(false)
+      toast.error(ErrorFormatter(error));
+    } finally {
+      setLoading(false);
     }
-
-  
   };
 
   return (
     <div className="space-y-5">
-        <div className="w-full text-center">
-      <HeaderTitle titleText="Update Ads Status" />
+      <div className="w-full text-center">
+        <HeaderTitle titleText="Update Ads Status" />
       </div>
       <form action="" className="space-y-6" onSubmit={handleSubmit}>
         <EnhancedSelect
@@ -55,10 +51,10 @@ const UpdatePromoStatus = ({promo, onFinish}) => {
           value={promotionStatus}
           onChange={(e) => setPromotionStatus(e.target.value)}
         />
-         <div className="flex items-center justify-center">
-        <Button type="submit" variant="success" className="px-6">
-          {loading ? "Please Wait..." : "Update"}
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button type="submit" variant="success" className="px-6">
+            {loading ? "Please Wait..." : "Update"}
+          </Button>
         </div>
       </form>
     </div>

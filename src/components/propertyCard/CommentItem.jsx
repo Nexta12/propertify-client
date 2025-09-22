@@ -1,4 +1,3 @@
-
 import Avater from "@assets/img/avater.png";
 import { FaTrash } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -26,16 +25,13 @@ const CommentItem = ({ comment, setAllComments, user }) => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await apiClient.put(
-        `${endpoints.updateComment}/${comment._id}`,
-        { content: editText }
-      );
+      const res = await apiClient.put(`${endpoints.updateComment}/${comment._id}`, {
+        content: editText,
+      });
 
       // Update in state
       setAllComments((prev) =>
-        prev.map((c) =>
-          c._id === comment._id ? { ...c, content: res.data.data.content } : c
-        )
+        prev.map((c) => (c._id === comment._id ? { ...c, content: res.data.data.content } : c))
       );
 
       setIsEditing(false);
@@ -48,9 +44,7 @@ const CommentItem = ({ comment, setAllComments, user }) => {
   useEffect(() => {
     const fetchReplies = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.getCommentReplies}/${comment._id}`
-        );
+        const res = await apiClient.get(`${endpoints.getCommentReplies}/${comment._id}`);
         setReplies(res.data.data || []);
       } catch (error) {
         console.error("Error fetching replies:", error);
@@ -88,10 +82,7 @@ const CommentItem = ({ comment, setAllComments, user }) => {
             className="w-full h-full max-h-[470px] object-contain"
           />
         ) : (
-          <video
-            controls
-            className="w-full h-full max-h-[570px] object-contain"
-          >
+          <video controls className="w-full h-full max-h-[570px] object-contain">
             <source src={comment?.attachment[0]?.url} type="video/mp4" />
           </video>
         )}
@@ -137,29 +128,20 @@ const CommentItem = ({ comment, setAllComments, user }) => {
             <span className="font-semibold text-gray-800 dark:text-gray-100 flex items-center">
               {comment?.userId?.firstName} {comment?.userId?.lastName}
               {comment?.userId?.isVerifiedUser && (
-                <RiVerifiedBadgeFill
-                  className="ml-1 text-blue-500"
-                  title="Duly Verified user"
-                />
+                <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
               )}
             </span>
 
             {/* Edit mode OR text */}
             {isEditing ? (
-              <form
-                onSubmit={handleEditSubmit}
-                className="mt-2 flex items-center gap-2"
-              >
+              <form onSubmit={handleEditSubmit} className="mt-2 flex items-center gap-2">
                 <textarea
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                   className="flex-1 p-2 text-sm rounded border dark:bg-gray-700 dark:text-white"
                   rows={2}
                 />
-                <button
-                  type="submit"
-                  className="bg-main-green text-white px-3 py-1 rounded"
-                >
+                <button type="submit" className="bg-main-green text-white px-3 py-1 rounded">
                   Save
                 </button>
                 <button
@@ -173,9 +155,9 @@ const CommentItem = ({ comment, setAllComments, user }) => {
             ) : (
               <p className="mt-1 text-gray-700 dark:text-gray-200">
                 {comment.content}
-                
-          {/* Media (only when not editing) */}
-          {!isEditing && renderMedia()}
+
+                {/* Media (only when not editing) */}
+                {!isEditing && renderMedia()}
               </p>
             )}
 
@@ -201,7 +183,6 @@ const CommentItem = ({ comment, setAllComments, user }) => {
             )}
           </div>
 
-
           {/* Bottom actions */}
           <div className="text-xs text-gray-500 mt-1 flex items-center gap-x-4">
             {timeAgoShort(comment?.createdAt)}
@@ -212,17 +193,12 @@ const CommentItem = ({ comment, setAllComments, user }) => {
                 likes.includes(user?.id) ? "text-blue-500 font-semibold" : ""
               }`}
             >
-              Like{" "}
-              <span className="text-[10px] font-semibold">
-                ({likes.length})
-              </span>
+              Like <span className="text-[10px] font-semibold">({likes.length})</span>
             </button>
 
             {user && <span>|</span>}
 
-            {user && (
-              <button onClick={() => setOpenReplyForm(true)}>Reply</button>
-            )}
+            {user && <button onClick={() => setOpenReplyForm(true)}>Reply</button>}
           </div>
 
           {/* Replies */}
@@ -246,4 +222,3 @@ const CommentItem = ({ comment, setAllComments, user }) => {
 };
 
 export default CommentItem;
-

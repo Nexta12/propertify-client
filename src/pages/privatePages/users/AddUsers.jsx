@@ -1,4 +1,3 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
@@ -7,7 +6,7 @@ import EnhancedSelect from "@components/ui/EnhancedSelect";
 import HeaderTitle from "@components/ui/HeaderTitle";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import useAuthStore from "@store/authStore";
-import { NigerianStates, professions} from "@utils/data";
+import { NigerianStates, professions } from "@utils/data";
 import { handleGoBack } from "@utils/helper";
 import { useState, useRef } from "react";
 import { FiLoader, FiUpload, FiFile } from "react-icons/fi";
@@ -28,7 +27,7 @@ const AddUsers = () => {
     password: "",
     email: "",
     profession: "",
-    state: ""
+    state: "",
   });
 
   const locations = NigerianStates.map((state) => ({
@@ -54,23 +53,21 @@ const AddUsers = () => {
       email: contactData.email,
       password: contactData.password,
       profession: contactData.profession,
-      state: contactData.state
+      state: contactData.state,
     };
 
     try {
+      await apiClient.post(endpoints.CreateUser, formData);
 
-     await apiClient.post(endpoints.CreateUser, formData); 
-
-        toast.success(` User added successfully`);
-        setContactData({
-          firstName: "",
-          lastName: "",
-          password: "",
-          email: "",
-          profession: "",
-          state: ""
-        });
-   
+      toast.success(` User added successfully`);
+      setContactData({
+        firstName: "",
+        lastName: "",
+        password: "",
+        email: "",
+        profession: "",
+        state: "",
+      });
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -91,7 +88,7 @@ const AddUsers = () => {
     try {
       const rows = await readXlsxFile(file);
       const headers = rows[0];
-      const data = rows.slice(1).map(row => {
+      const data = rows.slice(1).map((row) => {
         return headers.reduce((obj, header, index) => {
           obj[header] = row[index];
           return obj;
@@ -105,7 +102,7 @@ const AddUsers = () => {
         try {
           const userData = {
             email: row.Email || row.email || "",
-            password: row.Password || row.password || "defaultPassword123", 
+            password: row.Password || row.password || "defaultPassword123",
             profession: row.Profession || row.profession || "",
             state: row.State || row.state || "",
             city: row.City || row.city || "",
@@ -122,9 +119,7 @@ const AddUsers = () => {
         }
       }
 
-      toast.success(
-        `Import completed: ${successCount} users added, ${errorCount} failed`
-      );
+      toast.success(`Import completed: ${successCount} users added, ${errorCount} failed`);
     } catch (error) {
       toast.error("Error processing Excel file: " + ErrorFormatter(error));
     } finally {
@@ -134,125 +129,124 @@ const AddUsers = () => {
   };
 
   return (
-   <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col pb-8">
-  <div className="lg:px-8 flex-grow">
-    <div className="w-full mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <HandleGoBackBtn />
-        <HeaderTitle titleText="Add User"/>
-        <div className="w-8"></div>
-      </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col pb-8">
+      <div className="lg:px-8 flex-grow">
+        <div className="w-full mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <HandleGoBackBtn />
+            <HeaderTitle titleText="Add User" />
+            <div className="w-8"></div>
+          </div>
 
-      {/* Main Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md relative p-4 py-8 lg:px-8">
-        <div className="flex justify-end mb-6">
-          <button
-            type="button"
-            onClick={handleImportClick}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 flex items-center"
-            disabled={isImporting}
-          >
-            {isImporting ? (
-              <FiLoader className="animate-spin mr-2" />
-            ) : (
-              <FiFile className="mr-2" />
-            )}
-            {isImporting ? "Importing..." : "Import from Excel"}
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-            accept=".xlsx, .xls, .csv"
-            className="hidden"
-          />
+          {/* Main Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md relative p-4 py-8 lg:px-8">
+            <div className="flex justify-end mb-6">
+              <button
+                type="button"
+                onClick={handleImportClick}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 flex items-center"
+                disabled={isImporting}
+              >
+                {isImporting ? (
+                  <FiLoader className="animate-spin mr-2" />
+                ) : (
+                  <FiFile className="mr-2" />
+                )}
+                {isImporting ? "Importing..." : "Import from Excel"}
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                accept=".xlsx, .xls, .csv"
+                className="hidden"
+              />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <EnhancedInput
+                  name="firstName"
+                  type="text"
+                  label="First Name"
+                  value={contactData.firstName}
+                  onChange={handleChange}
+                  className="focus:ring-2 focus:ring-main-green"
+                />
+                <EnhancedInput
+                  name="lastName"
+                  type="text"
+                  label="Last Name"
+                  value={contactData.lastName}
+                  onChange={handleChange}
+                  className="focus:ring-2 focus:ring-main-green"
+                />
+                <EnhancedInput
+                  name="password"
+                  type="password"
+                  label="Password"
+                  value={contactData.password}
+                  onChange={handleChange}
+                  forceValidate={false}
+                  className="focus:ring-2 focus:ring-main-green"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <EnhancedInput
+                  name="email"
+                  type="email"
+                  label="Email*"
+                  value={contactData.email}
+                  onChange={handleChange}
+                  className="focus:ring-2 focus:ring-main-green"
+                />
+
+                <EnhancedSelect
+                  name="profession"
+                  label="Profession*"
+                  value={contactData.profession}
+                  onChange={handleChange}
+                  options={professions}
+                  placeholder="Select Profession"
+                />
+                <EnhancedSelect
+                  name="state"
+                  label="Location*"
+                  value={contactData.state}
+                  onChange={handleChange}
+                  options={locations}
+                  placeholder="Select Location"
+                />
+              </div>
+
+              <div className="flex flex-col-reverse gap-4 md:flex-row justify-end">
+                <button
+                  type="button"
+                  onClick={() => handleGoBack(navigate, user)}
+                  className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 flex items-center justify-center"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <FiLoader className="animate-spin mr-2" />
+                  ) : (
+                    <FiUpload className="mr-2" />
+                  )}
+                  {isLoading ? "Please Wait..." : "Save User"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <EnhancedInput
-              name="firstName"
-              type="text"
-              label="First Name"
-              value={contactData.firstName}
-              onChange={handleChange}
-              className="focus:ring-2 focus:ring-main-green"
-            />
-            <EnhancedInput
-              name="lastName"
-              type="text"
-              label="Last Name"
-              value={contactData.lastName}
-              onChange={handleChange}
-              className="focus:ring-2 focus:ring-main-green"
-            />
-            <EnhancedInput
-              name="password"
-              type="password"
-              label="Password"
-              value={contactData.password}
-              onChange={handleChange}
-              forceValidate={false}
-              className="focus:ring-2 focus:ring-main-green"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <EnhancedInput
-              name="email"
-              type="email"
-              label="Email*"
-              value={contactData.email}
-              onChange={handleChange}
-              className="focus:ring-2 focus:ring-main-green"
-            />
-
-            <EnhancedSelect
-              name="profession"
-              label="Profession*"
-              value={contactData.profession}
-              onChange={handleChange}
-              options={professions}
-              placeholder="Select Profession"
-            />
-            <EnhancedSelect
-              name="state"
-              label="Location*"
-              value={contactData.state}
-              onChange={handleChange}
-              options={locations}
-              placeholder="Select Location"
-            />
-          </div>
-
-          <div className="flex flex-col-reverse gap-4 md:flex-row justify-end">
-            <button
-              type="button"
-              onClick={() => handleGoBack(navigate, user)}
-              className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 flex items-center justify-center"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <FiLoader className="animate-spin mr-2" />
-              ) : (
-                <FiUpload className="mr-2" />
-              )}
-              {isLoading ? "Please Wait..." : "Save User"}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
-  </div>
-</div>
-
   );
 };
 

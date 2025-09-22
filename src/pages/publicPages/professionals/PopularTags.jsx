@@ -1,4 +1,3 @@
-import React from "react";
 import { FaLightbulb, FaSearchLocation } from "react-icons/fa";
 
 export const PopularTags = () => {

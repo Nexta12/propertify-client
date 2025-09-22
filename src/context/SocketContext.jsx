@@ -11,7 +11,6 @@ export const SocketProvider = ({ children, userId }) => {
     loggedInUsers: [],
   });
 
-
   useEffect(() => {
     const socketInstance = io(import.meta.env.VITE_API_BASE_URL, {
       withCredentials: true,
@@ -32,11 +31,7 @@ export const SocketProvider = ({ children, userId }) => {
     };
   }, [userId]);
 
-  return (
-    <SocketContext.Provider value={{ socket, onlineInfo }}>
-      {children}
-    </SocketContext.Provider>
-  );
+  return <SocketContext.Provider value={{ socket, onlineInfo }}>{children}</SocketContext.Provider>;
 };
 
 export default SocketContext;

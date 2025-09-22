@@ -88,9 +88,7 @@ const NewProperty = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     const newCityOptions =
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -118,18 +116,14 @@ const NewProperty = () => {
 
   const isResidential = useMemo(() => {
     if (!formData.propertyType) return false;
-    const selectedProperty = PropertyTypes.find(
-      (prop) => prop.value === formData.propertyType
-    );
+    const selectedProperty = PropertyTypes.find((prop) => prop.value === formData.propertyType);
     return selectedProperty?.category === "residential";
   }, [formData.propertyType]);
 
   const isCommercial = useMemo(() => {
     if (!formData.propertyType) return false;
 
-    const selectedProperty = PropertyTypes.find(
-      (prop) => prop.value === formData.propertyType
-    );
+    const selectedProperty = PropertyTypes.find((prop) => prop.value === formData.propertyType);
     return selectedProperty?.category === "commercial";
   }, [formData.propertyType]);
 
@@ -201,10 +195,7 @@ const NewProperty = () => {
         }),
       };
 
-      const res = await apiClient.post(
-        endpoints.createProperty,
-        sanitizedFormData
-      );
+      const res = await apiClient.post(endpoints.createProperty, sanitizedFormData);
 
       if (res.status == 201) {
         toast.success("Listing Created successfully");
@@ -234,10 +225,7 @@ const NewProperty = () => {
       };
 
       const res = draftId
-        ? await apiClient.put(
-            `${endpoints.updateDraft}/${draftId}`,
-            sanitizedFormData
-          )
+        ? await apiClient.put(`${endpoints.updateDraft}/${draftId}`, sanitizedFormData)
         : await apiClient.post(endpoints.saveAsDraft, sanitizedFormData);
 
       if (res.status === 200 || res.status === 201) {
@@ -461,9 +449,7 @@ const NewProperty = () => {
 
         {/* Property Location */}
         <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-          <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-            Property Location
-          </h3>
+          <h3 className="text-xl font-semibold text-main-green border-b pb-3">Property Location</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <EnhancedSelect
@@ -482,9 +468,7 @@ const NewProperty = () => {
               value={formData.city}
               onChange={handleChange}
               options={cityOptions}
-              placeholder={
-                formData.state ? "Select city" : "Select state first"
-              }
+              placeholder={formData.state ? "Select city" : "Select state first"}
               disabled={!formData.state}
               required
             />
@@ -503,16 +487,11 @@ const NewProperty = () => {
           {formData.state && (
             <div className="mt-6">
               <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                <Map
-                  address={formData.location}
-                  city={formData.city}
-                  state={formData.state}
-                />
+                <Map address={formData.location} city={formData.city} state={formData.state} />
               </div>
               <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex items-center">
                 <MdLocationOn className="inline mr-1 text-green-600" />
-                {formData.location || "No address specified"} {formData.city}{" "}
-                {formData.state}
+                {formData.location || "No address specified"} {formData.city} {formData.state}
               </div>
             </div>
           )}
@@ -580,7 +559,7 @@ const NewProperty = () => {
         {/* Post As Section */}
         <div className="bg-white dark:bg-gray-800 text-sm space-y-4 p-6 border border-gray-200 dark:border-gray-700">
           <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-            Property Owned by: 
+            Property Owned by:
           </h3>
 
           <div className="flex flex-col gap-4">
@@ -603,10 +582,7 @@ const NewProperty = () => {
             {userCompanies?.length > 0 && (
               <div className="flex flex-col gap-2 ml-4">
                 {userCompanies.map((company) => (
-                  <label
-                    key={company._id}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
+                  <label key={company._id} className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
                       name="postAs"
@@ -615,9 +591,7 @@ const NewProperty = () => {
                       onChange={handlePostAsChange}
                       className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
                     />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      {company.companyName}
-                    </span>
+                    <span className="text-gray-700 dark:text-gray-300">{company.companyName}</span>
                   </label>
                 ))}
               </div>

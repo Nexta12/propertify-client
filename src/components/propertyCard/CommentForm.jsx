@@ -48,10 +48,9 @@ const CommentForm = ({ post, setAllComments }) => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
- if (!commentText && !attachment) {
-  return toast.error("Cannot post empty comment");
-}
-
+    if (!commentText && !attachment) {
+      return toast.error("Cannot post empty comment");
+    }
 
     const dataToSend = {
       propertyId: post._id,
@@ -74,14 +73,9 @@ const CommentForm = ({ post, setAllComments }) => {
     }
   };
 
-
-
   return (
     <div className="px-2 pt-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-      <form
-        onSubmit={handleCommentSubmit}
-        className="flex  items-center space-x-2 relative"
-      >
+      <form onSubmit={handleCommentSubmit} className="flex  items-center space-x-2 relative">
         <textarea
           ref={textareaRef}
           value={commentText}
@@ -101,11 +95,7 @@ const CommentForm = ({ post, setAllComments }) => {
 
         {showEmojiPicker && (
           <div className="absolute bottom-12 right-4 z-50">
-            <Picker
-              data={data}
-              onEmojiSelect={handleEmojiSelect}
-              theme="light"
-            />
+            <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
           </div>
         )}
 

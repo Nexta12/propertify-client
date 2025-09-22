@@ -32,13 +32,7 @@ const Contacts = () => {
     verifyAuth();
   }, [validateAuth]);
 
-  const fetchContacts = async ({
-    page,
-    limit,
-    sortField,
-    sortOrder,
-    search,
-  }) => {
+  const fetchContacts = async ({ page, limit, sortField, sortOrder, search }) => {
     if (!user?.id) return { data: [], pagination: { total: 0 } };
 
     try {
@@ -77,83 +71,74 @@ const Contacts = () => {
   if (authLoading || !user) {
     return (
       <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
-        <PuffLoader
-          height="80"
-          width="80"
-          radius={1}
-          color="#4866ff"
-          area-label="puff-loading"
-        />
+        <PuffLoader height="80" width="80" radius={1} color="#4866ff" area-label="puff-loading" />
       </div>
     );
   }
 
   const isAdmin = user.role === UserRole.ADMIN;
 
-const columns = [
-  {
-    accessorKey: "serialNo",
-    header: "S/No",
-    cell: ({ row }) => row.index + 1,
-  },
-  {
-    accessorKey: "fullName",
-    header: "Name",
-    cell: ({ row }) => (
-      <span className="whitespace-nowrap capitalize">
-        {row.original.title} {row.original.firstName || "NA"}{" "}
-        {row.original.lastName}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "profession",
-    header: "Profession",
-    cell: ({ row }) => (
-      <span className="whitespace-normal capitalize">
-        {formatTitleCase(row.original.profession)}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: (info) => info.getValue(),
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-    cell: (info) => info.getValue(),
-  },
-  // Only include the actions column if user is NOT an admin
-  ...(!isAdmin
-    ? [
-        {
-          id: "actions",
-          header: "ACTIONS",
-          cell: ({ row }) => (
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleView(row.original)}
-                className="px-2 py-1 text-xs text-main-green bg-green-100 rounded hover:bg-green-200"
-              >
-                View
-              </button>
+  const columns = [
+    {
+      accessorKey: "serialNo",
+      header: "S/No",
+      cell: ({ row }) => row.index + 1,
+    },
+    {
+      accessorKey: "fullName",
+      header: "Name",
+      cell: ({ row }) => (
+        <span className="whitespace-nowrap capitalize">
+          {row.original.title} {row.original.firstName || "NA"} {row.original.lastName}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "profession",
+      header: "Profession",
+      cell: ({ row }) => (
+        <span className="whitespace-normal capitalize">
+          {formatTitleCase(row.original.profession)}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: "Email",
+      cell: (info) => info.getValue(),
+    },
+    {
+      accessorKey: "phone",
+      header: "Phone",
+      cell: (info) => info.getValue(),
+    },
+    // Only include the actions column if user is NOT an admin
+    ...(!isAdmin
+      ? [
+          {
+            id: "actions",
+            header: "ACTIONS",
+            cell: ({ row }) => (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleView(row.original)}
+                  className="px-2 py-1 text-xs text-main-green bg-green-100 rounded hover:bg-green-200"
+                >
+                  View
+                </button>
 
-              <button
-                onClick={() => handleDelete(row.original)}
-                className="px-2 py-1 text-xs text-red-500 rounded hover:bg-red-100"
-              >
-                <FiTrash2 />
-              </button>
-            </div>
-          ),
-        },
-      ]
-    : []),
-];
-
-
+                <button
+                  onClick={() => handleDelete(row.original)}
+                  className="px-2 py-1 text-xs text-red-500 rounded hover:bg-red-100"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+            ),
+          },
+        ]
+      : []),
+  ];
 
   const handleView = (data) => {
     navigate(`${paths.protected}/contacts/${data._id}`);

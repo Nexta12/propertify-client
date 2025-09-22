@@ -8,24 +8,24 @@ const EnhancedEditor = ({
   name,
   error,
   label,
-  withToolbar = false, 
+  withToolbar = false,
   ...rest
 }) => {
   // modules config depends on `withToolbar`
- const modules = withToolbar
-  ? {
-      toolbar: [
-        [{ header: [1, 2, 3, false] }], // headers
-        ["bold", "italic", "underline", "strike"], // basic styles
-        [{ list: "ordered" }, { list: "bullet" }], // lists
-        ["blockquote", "code-block"], // special blocks
-        ["link", "image"], // media
-        [{ color: [] }, { background: [] }], // text & background colors
-        [{ align: [] }], // alignment
-        ["clean"], // remove formatting
-      ],
-    }
-  : { toolbar: false };
+  const modules = withToolbar
+    ? {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }], // headers
+          ["bold", "italic", "underline", "strike"], // basic styles
+          [{ list: "ordered" }, { list: "bullet" }], // lists
+          ["blockquote", "code-block"], // special blocks
+          ["link", "image"], // media
+          [{ color: [] }, { background: [] }], // text & background colors
+          [{ align: [] }], // alignment
+          ["clean"], // remove formatting
+        ],
+      }
+    : { toolbar: false };
 
   return (
     <div>
@@ -42,9 +42,7 @@ const EnhancedEditor = ({
         <ReactQuill
           value={value}
           modules={modules}
-          onChange={(content) =>
-            onChange({ target: { name, value: content } })
-          }
+          onChange={(content) => onChange({ target: { name, value: content } })}
           placeholder={placeholder}
           className="bg-white dark:bg-gray-800 dark:text-gray-100 rounded-md border border-gray-300 dark:border-gray-700 focus-within:border-main-green focus-within:ring-main-green dark:placeholder:text-gray-200"
           theme="snow"

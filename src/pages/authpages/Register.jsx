@@ -14,7 +14,7 @@ import { getLoggedInUserPath, getRoleFromProfession } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import { removeLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
-import GreenLogo from "@assets/img/green-logo.png"
+import GreenLogo from "@assets/img/green-logo.png";
 import FullPageLoader from "./FullPageLoader";
 
 const Register = () => {
@@ -65,12 +65,7 @@ const Register = () => {
       return false;
     }
 
-    if (
-      !formData.email ||
-      !formData.password ||
-      !formData.state ||
-      !formData.profession
-    ) {
+    if (!formData.email || !formData.password || !formData.state || !formData.profession) {
       toast.error("Please fill all required fields");
       return false;
     }
@@ -92,23 +87,21 @@ const Register = () => {
         ...formData,
         role: userRole,
       });
-    
 
       if (res.status == 201) {
         toast.success("An OTP was sent to your email..");
-         setLocalStorageItem('otpEmail', formData.email);
-         setLocalStorageItem('otp', true);
-          setTimeout(() => {
-            navigate(paths.verifyOTP);
-          }, 3000);
+        setLocalStorageItem("otpEmail", formData.email);
+        setLocalStorageItem("otp", true);
+        setTimeout(() => {
+          navigate(paths.verifyOTP);
+        }, 3000);
       }
     } catch (error) {
       toast.error(ErrorFormatter(error));
-       removeLocalStorageItem('userEmail', formData.email);
-       removeLocalStorageItem('showOtpPage', true);
+      removeLocalStorageItem("userEmail", formData.email);
+      removeLocalStorageItem("showOtpPage", true);
     } finally {
       setIsSubmitting(false);
-      
     }
   };
 
@@ -131,17 +124,15 @@ const Register = () => {
     }
   }, [user, isAuthenticated, navigate]);
 
- if (authLoading) {
-  return <FullPageLoader />;
-}
+  if (authLoading) {
+    return <FullPageLoader />;
+  }
 
-  if(!isAuthenticated){
-  return (
- 
-  
+  if (!isAuthenticated) {
+    return (
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden relative ">
-         <div className="absolute top-4 left-5">
-        <HandleGoBackBtn/>
+        <div className="absolute top-4 left-5">
+          <HandleGoBackBtn />
         </div>
         {/* Logo Section */}
         <div className=" mt-5 text-center">
@@ -239,31 +230,21 @@ const Register = () => {
 
           {/* Register Button */}
 
-          <Button
-            variant="success"
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting}
-          >
+          <Button variant="success" type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
 
           {/* Login Link */}
           <div className="text-center text-sm text-[#1F3E72] dark:text-gray-300">
             Already have an account?{" "}
-            <Link
-              to={paths.login}
-              className="font-medium text-[#28B16D] hover:text-[#09C269]"
-            >
+            <Link to={paths.login} className="font-medium text-[#28B16D] hover:text-[#09C269]">
               Log in
             </Link>
           </div>
         </form>
       </div>
-  
-  );
-   }
-
+    );
+  }
 };
 
 export default Register;

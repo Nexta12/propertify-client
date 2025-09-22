@@ -1,9 +1,4 @@
-import {
-  FiMail,
-  FiPhone,
-  FiMessageSquare,
-  FiCalendar,
-} from "react-icons/fi";
+import { FiMail, FiPhone, FiMessageSquare } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
@@ -14,7 +9,6 @@ import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import Avater from "@assets/img/avater.png";
 import { formatTitleCase } from "@utils/helper";
-
 
 const ViewContact = () => {
   // const [message, setMessage] = useState("");
@@ -28,9 +22,7 @@ const ViewContact = () => {
   useEffect(() => {
     const fetchContactDetails = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.getContactDetails}/${id}`
-        );
+        const response = await apiClient.get(`${endpoints.getContactDetails}/${id}`);
         setContactDetails(response.data.data);
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -60,7 +52,6 @@ const ViewContact = () => {
   //   }
   // };
 
-
   return (
     <div className="min-h-screen bg-gray-50  ">
       <div className=" mx-auto mb-8">
@@ -81,12 +72,8 @@ const ViewContact = () => {
                   alt={contactDetails?.fullName}
                   className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg mb-6"
                 />
-                <h2 className="text-2xl font-bold text-gray-800">
-                  {contactDetails?.fullName}
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  {formatTitleCase(contactDetails?.profession)}
-                </p>
+                <h2 className="text-2xl font-bold text-gray-800">{contactDetails?.fullName}</h2>
+                <p className="text-gray-600 mb-6">{formatTitleCase(contactDetails?.profession)}</p>
 
                 {/* Quick Actions */}
                 <div className="flex space-x-3 mb-8">
@@ -98,10 +85,7 @@ const ViewContact = () => {
                     <FiPhone size={20} />
                   </a>
                   <a
-                    href={`https://wa.me/${contactDetails?.phone?.replace(
-                      /[^\d]/g,
-                      ""
-                    )}`}
+                    href={`https://wa.me/${contactDetails?.phone?.replace(/[^\d]/g, "")}`}
                     className="p-3 bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition-colors"
                     title="WhatsApp"
                   >
@@ -144,13 +128,10 @@ const ViewContact = () => {
                     </div>
                   </div>
 
-
                   <div className="flex items-start">
                     <FiMessageSquare className="text-gray-500 mt-1 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">
-                        Preferred Contact Method
-                      </p>
+                      <p className="text-sm text-gray-500">Preferred Contact Method</p>
                       <p className="text-gray-800 capitalize">
                         {contactDetails?.preferredContactMethod.toLowerCase()}
                       </p>
@@ -164,13 +145,10 @@ const ViewContact = () => {
             <div className="md:w-2/3 p-6 md:p-8">
               {/* Notes Section */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                  Notes
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Notes</h3>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-gray-700 whitespace-pre-line">
-                    {contactDetails?.notes ||
-                      "No notes available for this contact."}
+                    {contactDetails?.notes || "No notes available for this contact."}
                   </p>
                 </div>
               </div>

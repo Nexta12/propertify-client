@@ -4,7 +4,6 @@ import { professions } from "./data";
 import { useEffect } from "react";
 
 export const getLoggedInUserPath = (user) => {
-
   const rolePathMap = {
     [UserRole.ADMIN]: paths.dashboard,
     [UserRole.REALTOR]: paths.feed,
@@ -22,29 +21,28 @@ export const getRoleFromProfession = (professionValue) => {
 };
 
 export const formatLargeNumber = (number) => {
-  if (typeof number !== 'number' || isNaN(number)) return '';
+  if (typeof number !== "number" || isNaN(number)) return "";
 
   const absNum = Math.abs(number);
 
   if (absNum >= 1_000_000_000_000) {
-    return (number / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+    return (number / 1_000_000_000_000).toFixed(1).replace(/\.0$/, "") + "T";
   } else if (absNum >= 1_000_000_000) {
-    return (number / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+    return (number / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
   } else if (absNum >= 1_000_000) {
-    return (number / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    return (number / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
   }
 
   // Return number with comma formatting if less than 1 million
   return number.toLocaleString();
-}
-
+};
 
 export const handleFileUploadWith = (name, files, setFormData) => {
   setFormData((prev) => {
     // Combine existing images with new files
     const combinedImages = [
       ...prev.otherImages, // Keep existing images
-      ...files.filter(file => !prev.otherImages.includes(file)) // Add new files that aren't already present
+      ...files.filter((file) => !prev.otherImages.includes(file)), // Add new files that aren't already present
     ];
 
     return {
@@ -54,16 +52,15 @@ export const handleFileUploadWith = (name, files, setFormData) => {
   });
 };
 
- 
-  export const handleGoBack = (navigate, user) => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate(getLoggedInUserPath(user));
-    }
-  };
+export const handleGoBack = (navigate, user) => {
+  if (window.history.length > 1) {
+    navigate(-1);
+  } else {
+    navigate(getLoggedInUserPath(user));
+  }
+};
 
-  export const useTenMinuteTimeout = (callback) => {
+export const useTenMinuteTimeout = (callback) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       callback();
@@ -71,70 +68,69 @@ export const handleFileUploadWith = (name, files, setFormData) => {
 
     // Cleanup function to clear timeout if component unmounts
     return () => clearTimeout(timer);
-  }, [callback]); 
+  }, [callback]);
 };
 
 export const formatTitleCase = (str) => {
-    if (typeof str !== 'string' || !str.trim()) return '';
+  if (typeof str !== "string" || !str.trim()) return "";
 
-  return str
-    // .split('_')
-    .split(/[-_]+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-   
-}
+  return (
+    str
+      // .split('_')
+      .split(/[-_]+/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+  );
+};
 
-export  const MessageEncoder = (message) =>{
- return message ? encodeURIComponent(message.trim()) : "";
+export const MessageEncoder = (message) => {
+  return message ? encodeURIComponent(message.trim()) : "";
+};
 
-} 
+export const DateFormatter = (dateString, showTime = false) => {
+  if (!dateString || isNaN(new Date(dateString).getTime())) {
+    return "-"; // Return '-' for invalid or null dates
+  }
 
-  export const DateFormatter = (dateString, showTime = false) => {
-    if (!dateString || isNaN(new Date(dateString).getTime())) {
-      return '-'; // Return '-' for invalid or null dates
-    }
-  
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const suffix = ["th", "st", "nd", "rd"][
-      (day % 10 > 3 || [11, 12, 13].includes(day % 100)) ? 0 : day % 10
-    ];
-  
-    // Format the date (e.g., "Wed, Apr 3rd, 2024")
-    const formattedDate = date.toLocaleDateString("en-US", { 
-      weekday: 'short', 
-      month: 'short', 
-      day: 'numeric',
-      year: 'numeric'
-    }).replace(/\d+/, `${day}${suffix}`);
-  
-    // Return only the date if `showTime` is false
-    if (!showTime) return formattedDate;
-  
-    // Format the time (e.g., "12:30 PM")
-    const formattedTime = date.toLocaleTimeString("en-US", {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  
-    return `${formattedDate} at ${formattedTime}`;
-  };
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const suffix = ["th", "st", "nd", "rd"][
+    day % 10 > 3 || [11, 12, 13].includes(day % 100) ? 0 : day % 10
+  ];
 
-  export const formatPercentageChange = (percent) => {
+  // Format the date (e.g., "Wed, Apr 3rd, 2024")
+  const formattedDate = date
+    .toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+    .replace(/\d+/, `${day}${suffix}`);
+
+  // Return only the date if `showTime` is false
+  if (!showTime) return formattedDate;
+
+  // Format the time (e.g., "12:30 PM")
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return `${formattedDate} at ${formattedTime}`;
+};
+
+export const formatPercentageChange = (percent) => {
   const sign = percent > 0 ? "+" : percent < 0 ? "" : "";
   return `${sign}${percent}% from last month`;
 };
 
-
 export const getPermittedRole = (user, navigate) => {
-   if(user.role !== UserRole.ADMIN) {
-    return navigate(getLoggedInUserPath(user))
-   }
-
-}
-
+  if (user.role !== UserRole.ADMIN) {
+    return navigate(getLoggedInUserPath(user));
+  }
+};
 
 export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, currentPage) => {
   const result = [];
@@ -144,7 +140,7 @@ export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, 
   if (totalAds === 0) {
     return {
       mixedPosts: regularPosts,
-      newCounter: counter + regularPosts.length
+      newCounter: counter + regularPosts.length,
     };
   }
 
@@ -152,7 +148,7 @@ export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, 
     // Add regular post
     result.push(regularPosts[i]);
     counter++;
-    
+
     // Add ad after every 2 posts
     if (counter % 2 === 0) {
       const adIndex = Math.floor(counter / 2 - 1) % totalAds;
@@ -160,7 +156,7 @@ export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, 
         ...sponsoredPosts[adIndex],
         syntheticId: `sponsored-${sponsoredPosts[adIndex]._id}-${currentPage}-${counter}`,
         isSponsored: true,
-        promoType: "Sponsored"
+        promoType: "Sponsored",
       };
       result.push(ad);
     }
@@ -168,10 +164,9 @@ export const insertAdvertManager = (regularPosts, sponsoredPosts, startCounter, 
 
   return {
     mixedPosts: result,
-    newCounter: counter
+    newCounter: counter,
   };
 };
-
 
 export const shufflePostsArray = (array) => {
   const shuffled = [...array];
@@ -181,7 +176,6 @@ export const shufflePostsArray = (array) => {
   }
   return shuffled;
 };
-
 
 export const timeAgoShort = (date) => {
   const now = new Date();

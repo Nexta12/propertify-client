@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import MessageReplyForm from "./MessageReplyForm";
 import MessageReplies from "./MessageReplies";
+import { DetailItem } from "./component/DetailItem";
 
 const ViewMessage = () => {
   const { user } = useAuthStore();
@@ -23,9 +24,7 @@ const ViewMessage = () => {
     const fetchMessage = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get(
-          `${endpoints.getSingleMessage}/${id}`
-        );
+        const response = await apiClient.get(`${endpoints.getSingleMessage}/${id}`);
         setSingleMessage(response.data.data);
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -41,13 +40,7 @@ const ViewMessage = () => {
     return (
       <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
         {" "}
-        <PuffLoader
-          height="80"
-          width="80"
-          radius={1}
-          color="#4866ff"
-          area-label="puff-loading"
-        />
+        <PuffLoader height="80" width="80" radius={1} color="#4866ff" area-label="puff-loading" />
       </div>
     );
   }
@@ -64,7 +57,6 @@ const ViewMessage = () => {
       <div className=" rounded-xl overflow-hidden">
         {/* Message Details */}
         <div className=" bg-white dark:bg-gray-800 p-6 border-b">
-
           <div className="mb-4">
             {singlemessage.subject && (
               <p className="text-gray-700 whitespace-pre-line text-sm italic capitalize mb-4">
@@ -128,32 +120,16 @@ const ViewMessage = () => {
               />
             </div>
           )}
-
         </div>
 
         {/* Replies */}
         <MessageReplies singlemessage={singlemessage} />
         <MessageReplyForm singlemessage={singlemessage} />
       </div>
-
     </div>
   );
 };
 
 // Reusable Detail Item Component
-const DetailItem = ({ icon, label, value }) => (
-  <div className="flex items-start">
-    {icon && <div className="flex-shrink-0 mt-1 mr-3">{icon}</div>}
-    <div>
-      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-        {label}
-      </dt>
-      <dd className="mt-1 text-[12px] font-secondary text-primary-text dark:text-gray-200">
-        {value || "N/A"}
-      </dd>
-    </div>
-  </div>
-);
-
 
 export default ViewMessage;

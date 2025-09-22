@@ -1,7 +1,6 @@
 import PostCard from "@components/propertyCard/PostCard";
 import PropertyCard from "@components/propertyCard/PropertyCard";
 import WidgetPost from "@components/propertyCard/WidgetPost";
-import React from "react";
 
 const Step5SummaryPreview = ({ formData }) => {
   return (
@@ -52,11 +51,7 @@ const AdsDetails = (formData) => (
 );
 
 const feedAds = (formData) => (
-  <PostCard
-    post={formData.post}
-    isProperty={formData.post.isProperty}
-    promoType={"Promoted"}
-  />
+  <PostCard post={formData.post} isProperty={formData.post.isProperty} promoType={"Promoted"} />
 );
 
 const featuredAds = (formData) => (
@@ -69,21 +64,10 @@ const featuredAds = (formData) => (
 
 const sponsoredSearch = (formData) => {
   const { post } = formData;
-  return (
-     <PostCard
-        post={post}
-        isProperty={post.isProperty}
-        promoType={"Sponsored"}
-      />
-  );
+  return <PostCard post={post} isProperty={post.isProperty} promoType={"Sponsored"} />;
 };
 
 const widgetAd = (formData) => {
   const { post } = formData;
-  return (
-     <WidgetPost
-        property={post}
-        promoType={"Ad"}
-      />
-  );
+  return <WidgetPost property={post} promoType={"Ad"} />;
 };

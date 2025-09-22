@@ -1,4 +1,4 @@
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion as Motion } from "framer-motion";
 
 const NotFound = () => {
@@ -15,7 +15,7 @@ const NotFound = () => {
 
       <div className="text-center z-10 p-8 max-w-md mx-auto">
         {/* 404 Title (using your primary font) */}
-        <Motion.h1 
+        <Motion.h1
           className="text-8xl font-bold mb-4  bg-clip-text  "
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -31,14 +31,8 @@ const NotFound = () => {
           The page you&quot;re looking for got lost in the digital void.
         </p>
 
-        <Motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Link
-            to="/"
-            className="inline-block btn btn-primary btn-md "
-          >
+        <Motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Link to="/" className="inline-block btn btn-primary btn-md ">
             Take Me Home
           </Link>
         </Motion.div>

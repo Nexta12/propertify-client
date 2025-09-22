@@ -38,9 +38,7 @@ const CompanyCard = ({ companies }) => {
                 alt="logo"
                 className="w-12 h-12 rounded-full border"
               />
-              <h3 className="text-lg font-semibold dark:text-gray-200 ">
-                {company.companyName}
-              </h3>
+              <h3 className="text-lg font-semibold dark:text-gray-200 ">{company.companyName}</h3>
             </div>
 
             {/* Description */}

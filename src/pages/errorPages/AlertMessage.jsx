@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const AlertMessage = ({ alert }) => {
   useEffect(() => {
@@ -8,8 +7,7 @@ const AlertMessage = ({ alert }) => {
 
     if (alert.errorMessage) {
       toast.error(alert.errorMessage);
-    } 
-    else if (alert.successMessage) {
+    } else if (alert.successMessage) {
       toast.success(alert.successMessage);
     }
   }, [alert]);

@@ -1,4 +1,3 @@
-
 import { motion as Motion } from "framer-motion";
 import { AiOutlineWarning } from "react-icons/ai";
 
@@ -34,9 +33,7 @@ const DeleteModal = ({
           <div className="bg-red-100 dark:bg-red-900/40 p-4 rounded-full">
             <AiOutlineWarning className="text-red-500 text-3xl" />
           </div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-            Are you sure?
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Are you sure?</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
         </div>
 
@@ -78,5 +75,3 @@ const DeleteModal = ({
 };
 
 export default DeleteModal;
-
-

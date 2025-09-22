@@ -1,16 +1,15 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { paths } from "@routes/paths";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Step6Payment = ({ formData, setFormData}) => {
+const Step6Payment = ({ formData, setFormData }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handlePaymentSelect = (method) => {
     setPaymentMethod(method);
@@ -35,7 +34,7 @@ const Step6Payment = ({ formData, setFormData}) => {
         cost: formData.cost * 100, // converting to kobo
         media: formData.post.media,
         paymentMethod: paymentMethod,
-        email: formData?.post?.owner?.email
+        email: formData?.post?.owner?.email,
       };
 
       if (paymentMethod === "Card Payment") {
@@ -48,12 +47,10 @@ const Step6Payment = ({ formData, setFormData}) => {
         // For bank transfer, create the ad directly
         await apiClient.post(endpoints.createAds, promotionData);
         toast.success("Ad promotion Created, Please send evidence of payment for activation.");
-        setTimeout(()=>{
-           navigate(`${paths.protected}/ads/all`)
-
-        },3000)
+        setTimeout(() => {
+          navigate(`${paths.protected}/ads/all`);
+        }, 3000);
       }
-
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -84,19 +81,36 @@ const Step6Payment = ({ formData, setFormData}) => {
 
       {paymentMethod === "Bank Transfer" && (
         <div className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Bank Transfer Details</h4>
+          <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+            Bank Transfer Details
+          </h4>
           <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-            <p><span className="font-medium">Bank Name:</span> {import.meta.env.VITE_BANK_NAME} </p>
-            <p><span className="font-medium">Account Name:</span> {import.meta.env.VITE_ACCOUNT_NAME}</p>
-            <p><span className="font-medium">Account Number:</span> {import.meta.env.VITE_ACCOUNT_NUMBER}</p>
-            <p><span className="font-medium">Amount:</span> ₦{formData.cost.toLocaleString()}</p>
+            <p>
+              <span className="font-medium">Bank Name:</span> {import.meta.env.VITE_BANK_NAME}{" "}
+            </p>
+            <p>
+              <span className="font-medium">Account Name:</span> {import.meta.env.VITE_ACCOUNT_NAME}
+            </p>
+            <p>
+              <span className="font-medium">Account Number:</span>{" "}
+              {import.meta.env.VITE_ACCOUNT_NUMBER}
+            </p>
+            <p>
+              <span className="font-medium">Amount:</span> ₦{formData.cost.toLocaleString()}
+            </p>
             <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-              <h5 className="font-medium text-gray-800 dark:text-white mb-1">Payment Instructions:</h5>
+              <h5 className="font-medium text-gray-800 dark:text-white mb-1">
+                Payment Instructions:
+              </h5>
               <ol className="list-decimal pl-5 space-y-1">
                 <li>Make a transfer to the account details above</li>
-                <li className="font-bold" >Use your post ID as the payment reference: {formData.post.id}</li>
-                <li className="font-bold" >Raise a support ticket and send proof of payment</li>
-                <li>You can also Send payment confirmation to {import.meta.env.VITE_OFFICIAL_EMAIL}</li>
+                <li className="font-bold">
+                  Use your post ID as the payment reference: {formData.post.id}
+                </li>
+                <li className="font-bold">Raise a support ticket and send proof of payment</li>
+                <li>
+                  You can also Send payment confirmation to {import.meta.env.VITE_OFFICIAL_EMAIL}
+                </li>
                 <li>Your ad will be activated within 24 hours of payment confirmation</li>
               </ol>
             </div>
@@ -109,7 +123,11 @@ const Step6Payment = ({ formData, setFormData}) => {
         disabled={!paymentMethod || isProcessing}
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50"
       >
-        {isProcessing ? "Processing..." : paymentMethod === "Bank Transfer" ? "Confirm Bank Transfer" : "Complete Payment"}
+        {isProcessing
+          ? "Processing..."
+          : paymentMethod === "Bank Transfer"
+            ? "Confirm Bank Transfer"
+            : "Complete Payment"}
       </button>
     </div>
   );

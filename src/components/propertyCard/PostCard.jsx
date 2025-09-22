@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { FiMoreVertical, FiMessageSquare, FiBarChart2 } from "react-icons/fi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import {
-  formatLargeNumber,
-  formatTitleCase,
-  timeAgoShort,
-} from "@utils/helper";
+import { formatLargeNumber, formatTitleCase, timeAgoShort } from "@utils/helper";
 import Avater from "@assets/img/avater.png";
 import useAuthStore from "@store/authStore";
 import { Link } from "react-router-dom";
@@ -38,9 +34,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
   useEffect(() => {
     const fetchPostComments = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.fetchPostComment}/${post._id}`
-        );
+        const response = await apiClient.get(`${endpoints.fetchPostComment}/${post._id}`);
         setAllComments(response.data.data);
       } catch (error) {
         toast(ErrorFormatter(error));
@@ -76,10 +70,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                 className="w-full h-full max-h-[570px] object-contain"
               />
             ) : (
-              <video
-                controls
-                className="w-full h-full max-h-[570px] object-contain"
-              >
+              <video controls className="w-full h-full max-h-[570px] object-contain">
                 <source src={post.media[0].url} type="video/mp4" />
               </video>
             )}
@@ -93,10 +84,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         <Link to={`${paths.properties}/${post.slug}`}>
           <div className="mt-3 grid grid-cols-3 gap-2">
             {post.media.map((item, index) => (
-              <div
-                key={index}
-                className="relative rounded-lg overflow-hidden h-32"
-              >
+              <div key={index} className="relative rounded-lg overflow-hidden h-32">
                 {item.type === "image" ? (
                   <img
                     src={item.url || PropertyPlaceholder}
@@ -119,10 +107,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
       <Link to={`${paths.properties}/${post.slug}`}>
         <div className="mt-3 grid grid-cols-2 gap-2">
           {post.media.slice(0, 4).map((item, index) => (
-            <div
-              key={index}
-              className="relative rounded-lg overflow-hidden h-40"
-            >
+            <div key={index} className="relative rounded-lg overflow-hidden h-40">
               {item.type === "image" ? (
                 <img
                   src={item.url || PropertyPlaceholder}
@@ -154,8 +139,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
       <div className="mt-3 space-y-2 text-gray-900 dark:text-gray-100">
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold capitalize">
-            {post.currency || "₦"} {formatLargeNumber(post.price)} /{" "}
-            {post.frequency}
+            {post.currency || "₦"} {formatLargeNumber(post.price)} / {post.frequency}
           </span>
           <span className="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs rounded-full">
             {post.purpose}
@@ -192,9 +176,9 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
           )}
         </div>
 
-         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
+        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
           {post.description}
-        </p> 
+        </p>
         {/* <div
           className="prose prose-lg text-[15px] dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{ __html: post.description }}
@@ -213,8 +197,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
           )}
           {post.size && (
             <span className="flex items-center">
-              <FaRulerCombined className="mr-1" /> {post.size}{" "}
-              {post.propertySizeUnit}
+              <FaRulerCombined className="mr-1" /> {post.size} {post.propertySizeUnit}
             </span>
           )}
         </div>
@@ -290,9 +273,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
       {/* Header */}
       <div className="w-full text-xs flex justify-end ">
         {post.promotionType == "feed_Ads" && <PromotionBadge post={post} />}
-        {promoType && (
-          <span className="italic text-[11px] text-orange">{promoType}</span>
-        )}
+        {promoType && <span className="italic text-[11px] text-orange">{promoType}</span>}
       </div>
 
       <div className="flex justify-between items-start">
@@ -304,8 +285,8 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                   ? `${paths.protected}/companies/${post.postAs.slug}`
                   : `${paths.protected}/profile/${post.owner.slug}`
                 : post.postAs
-                ? `${paths.companies}/${post.postAs.slug}`
-                : `${paths.properties}/${post.slug}`
+                  ? `${paths.companies}/${post.postAs.slug}`
+                  : `${paths.properties}/${post.slug}`
             }
           >
             <img
@@ -329,8 +310,8 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                         ? `${paths.protected}/companies/${post.postAs.slug}`
                         : `${paths.protected}/profile/${post.owner.slug}`
                       : post.postAs
-                      ? `${paths.companies}/${post.postAs.slug}`
-                      : `${paths.properties}/${post.slug}`
+                        ? `${paths.companies}/${post.postAs.slug}`
+                        : `${paths.properties}/${post.slug}`
                   }
                 >
                   <span className="font-semibold dark:text-gray-100">
@@ -353,8 +334,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                     }
                   >
                     <span className="font-semibold dark:text-gray-100">
-                      {post?.owner?.title} {post?.owner?.firstName}{" "}
-                      {post?.owner?.lastName}
+                      {post?.owner?.title} {post?.owner?.firstName} {post?.owner?.lastName}
                     </span>
                   </Link>
                   {post.owner.isVerifiedUser && (
@@ -425,10 +405,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         <div className="flex justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-500">
           <div className="flex items-center space-x-4 text-gray-500 dark:text-gray-300 ">
             <span className="text-xs">{post?.views} views</span>
-            <span
-              className="text-xs flex items-center gap-x-1"
-              title="Impressions"
-            >
+            <span className="text-xs flex items-center gap-x-1" title="Impressions">
               <FiBarChart2 /> {post?.impressions || 0}
             </span>
           </div>
@@ -459,11 +436,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
 
       {/* Comments Section */}
       {showComments && (
-        <Comments
-          post={post}
-          allComments={allComments}
-          setAllComments={setAllComments}
-        />
+        <Comments post={post} allComments={allComments} setAllComments={setAllComments} />
       )}
     </div>
   );

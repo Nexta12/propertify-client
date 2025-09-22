@@ -3,10 +3,7 @@ import { IoChatbubblesOutline, IoCloseSharp } from "react-icons/io5";
 import WelcomeBox from "./WelcomeBox";
 import MessagesBox from "./MessagesBox";
 import { useEffect, useState } from "react";
-import {
-  getLocalStorageItem,
-  removeLocalStorageItem,
-} from "@utils/localStorage";
+import { getLocalStorageItem, removeLocalStorageItem } from "@utils/localStorage";
 import useSocket from "@context/useSocket";
 import Avater from "@assets/img/avater.png";
 import ChatCloserModal from "./ChatCloserModal";
@@ -103,27 +100,22 @@ const Chatboax = ({ expanded, setExpanded }) => {
                 </div>
 
                 <div className="flex flex-col gap-y-0">
-                  <span className="font-semibold tracking-wide">
-                    {joinedUser?.fullName}
-                  </span>
+                  <span className="font-semibold tracking-wide">{joinedUser?.fullName}</span>
                   <span className="text-xs">Customer Assistant</span>
                 </div>
               </div>
             ) : (
-              <p className="font-semibold text-sm md:text-lg">
-                Propertify Nigeria
-              </p>
+              <p className="font-semibold text-sm md:text-lg">Propertify Nigeria</p>
             )}
 
             <div className="flex space-x-2">
-              <button
-                onClick={() => setExpanded(false)}
-                className="hover:text-gray-200 transition"
-              >
+              <button onClick={() => setExpanded(false)} className="hover:text-gray-200 transition">
                 <FiMinus size={18} title="Minimize" />
               </button>
               <button
-                onClick={() => {setHandleCloseChatToggle(true), setExpanded(false)}}
+                onClick={() => {
+                  (setHandleCloseChatToggle(true), setExpanded(false));
+                }}
                 className="hover:text-gray-200 transition"
               >
                 <IoCloseSharp size={20} title="End Chat" />

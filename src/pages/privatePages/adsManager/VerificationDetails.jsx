@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { apiClient } from "@api/apiClient";
@@ -19,9 +18,7 @@ const VerificationDetails = () => {
     const fetchVerification = async () => {
       setLoading(true);
       try {
-        const res = await apiClient.get(
-          `${endpoints.getVerificationById}/${id}`
-        );
+        const res = await apiClient.get(`${endpoints.getVerificationById}/${id}`);
         setVerification(res.data.data);
       } catch (error) {
         toast.error(ErrorFormatter(error));
@@ -35,12 +32,7 @@ const VerificationDetails = () => {
   const handleAction = async (status) => {
     setActionLoading(true);
     try {
-
-       await apiClient.put(
-        `${endpoints.verifyUser}/${id}`,
-        { status }
-      );
-
+      await apiClient.put(`${endpoints.verifyUser}/${id}`, { status });
 
       setVerification((prev) => ({ ...prev, status }));
       toast.success(
@@ -64,9 +56,7 @@ const VerificationDetails = () => {
   }
 
   if (!verification) {
-    return (
-      <div className="p-6 text-center text-red-500">Verification not found</div>
-    );
+    return <div className="p-6 text-center text-red-500">Verification not found</div>;
   }
 
   return (
@@ -79,8 +69,7 @@ const VerificationDetails = () => {
       {/* User Info */}
       <div className="space-y-3 mb-8">
         <p className="text-gray-700 dark:text-gray-300">
-          <span className="font-semibold">Full Name:</span>{" "}
-          {verification.fullName}
+          <span className="font-semibold">Full Name:</span> {verification.fullName}
         </p>
         <p className="text-gray-700 dark:text-gray-300">
           <span className="font-semibold">Email:</span>{" "}
@@ -99,8 +88,8 @@ const VerificationDetails = () => {
               verification.status === "approved"
                 ? "bg-green-100 text-green-700"
                 : verification.status === "declined"
-                ? "bg-red-100 text-red-600"
-                : "bg-yellow-100 text-yellow-700"
+                  ? "bg-red-100 text-red-600"
+                  : "bg-yellow-100 text-yellow-700"
             }`}
           >
             {verification.status}
@@ -135,11 +124,7 @@ const VerificationDetails = () => {
       {verification.documents?.length ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {verification.documents.map((doc, idx) => (
-            <div
-              key={idx}
-              className="cursor-pointer"
-              onClick={() => setSelectedImage(doc)}
-            >
+            <div key={idx} className="cursor-pointer" onClick={() => setSelectedImage(doc)}>
               <img
                 src={doc?.url}
                 alt={`document-${idx}`}
@@ -149,9 +134,7 @@ const VerificationDetails = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 dark:text-gray-400">
-          No documents uploaded.
-        </p>
+        <p className="text-gray-500 dark:text-gray-400">No documents uploaded.</p>
       )}
 
       {/* Image Preview Modal */}
@@ -162,11 +145,7 @@ const VerificationDetails = () => {
       >
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-white dark:bg-gray-900 rounded-lg shadow-lg max-w-3xl w-full p-4">
-            <img
-              src={selectedImage?.url}
-              alt="preview"
-              className="w-full h-auto rounded-lg"
-            />
+            <img src={selectedImage?.url} alt="preview" className="w-full h-auto rounded-lg" />
             <button
               onClick={() => setSelectedImage(null)}
               className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -181,4 +160,3 @@ const VerificationDetails = () => {
 };
 
 export default VerificationDetails;
-

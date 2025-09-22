@@ -1,16 +1,11 @@
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete, AiOutlineYoutube } from "react-icons/ai";
 import { FiVideo } from "react-icons/fi";
 
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
-const VideoUpload = ({
-  value = null,
-  onChange,
-  disabled = false,
-  className = "",
-}) => {
+const VideoUpload = ({ value = null, onChange, disabled = false, className = "" }) => {
   const [video, setVideo] = useState(value || null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -23,17 +18,17 @@ const VideoUpload = ({
     onSuccess: (tokenResponse) => {
       setGoogleToken(tokenResponse);
       setIsAuthenticated(true);
-      localStorage.setItem('youtube_token', JSON.stringify(tokenResponse));
+      localStorage.setItem("youtube_token", JSON.stringify(tokenResponse));
     },
     onError: (error) => {
-      console.error('Login Failed:', error);
-      alert('YouTube authentication failed');
+      console.error("Login Failed:", error);
+      alert("YouTube authentication failed");
     },
   });
 
   // Check for existing token on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('youtube_token');
+    const storedToken = localStorage.getItem("youtube_token");
     if (storedToken) {
       const token = JSON.parse(storedToken);
       setGoogleToken(token);
@@ -45,13 +40,13 @@ const VideoUpload = ({
     googleLogout();
     setGoogleToken(null);
     setIsAuthenticated(false);
-    localStorage.removeItem('youtube_token');
+    localStorage.removeItem("youtube_token");
   };
 
   const handleUpload = async (file) => {
     if (!file) return;
     if (!isAuthenticated) {
-      alert('Please authenticate with YouTube first');
+      alert("Please authenticate with YouTube first");
       return;
     }
 
@@ -72,7 +67,10 @@ const VideoUpload = ({
 
       // Create FormData for the upload
       const formData = new FormData();
-      formData.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+      formData.append(
+        "metadata",
+        new Blob([JSON.stringify(metadata)], { type: "application/json" })
+      );
       formData.append("file", file);
 
       // Upload to YouTube
@@ -85,16 +83,14 @@ const VideoUpload = ({
             "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             setUploadProgress(percentCompleted);
           },
         }
       );
 
       const youtubeId = response.data.id;
-      
+
       // Save to your database
       await axios.post("/api/videos", {
         youtubeId,
@@ -118,7 +114,7 @@ const VideoUpload = ({
 
   const handleFileChange = (e) => {
     if (disabled) return;
-    
+
     const file = e.target.files[0];
     if (!file) return;
 
@@ -129,7 +125,8 @@ const VideoUpload = ({
       return;
     }
 
-    if (file.size > 128 * 1024 * 1024) { // 128MB limit
+    if (file.size > 128 * 1024 * 1024) {
+      // 128MB limit
       alert("Video file too large (max 128MB)");
       return;
     }
@@ -189,9 +186,7 @@ const VideoUpload = ({
                 <p className="font-medium text-gray-700">
                   {video ? "Replace video" : "Upload a video"}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  MP4, MOV, AVI, or MKV (max 128MB)
-                </p>
+                <p className="text-xs text-gray-500 mt-1">MP4, MOV, AVI, or MKV (max 128MB)</p>
                 {isUploading && (
                   <div className="mt-2">
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -215,10 +210,7 @@ const VideoUpload = ({
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
               Connected to YouTube
             </span>
-            <button
-              onClick={handleLogout}
-              className="text-red-500 hover:text-red-700 text-xs"
-            >
+            <button onClick={handleLogout} className="text-red-500 hover:text-red-700 text-xs">
               Disconnect
             </button>
           </div>
@@ -246,9 +238,7 @@ const VideoUpload = ({
                   </button>
                 )}
               </div>
-              <p className="text-sm text-gray-700 mt-2 truncate">
-                {video.url}
-              </p>
+              <p className="text-sm text-gray-700 mt-2 truncate">{video.url}</p>
             </div>
           )}
 

@@ -14,19 +14,13 @@ import { toast } from "react-toastify";
 import { create } from "zustand";
 import useCompanyStore from "./userCompaniesStore";
 
-
-
 const localStorageUser = getLocalStorageItem("user");
-
 
 const handleLogin = async (loginDetails, navigate, set) => {
   try {
     set({ isLoading: true });
-    const { data: response } = await apiClient.post(
-      endpoints.login,
-      loginDetails
-    );
-    
+    const { data: response } = await apiClient.post(endpoints.login, loginDetails);
+
     const user = response.data;
     const accessToken = response.accessToken;
 
@@ -38,9 +32,8 @@ const handleLogin = async (loginDetails, navigate, set) => {
       firstName: user.firstName,
       lastName: user.lastName,
       title: user.title,
-      userStatus: user.userStatus
-      
-    }
+      userStatus: user.userStatus,
+    };
     setLocalStorageItem("accessToken", accessToken);
     setLocalStorageItem("user", userDetail);
 
@@ -56,11 +49,10 @@ const handleLogin = async (loginDetails, navigate, set) => {
       isAuthenticated: false,
       isLoading: false,
     });
-    if(ErrorFormatter(error) === httpError.UnverifiedAccount){
-      setTimeout(()=>{
-        navigate(paths.resendOTP)
-      }, 2000)
-     
+    if (ErrorFormatter(error) === httpError.UnverifiedAccount) {
+      setTimeout(() => {
+        navigate(paths.resendOTP);
+      }, 2000);
     }
   }
 };
@@ -86,7 +78,7 @@ const handleLogout = async (navigate, set) => {
   } catch (error) {
     set({
       isLoading: false,
-      error: toast.error(error?.response?.data?.message || "Logout failed") ,
+      error: toast.error(error?.response?.data?.message || "Logout failed"),
     });
   }
 };
@@ -97,8 +89,7 @@ const useAuthStore = create((set, get) => ({
   error: null,
   setError: (error) => set({ error }),
   isLoading: false,
-  login: async (loginDetails, navigateFn) =>
-    handleLogin(loginDetails, navigateFn, set),
+  login: async (loginDetails, navigateFn) => handleLogin(loginDetails, navigateFn, set),
 
   logout: async (navigate) => handleLogout(navigate, set),
 
@@ -114,8 +105,7 @@ const useAuthStore = create((set, get) => ({
     const { setUserCompanies } = useCompanyStore.getState();
 
     if (!token) {
-      
-     await apiClient.post(endpoints.logout)
+      await apiClient.post(endpoints.logout);
       set({ isAuthenticated: false });
       return;
     }
@@ -123,14 +113,12 @@ const useAuthStore = create((set, get) => ({
       const response = await apiClient.get(endpoints.validateAuth);
       const user = response.data.data;
 
-      set({ isAuthenticated: true, user});
+      set({ isAuthenticated: true, user });
 
-      
-        if (user?.id) {
-      const companiesRes = await apiClient.get(`${endpoints.fetchUserCompanies}/${user.id}`);
-      setUserCompanies(companiesRes.data.data); 
-    }
-
+      if (user?.id) {
+        const companiesRes = await apiClient.get(`${endpoints.fetchUserCompanies}/${user.id}`);
+        setUserCompanies(companiesRes.data.data);
+      }
     } catch {
       set({ isAuthenticated: false });
       removeLocalStorageItem("accessToken");

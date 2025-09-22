@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import FileUpload from "@components/ui/FileUpload";
 import DOMPurify from "dompurify";
@@ -39,14 +39,11 @@ const ProfileTab = () => {
     profession: "",
   });
 
-
   // Get The Current User Details
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.getUserDetails}/${user.slug}`
-        );
+        const response = await apiClient.get(`${endpoints.getUserDetails}/${user.slug}`);
         const { data } = response.data;
 
         setProfileData({
@@ -91,9 +88,7 @@ const ProfileTab = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     setCityOptions(
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -192,10 +187,7 @@ const ProfileTab = () => {
         formData.append("coverPic", profileData.coverPic?.url);
       }
 
-      const response = await apiClient.put(
-        `${endpoints.UpdateUser}/${user?.slug}`,
-        formData
-      );
+      const response = await apiClient.put(`${endpoints.UpdateUser}/${user?.slug}`, formData);
 
       if (response.status === 200) {
         toast.success("Profile saved successfully!");
@@ -235,9 +227,7 @@ const ProfileTab = () => {
   // Initialize city options when component mounts or state changes
   useEffect(() => {
     if (profileData.state) {
-      const selectedStateData = NigerianStates.find(
-        (s) => s.state === profileData.state
-      );
+      const selectedStateData = NigerianStates.find((s) => s.state === profileData.state);
       setCityOptions(
         selectedStateData?.lgas.map((lga) => ({
           label: lga,
@@ -266,9 +256,7 @@ const ProfileTab = () => {
             <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded-xl overflow-hidden">
               {profileData.coverPic ? (
                 <img
-                  src={getImageSrc(
-                    profileData.coverPic?.url || profileData.coverPic
-                  )}
+                  src={getImageSrc(profileData.coverPic?.url || profileData.coverPic)}
                   alt="Cover"
                   className="w-full h-full object-cover"
                 />
@@ -305,9 +293,7 @@ const ProfileTab = () => {
                 <div className="w-24 h-24 border-4 border-white dark:border-gray-700 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center overflow-hidden">
                   {profileData.profilePic ? (
                     <img
-                      src={getImageSrc(
-                        profileData.profilePic?.url || profileData.profilePic
-                      )}
+                      src={getImageSrc(profileData.profilePic?.url || profileData.profilePic)}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
@@ -351,12 +337,7 @@ const ProfileTab = () => {
                 options={professions}
                 placeholder="Select Profession"
               />
-           
-
-             
             </div>
-
-            
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <EnhancedInput
@@ -394,9 +375,7 @@ const ProfileTab = () => {
                 value={profileData.city}
                 onChange={handleChange}
                 options={cityOptions}
-                placeholder={
-                  profileData.state ? "Select city" : "Select state first"
-                }
+                placeholder={profileData.state ? "Select city" : "Select state first"}
                 disabled={!profileData.state}
                 required
               />

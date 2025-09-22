@@ -1,5 +1,3 @@
-
-
 // import React, { useState } from "react";
 // import { FaCheckCircle, FaSpinner } from "react-icons/fa";
 // import { toast } from "react-toastify";
@@ -16,7 +14,7 @@
 
 //   const handleSubmit = async () => {
 //     setIsSubmitting(true);
-    
+
 //     try {
 //       // Submit the complete ad data to your API
 //       const response = await apiClient.post(endpoints.submitAd, {
@@ -29,7 +27,7 @@
 //       // Handle successful submission
 //       setIsSubmitted(true);
 //       toast.success("Ad submitted successfully for approval!");
-      
+
 //       // Redirect to dashboard or ads page after 3 seconds
 //       setTimeout(() => {
 //         navigate(paths.adsDashboard);
@@ -68,7 +66,7 @@
 //         Once you submit, our team will review your ad and notify you once it is approved.
 //         Please ensure all details are correct before submission.
 //       </p>
-      
+
 //       <div className="flex flex-col items-center gap-4">
 //         <button
 //           onClick={handleSubmit}
@@ -88,7 +86,7 @@
 //             "Submit Ad"
 //           )}
 //         </button>
-        
+
 //         <p className="text-sm text-gray-500 dark:text-gray-400">
 //           Note: Approval typically takes 1 - 2 hours
 //         </p>

@@ -1,13 +1,9 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import { paths } from "@routes/paths";
-import {
-  getLocalStorageItem,
-  removeLocalStorageItem,
-} from "@utils/localStorage";
+import { getLocalStorageItem, removeLocalStorageItem } from "@utils/localStorage";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { PuffLoader } from "react-spinners";
 import LogoGreen from "@assets/img/green-logo.png";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
@@ -69,13 +65,13 @@ const ResetPassword = () => {
       setIsLoading(false);
       return;
     }
-     const getResetEmail = getLocalStorageItem("resetEmail");
+    const getResetEmail = getLocalStorageItem("resetEmail");
     try {
       setIsLoading(true);
       await apiClient.post(endpoints.ResetPassword, {
         password: formData.password,
         email: getResetEmail,
-        confirmPassword: formData.confirmPassword
+        confirmPassword: formData.confirmPassword,
       });
 
       removeLocalStorageItem("resetEmail");
@@ -92,15 +88,14 @@ const ResetPassword = () => {
     }
   };
 
-
-   if (!showPage) {
-  return <FullPageLoader />;
-}
+  if (!showPage) {
+    return <FullPageLoader />;
+  }
 
   return (
     <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
       <div className="p-2">
-      <HandleGoBackBtn/>
+        <HandleGoBackBtn />
       </div>
       {/* Logo Section */}
       <div className=" text-center">
@@ -111,14 +106,11 @@ const ResetPassword = () => {
         </div>
 
         <header className="">
-          <p className="text-[15px] text-green">
-            Set New Password
-          </p>
+          <p className="text-[15px] text-green">Set New Password</p>
         </header>
       </div>
 
-      <form id="otp-form" onSubmit={handleSubmit} className="p-6 space-y-4" >
-
+      <form id="otp-form" onSubmit={handleSubmit} className="p-6 space-y-4">
         {/* Password Field */}
         <div>
           <div className="relative">
@@ -166,7 +158,6 @@ const ResetPassword = () => {
           </button>
         </div>
       </form>
-
     </div>
   );
 };

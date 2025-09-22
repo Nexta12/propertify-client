@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { getLocalStorageItem } from "@utils/localStorage";
@@ -58,9 +58,7 @@ const MessagesBox = () => {
   useEffect(() => {
     const fetchCurrentChat = async () => {
       try {
-        const res = await apiClient.get(
-          `${endpoints.fetchCurrentChatById}/${chatId}`
-        );
+        const res = await apiClient.get(`${endpoints.fetchCurrentChatById}/${chatId}`);
         const chat = res.data.data;
 
         // set visitor if no logged-in user
@@ -79,12 +77,10 @@ const MessagesBox = () => {
           createdAt: new Date(),
         };
 
-        const convRes = await apiClient.get(
-          `${endpoints.fetchConversations}/${chatId}`
-        );
+        const convRes = await apiClient.get(`${endpoints.fetchConversations}/${chatId}`);
         const conversations = convRes.data.data || [];
 
-        setChatMessages([ chat, welcomeMessage, ...conversations]);
+        setChatMessages([chat, welcomeMessage, ...conversations]);
       } catch (error) {
         toast.error(ErrorFormatter(error));
       }
@@ -115,10 +111,7 @@ const MessagesBox = () => {
     };
 
     try {
-      const res = await apiClient.post(
-        `${endpoints.sendChatConversation}/${chatId}`,
-        chatData
-      );
+      const res = await apiClient.post(`${endpoints.sendChatConversation}/${chatId}`, chatData);
       const savedMessage = res.data.data;
 
       setNewMessage("");
@@ -126,8 +119,6 @@ const MessagesBox = () => {
       socket.emit("visitorReply", savedMessage);
       socket.emit("stopTyping", { chatId, user: effectiveUser });
       setTypingUser(null);
-
-      
     } catch (error) {
       toast.error(ErrorFormatter(error));
     }
@@ -187,5 +178,3 @@ const MessagesBox = () => {
 };
 
 export default MessagesBox;
-
-

@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 import { paths } from "@routes/paths";
-import {
-  FaPhoneAlt,
-  FaEnvelope,
-  FaBriefcase,
-  FaBusinessTime,
-} from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaBriefcase, FaBusinessTime } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { apiClient } from "@api/apiClient";
@@ -27,7 +22,7 @@ const UserProfile = () => {
   const [userProperties, setUserProperties] = useState([]);
   const { user } = useAuthStore();
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const [userRes, propertiesRes] = await Promise.all([
         apiClient.get(`${endpoints.getUserDetails}/${slug}`),
@@ -39,29 +34,24 @@ const UserProfile = () => {
     } catch (error) {
       toast.error(ErrorFormatter(error));
     }
-  };
-
+  }, [slug]);
 
   useEffect(() => {
     if (slug) {
       fetchUserData();
     }
-  }, [slug]);
+  }, [slug, fetchUserData]);
 
   return (
     <>
-    {user && <HandleGoBackBtn /> }
+      {user && <HandleGoBackBtn />}
 
       <div className="bg-white selection-container dark:bg-gray-900 rounded-xl overflow-hidden shadow-md dark:shadow-lg">
         {/* Cover Image */}
         <div className="relative h-48 dark:bg-gray-700 bg-blue-400">
           {userDetails?.coverPic && (
-          <img
-            src={userDetails?.coverPic}
-            alt=""
-            className="w-full h-full object-cover"
-          />
-           )}
+            <img src={userDetails?.coverPic} alt="" className="w-full h-full object-cover" />
+          )}
           {/* Profile Picture */}
           <div className="absolute -bottom-12 left-5">
             <img
@@ -90,8 +80,7 @@ const UserProfile = () => {
         <div className="mt-16 px-5 pb-5">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-      
-                {userDetails?.firstName && userDetails?.lastName
+              {userDetails?.firstName && userDetails?.lastName
                 ? `${userDetails.firstName} ${userDetails.lastName}`
                 : "Welcome"}
             </h2>
@@ -102,10 +91,7 @@ const UserProfile = () => {
 
           <p className="text-gray-600 dark:text-gray-300 text-sm mt-1 capitalize">
             {userDetails?.companyDetails?.companyName}
-            <Link
-              to={userDetails?.companyDetails?.companyWebsite}
-              target="_blank"
-            >
+            <Link to={userDetails?.companyDetails?.companyWebsite} target="_blank">
               <span className="text-[14px] mx-4 text-blue-500 lowercase">
                 {userDetails?.companyDetails?.companyWebsite}
               </span>
@@ -140,8 +126,7 @@ const UserProfile = () => {
             )}
             {userDetails?.profession && (
               <div className="flex items-center gap-1">
-                <FaBriefcase />{" "}
-                <span>{formatTitleCase(userDetails?.profession)}</span>
+                <FaBriefcase /> <span>{formatTitleCase(userDetails?.profession)}</span>
               </div>
             )}
             {userDetails?.lastLogin && (
@@ -203,9 +188,7 @@ const UserProfile = () => {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              No properties listed.
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">No properties listed.</p>
           )}
         </div>
       </div>

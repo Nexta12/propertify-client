@@ -48,21 +48,15 @@ const Dashboard = () => {
             title="Total Listings"
             value={userStarts?.totalListings}
             icon={<FiHome className="text-[#28B16D] text-lg sm:text-xl" />}
-            description={formatPercentageChange(
-              userStarts?.percentListingChange
-            )}
-            roles={Object.values(UserRole).filter(
-              (role) => role !== UserRole.ADMIN
-            )}
+            description={formatPercentageChange(userStarts?.percentListingChange)}
+            roles={Object.values(UserRole).filter((role) => role !== UserRole.ADMIN)}
           />
           <StatCard
             title="Total Contacts"
             value={userStarts?.totalContacts}
             icon={<FiUsers className="text-blue-500 text-xl" />}
             description={`${userStarts?.todaysContacts} new today `}
-            roles={Object.values(UserRole).filter(
-              (role) => role !== UserRole.ADMIN
-            )}
+            roles={Object.values(UserRole).filter((role) => role !== UserRole.ADMIN)}
           />
 
           <StatCard
@@ -70,9 +64,7 @@ const Dashboard = () => {
             value={userStarts?.userMessages}
             icon={<FiHome className="text-[#28B16D] text-lg sm:text-xl" />}
             description={`${userStarts?.todaysMessages} new today `}
-            roles={Object.values(UserRole).filter(
-              (role) => role !== UserRole.ADMIN
-            )}
+            roles={Object.values(UserRole).filter((role) => role !== UserRole.ADMIN)}
           />
         </div>
       )}

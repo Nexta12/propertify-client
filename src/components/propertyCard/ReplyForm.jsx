@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 
-const ReplyForm = ({ parentCommentId  }) => {
+const ReplyForm = ({ parentCommentId }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [attachment, setAttachment] = useState(null);
@@ -62,8 +62,8 @@ const ReplyForm = ({ parentCommentId  }) => {
     };
 
     try {
-     await apiClient.post(`${endpoints.replyToComment}/${parentCommentId}`, dataToSend);
-    //   setAllComments((prev) => [res.data.data, ...prev]);
+      await apiClient.post(`${endpoints.replyToComment}/${parentCommentId}`, dataToSend);
+      //   setAllComments((prev) => [res.data.data, ...prev]);
       setCommentText("");
       setAttachment(null);
       toast.success("Comment posted!");
@@ -74,10 +74,7 @@ const ReplyForm = ({ parentCommentId  }) => {
 
   return (
     <div className="px-2  pt-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 !z-50">
-      <form
-        onSubmit={handleSubmit}
-        className="flex  items-center space-x-2 relative"
-      >
+      <form onSubmit={handleSubmit} className="flex  items-center space-x-2 relative">
         <textarea
           ref={textareaRef}
           value={commentText}
@@ -97,11 +94,7 @@ const ReplyForm = ({ parentCommentId  }) => {
 
         {showEmojiPicker && (
           <div className="absolute bottom-12 right-4 !z-[999]">
-            <Picker
-              data={data}
-              onEmojiSelect={handleEmojiSelect}
-              theme="light"
-            />
+            <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
           </div>
         )}
 

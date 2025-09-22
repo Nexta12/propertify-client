@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const EnhancedSelect = ({
   name,
@@ -18,24 +17,27 @@ const EnhancedSelect = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const validateInput = useCallback(
+    (val) => {
+      let isValid = true;
+
+      if (required && (!val || val === "")) {
+        isValid = false;
+      } else if (validate) {
+        isValid = validate(val);
+      }
+
+      setError(!isValid);
+      return isValid;
+    },
+    [required, validate] // 👈 dependencies
+  );
+
   useEffect(() => {
     if (touched || forceValidate) {
       validateInput(value);
     }
-  }, [value, touched, forceValidate]);
-
-  const validateInput = (val) => {
-    let isValid = true;
-
-    if (required && (!val || val === "")) {
-      isValid = false;
-    } else if (validate) {
-      isValid = validate(val);
-    }
-
-    setError(!isValid);
-    return isValid;
-  };
+  }, [value, touched, forceValidate, validateInput]);
 
   const handleBlur = () => {
     setTouched(true);
@@ -104,9 +106,7 @@ const EnhancedSelect = ({
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
                   className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                    value === opt.value
-                      ? "bg-gray-100 dark:bg-gray-700 font-semibold"
-                      : ""
+                    value === opt.value ? "bg-gray-100 dark:bg-gray-700 font-semibold" : ""
                   }`}
                 >
                   {opt.label}
@@ -121,14 +121,9 @@ const EnhancedSelect = ({
         </div>
       )}
 
-      {error && (
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-          {getErrorMessage()}
-        </p>
-      )}
+      {error && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{getErrorMessage()}</p>}
     </div>
   );
 };
 
 export default EnhancedSelect;
-

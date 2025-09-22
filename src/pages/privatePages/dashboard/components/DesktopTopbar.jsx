@@ -23,20 +23,10 @@ const DesktopTopbar = () => {
         <Link to={paths.index}>
           <div>
             {/* Light Mode Logo */}
-            <img
-              src={GreenLogo}
-              alt="Logo"
-              width={130}
-              className="block dark:hidden"
-            />
+            <img src={GreenLogo} alt="Logo" width={130} className="block dark:hidden" />
 
             {/* Dark Mode Logo */}
-            <img
-              src={WhiteLogo}
-              alt="Logo"
-              width={130}
-              className="hidden dark:block"
-            />
+            <img src={WhiteLogo} alt="Logo" width={130} className="hidden dark:block" />
           </div>
         </Link>
       </div>
@@ -60,15 +50,10 @@ const DesktopTopbar = () => {
         <div className="flex items-center space-x-2">
           <div className="text-right">
             <p className="text-sm font-medium flex items-center">
-              {user?.firstName && user?.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : "Welcome"}
+              {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : "Welcome"}
 
               {user?.isVerifiedUser && (
-                <RiVerifiedBadgeFill
-                  className="ml-1 text-blue-500"
-                  title="Duly Verified user"
-                />
+                <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
               )}
             </p>
 

@@ -5,12 +5,8 @@ const PopularSearches = ({
   title = "🔥 Popular Searches",
 }) => {
   return (
-    <div
-      className={`bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm ${className}`}
-    >
-      <h3 className="font-semibold text-primary-text dark:text-gray-100 mb-2 text-sm">
-        {title}
-      </h3>
+    <div className={`bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm ${className}`}>
+      <h3 className="font-semibold text-primary-text dark:text-gray-100 mb-2 text-sm">{title}</h3>
 
       <div className="flex flex-wrap gap-2">
         {tags.map((tag, index) => (

@@ -40,7 +40,7 @@ const EditProperty = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
-    const { userCompanies } = useCompanyStore();
+  const { userCompanies } = useCompanyStore();
 
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -77,9 +77,7 @@ const EditProperty = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.fetchProperty}/${slug}`
-        );
+        const response = await apiClient.get(`${endpoints.fetchProperty}/${slug}`);
         const propertyData = response.data.data;
 
         // Set the form data first
@@ -92,9 +90,7 @@ const EditProperty = () => {
 
         // Then update city options based on the property's state
         if (propertyData.state) {
-          const selectedStateData = NigerianStates.find(
-            (s) => s.state === propertyData.state
-          );
+          const selectedStateData = NigerianStates.find((s) => s.state === propertyData.state);
           const newCityOptions =
             selectedStateData?.lgas.map((lga) => ({
               label: lga,
@@ -132,9 +128,7 @@ const EditProperty = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     const newCityOptions =
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -163,10 +157,7 @@ const EditProperty = () => {
 
       // Filter new files that aren't already present
       const newFiles = files.filter((file) => {
-        const fileUrl =
-          typeof file === "string"
-            ? file
-            : file.url || URL.createObjectURL(file);
+        const fileUrl = typeof file === "string" ? file : file.url || URL.createObjectURL(file);
         return !existingUrls.includes(fileUrl);
       });
       if (newFiles.length > 0) setHasUploadedImages(true);
@@ -200,9 +191,7 @@ const EditProperty = () => {
         setFormData((prev) => ({
           ...prev,
           media: prev.media.filter((img) => img.url !== itemToDelete),
-          existingImages: prev.existingImages.filter(
-            (img) => img.url !== itemToDelete
-          ),
+          existingImages: prev.existingImages.filter((img) => img.url !== itemToDelete),
         }));
 
         setOpenModal(false); // Close the modal
@@ -219,18 +208,14 @@ const EditProperty = () => {
 
   const isResidential = useMemo(() => {
     if (!formData.propertyType) return false;
-    const selectedProperty = PropertyTypes.find(
-      (prop) => prop.value === formData.propertyType
-    );
+    const selectedProperty = PropertyTypes.find((prop) => prop.value === formData.propertyType);
     return selectedProperty?.category === "residential";
   }, [formData.propertyType]);
 
   const isCommercial = useMemo(() => {
     if (!formData.propertyType) return false;
 
-    const selectedProperty = PropertyTypes.find(
-      (prop) => prop.value === formData.propertyType
-    );
+    const selectedProperty = PropertyTypes.find((prop) => prop.value === formData.propertyType);
     return selectedProperty?.category === "commercial";
   }, [formData.propertyType]);
 
@@ -270,7 +255,7 @@ const EditProperty = () => {
     }
   };
 
-    const handlePostAsChange = (e) => {
+  const handlePostAsChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       postAs: e.target.value,
@@ -299,20 +284,13 @@ const EditProperty = () => {
       };
       const draftId = formData._id;
 
-      const res = await apiClient.put(
-        `${endpoints.updateDraft}/${draftId}`,
-        sanitizedFormData
-      );
+      const res = await apiClient.put(`${endpoints.updateDraft}/${draftId}`, sanitizedFormData);
 
       if (res.status === 200 || res.status === 201) {
         if (res.data.data?._id) {
           setHasUploadedImages(false);
         }
-        toast.success(
-          `${
-            formData.status === "draft" ? "Updated draft" : " Reversed To Draft"
-          }`
-        );
+        toast.success(`${formData.status === "draft" ? "Updated draft" : " Reversed To Draft"}`);
       }
     } catch (error) {
       toast.error(ErrorFormatter(error));
@@ -339,9 +317,7 @@ const EditProperty = () => {
       <form className="space-y-6 mb-6 w-full" onSubmit={handleSubmit}>
         {/* Basic Information */}
         <div className="bg-white space-y-6 p-6 border border-gray-200 ">
-          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">
-            Basic Information
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">Basic Information</h3>
 
           <div className="grid grid-cols-1 gap-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -439,9 +415,7 @@ const EditProperty = () => {
         {/* Property Details */}
         {(isResidential || isCommercial) && (
           <div className="bg-white space-y-6 p-6 border border-gray-200  ">
-            <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">
-              Property Details
-            </h3>
+            <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">Property Details</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {isResidential && (
@@ -453,7 +427,6 @@ const EditProperty = () => {
                     onChange={handleChange}
                     options={bedsOptions}
                     placeholder="Number of bedrooms"
-
                     required
                   />
 
@@ -494,9 +467,7 @@ const EditProperty = () => {
 
         {/* Property Location */}
         <div className="bg-white space-y-6 p-6 border border-gray-200  ">
-          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">
-            Property Location
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">Property Location</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <EnhancedSelect
@@ -515,9 +486,7 @@ const EditProperty = () => {
               value={formData.city}
               onChange={handleChange}
               options={cityOptions}
-              placeholder={
-                formData.state ? "Select city" : "Select state first"
-              }
+              placeholder={formData.state ? "Select city" : "Select state first"}
               disabled={!formData.state}
               required
             />
@@ -536,16 +505,11 @@ const EditProperty = () => {
           {formData.state && (
             <div className="mt-6">
               <div className="h-80 bg-gray-100 rounded-lg overflow-hidden">
-                <Map
-                  address={formData.location}
-                  city={formData.city}
-                  state={formData.state}
-                />
+                <Map address={formData.location} city={formData.city} state={formData.state} />
               </div>
               <div className="mt-3 text-sm text-gray-600 flex items-center">
                 <MdLocationOn className="inline mr-1 text-green-600" />
-                {formData.location || "No address specified"} {formData.city}{" "}
-                {formData.state}
+                {formData.location || "No address specified"} {formData.city} {formData.state}
               </div>
             </div>
           )}
@@ -566,7 +530,6 @@ const EditProperty = () => {
             rows={6}
             required
             withToolbar
-            
           />
         </div>
 
@@ -587,9 +550,7 @@ const EditProperty = () => {
 
         {/* Property Media */}
         <div className="bg-white space-y-6 p-6 border border-gray-200 ">
-          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">
-            Media
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-800 border-b pb-3">Media</h3>
 
           <div className="space-y-6">
             {/* Display existing images with remove option */}
@@ -655,10 +616,10 @@ const EditProperty = () => {
           </div>
         </div>
 
-          {/* Post As Section */}
+        {/* Post As Section */}
         <div className="bg-white dark:bg-gray-800 text-sm space-y-4 p-6 border border-gray-200 dark:border-gray-700">
           <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-            Property Owned by: 
+            Property Owned by:
           </h3>
 
           <div className="flex flex-col gap-4">
@@ -681,10 +642,7 @@ const EditProperty = () => {
             {userCompanies?.length > 0 && (
               <div className="flex flex-col gap-2 ml-4">
                 {userCompanies.map((company) => (
-                  <label
-                    key={company._id}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
+                  <label key={company._id} className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
                       name="postAs"
@@ -693,9 +651,7 @@ const EditProperty = () => {
                       onChange={handlePostAsChange}
                       className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
                     />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      {company.companyName}
-                    </span>
+                    <span className="text-gray-700 dark:text-gray-300">{company.companyName}</span>
                   </label>
                 ))}
               </div>
@@ -722,8 +678,8 @@ const EditProperty = () => {
             {isLoading
               ? "Saving..."
               : formData.status === "draft"
-              ? "Update draft"
-              : " Revert To Draft"}
+                ? "Update draft"
+                : " Revert To Draft"}
           </button>
 
           <button
@@ -732,11 +688,7 @@ const EditProperty = () => {
           >
             {isLoading
               ? "Please Wait..."
-              : `${
-                  formData.status === "draft"
-                    ? "Publish draft"
-                    : "Update Listing"
-                }`}
+              : `${formData.status === "draft" ? "Publish draft" : "Update Listing"}`}
           </button>
         </div>
       </form>

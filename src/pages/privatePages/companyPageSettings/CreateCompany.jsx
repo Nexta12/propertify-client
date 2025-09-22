@@ -30,7 +30,7 @@ const CreateCompany = () => {
     phones: [""],
     category: "",
     companyWebsite: "",
-    whatsapp: ""
+    whatsapp: "",
   });
 
   // Static options
@@ -50,9 +50,7 @@ const CreateCompany = () => {
       city: "",
     }));
 
-    const selectedStateData = NigerianStates.find(
-      (s) => s.state === selectedState
-    );
+    const selectedStateData = NigerianStates.find((s) => s.state === selectedState);
     setCityOptions(
       selectedStateData?.lgas.map((lga) => ({
         label: lga,
@@ -64,9 +62,7 @@ const CreateCompany = () => {
   // Initialize city options when component mounts or state changes
   useEffect(() => {
     if (companyData.state) {
-      const selectedStateData = NigerianStates.find(
-        (s) => s.state === companyData.state
-      );
+      const selectedStateData = NigerianStates.find((s) => s.state === companyData.state);
       setCityOptions(
         selectedStateData?.lgas.map((lga) => ({
           label: lga,
@@ -120,10 +116,7 @@ const CreateCompany = () => {
         whatsapp: companyData.whatsapp,
       };
 
-      const response = await apiClient.post(
-        endpoints.createCompany,
-        sanitizedData
-      );
+      const response = await apiClient.post(endpoints.createCompany, sanitizedData);
       if (response.status === 201) {
         toast.success("Company created successfully!");
       }
@@ -138,7 +131,7 @@ const CreateCompany = () => {
         phones: [""],
         category: "",
         companyWebsite: "",
-        whatsapp: ""
+        whatsapp: "",
       });
     } catch (error) {
       toast.error(ErrorFormatter(error));
@@ -149,8 +142,8 @@ const CreateCompany = () => {
 
   return (
     <section className="section-container mx-auto bg-white dark:bg-gray-800 p-6 rounded-sm">
-      <HandleGoBackBtn/>
-        <CompleteProfileCall />
+      <HandleGoBackBtn />
+      <CompleteProfileCall />
       <form onSubmit={handleSubmit} className="space-y-6 mt-2">
         {/* Logo & Cover */}
 
@@ -203,9 +196,7 @@ const CreateCompany = () => {
             value={companyData.city}
             onChange={handleChange}
             options={cityOptions}
-            placeholder={
-              companyData.state ? "Select city" : "Select state first"
-            }
+            placeholder={companyData.state ? "Select city" : "Select state first"}
             disabled={!companyData.state}
           />
           <EnhancedInput
@@ -247,14 +238,13 @@ const CreateCompany = () => {
           </button>
         </div>
 
-           <EnhancedInput
-            name="whatsapp"
-            type="text"
-            label="WhatsApp"
-            value={companyData.whatsapp}
-            onChange={handleChange}
-           
-          />
+        <EnhancedInput
+          name="whatsapp"
+          type="text"
+          label="WhatsApp"
+          value={companyData.whatsapp}
+          onChange={handleChange}
+        />
 
         {/* Description */}
         <EnhancedTextarea

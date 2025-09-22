@@ -1,4 +1,3 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DOMPurify from "dompurify";
@@ -39,9 +38,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await apiClient.get(
-          `${endpoints.fetchProperty}/${slug}`
-        );
+        const response = await apiClient.get(`${endpoints.fetchProperty}/${slug}`);
         const post = response.data.data;
         setFormData({
           ...post,
@@ -103,9 +100,7 @@ const EditPost = () => {
         setFormData((prev) => ({
           ...prev,
           media: prev.media.filter((img) => img.url !== itemToDelete),
-          existingImages: prev.existingImages.filter(
-            (img) => img.url !== itemToDelete
-          ),
+          existingImages: prev.existingImages.filter((img) => img.url !== itemToDelete),
         }));
 
         toast.success("File Deleted.");
@@ -137,9 +132,9 @@ const EditPost = () => {
       });
 
       toast.success("Post updated successfully");
-       setTimeout(()=>{
-        navigate(paths.feed)
-       },2000)
+      setTimeout(() => {
+        navigate(paths.feed);
+      }, 2000);
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -179,12 +174,9 @@ const EditPost = () => {
           <div>
             <p className="font-semibold text-gray-800 dark:text-gray-100 flex items-center">
               {user?.firstName} {user?.lastName}
-                    {user?.isVerifiedUser && (
-                            <RiVerifiedBadgeFill
-                              className="ml-1 text-blue-500"
-                              title="Duly Verified user"
-                            />
-                          )}
+              {user?.isVerifiedUser && (
+                <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
+              )}
             </p>
             <span className="text-xs text-gray-500">Editing your post</span>
           </div>
@@ -211,11 +203,7 @@ const EditPost = () => {
           </div>
           {showEmojiPicker && (
             <div className="mt-2">
-              <Picker
-                data={data}
-                onEmojiSelect={handleEmojiSelect}
-                theme="light"
-              />
+              <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
             </div>
           )}
         </div>
@@ -226,22 +214,11 @@ const EditPost = () => {
             {formData.existingImages.map((media, idx) => {
               const isVideo = media.url?.match(/\.(mp4|webm|ogg)$/i);
               return (
-                <div
-                  key={`media-${idx}`}
-                  className="relative group rounded-md overflow-hidden"
-                >
+                <div key={`media-${idx}`} className="relative group rounded-md overflow-hidden">
                   {isVideo ? (
-                    <video
-                      src={media.url}
-                      controls
-                      className="w-full h-32 object-cover"
-                    />
+                    <video src={media.url} controls className="w-full h-32 object-cover" />
                   ) : (
-                    <img
-                      src={media.url}
-                      alt=""
-                      className="w-full h-32 object-cover"
-                    />
+                    <img src={media.url} alt="" className="w-full h-32 object-cover" />
                   )}
                   <button
                     type="button"

@@ -125,11 +125,11 @@ export const DashBoardMenuItems = [
     link: `#`,
     visibility: ["admin", "realtor", "engineer", "service", "trader"],
     type: "",
-      subItems: [
+    subItems: [
       {
         title: "Create Company Page",
         link: `${paths.protected}/create-company`,
-        visibility: ["admin","realtor", "engineer", "service", "trader" ],
+        visibility: ["admin", "realtor", "engineer", "service", "trader"],
         type: "",
       },
       {
@@ -145,7 +145,7 @@ export const DashBoardMenuItems = [
     title: "Ads Manager",
     icon: FaBullhorn,
     link: `${paths.protected}/ads-manager`,
-    visibility: ["admin",],
+    visibility: ["admin"],
     type: "ads",
     subItems: [
       {
@@ -550,14 +550,7 @@ export const NigerianStates = [
   },
   {
     state: "FCT",
-    lgas: [
-      "Abaji",
-      "Abuja Municipal Area Council",
-      "Bwari",
-      "Gwagwalada",
-      "Kuje",
-      "Kwali",
-    ],
+    lgas: ["Abaji", "Abuja Municipal Area Council", "Bwari", "Gwagwalada", "Kuje", "Kwali"],
   },
   {
     state: "Gombe",
@@ -1888,23 +1881,20 @@ export const adTypes = [
   },
   {
     title: "Featured Property Ads",
-    description:
-      "Appear at website homepage and feed stream, enjoys maximum exposure.",
+    description: "Appear at website homepage and feed stream, enjoys maximum exposure.",
     icon: FiStar,
     className: "text-amber-500 dark:text-amber-400 text-3xl",
   },
   {
     title: "Sidebar Widget",
-    description:
-      "Appears in right Sidebar widget stream perfect for desktop views",
+    description: "Appears in right Sidebar widget stream perfect for desktop views",
     icon: FiPlayCircle,
     className: "text-purple-500 dark:text-purple-400 text-3xl",
   },
 
   {
     title: "Event Promotion Ads",
-    description:
-      "Promote open houses, exhibitions, or webinars with date countdowns and CTAs.",
+    description: "Promote open houses, exhibitions, or webinars with date countdowns and CTAs.",
     icon: FiCalendar,
     className: "text-red-500 dark:text-red-400 text-3xl",
   },
@@ -1946,69 +1936,72 @@ export const companyCategory = [
   { label: "Others", value: "others" },
 ];
 
-
 export const DEFAULT_BADGES = [
-{
-id: "luxury-agent",
-name: "Luxury Agent",
-emoji: "🌍",
-category: "Specialization",
-description: "Handles premium, high‑value properties.",
-cost: 9000,
-durationDays: 90,
-terms: ["Must meet luxury listing criteria.", "Pricing and quality standards apply."],
-},
-{
-id: "land-plots-expert",
-name: "Land & Plots Expert",
-emoji: "🌳",
-category: "Specialization",
-description: "Specializes in raw land and farmlands.",
-cost: 4500,
-durationDays: 120,
-terms: ["Zoning and documentation must be clear.", "Listings may be reviewed."],
-},
+  {
+    id: "luxury-agent",
+    name: "Luxury Agent",
+    emoji: "🌍",
+    category: "Specialization",
+    description: "Handles premium, high‑value properties.",
+    cost: 9000,
+    durationDays: 90,
+    terms: ["Must meet luxury listing criteria.", "Pricing and quality standards apply."],
+  },
+  {
+    id: "land-plots-expert",
+    name: "Land & Plots Expert",
+    emoji: "🌳",
+    category: "Specialization",
+    description: "Specializes in raw land and farmlands.",
+    cost: 4500,
+    durationDays: 120,
+    terms: ["Zoning and documentation must be clear.", "Listings may be reviewed."],
+  },
 
-
-// Engagement & Community Badges
-{
-id: "featured-contributor",
-name: "Featured Contributor",
-emoji: "📣",
-category: "Engagement & Community",
-description: "Posts guides, tips, or market insights that help the community.",
-cost: 3000,
-durationDays: 60,
-terms: ["Content must follow community guidelines.", "Low quality may revoke badge."],
-},
-{
-id: "market-insider",
-name: "Market Insider",
-emoji: "📰",
-category: "Engagement & Community",
-description: "Shares updates or has verified market knowledge.",
-cost: 3000,
-durationDays: 60,
-terms: ["Back claims with credible sources.", "Misinformation may revoke badge."],
-},
-{
-id: "portal-ambassador",
-name: "Portal Ambassador",
-emoji: "🎖",
-category: "Engagement & Community",
-description: "Long‑time user helping to grow the platform and community.",
-cost: 0,
-durationDays: 365,
-terms: ["Awarded at platform discretion.", "Subject to ongoing positive engagement."],
-},
+  // Engagement & Community Badges
+  {
+    id: "featured-contributor",
+    name: "Featured Contributor",
+    emoji: "📣",
+    category: "Engagement & Community",
+    description: "Posts guides, tips, or market insights that help the community.",
+    cost: 3000,
+    durationDays: 60,
+    terms: ["Content must follow community guidelines.", "Low quality may revoke badge."],
+  },
+  {
+    id: "market-insider",
+    name: "Market Insider",
+    emoji: "📰",
+    category: "Engagement & Community",
+    description: "Shares updates or has verified market knowledge.",
+    cost: 3000,
+    durationDays: 60,
+    terms: ["Back claims with credible sources.", "Misinformation may revoke badge."],
+  },
+  {
+    id: "portal-ambassador",
+    name: "Portal Ambassador",
+    emoji: "🎖",
+    category: "Engagement & Community",
+    description: "Long‑time user helping to grow the platform and community.",
+    cost: 0,
+    durationDays: 365,
+    terms: ["Awarded at platform discretion.", "Subject to ongoing positive engagement."],
+  },
 ];
 
 export const CATEGORY_COLORS = {
-"Trust & Verification": "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-200 dark:border-emerald-700/40",
-Performance: "bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-200 dark:border-indigo-700/40",
-"Quality & Service": "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-200 dark:border-amber-700/40",
-Specialization: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/30 dark:text-sky-200 dark:border-sky-700/40",
-"Engagement & Community": "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 dark:bg-fuchsia-900/30 dark:text-fuchsia-200 dark:border-fuchsia-700/40",
+  "Trust & Verification":
+    "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-200 dark:border-emerald-700/40",
+  Performance:
+    "bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-200 dark:border-indigo-700/40",
+  "Quality & Service":
+    "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-200 dark:border-amber-700/40",
+  Specialization:
+    "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/30 dark:text-sky-200 dark:border-sky-700/40",
+  "Engagement & Community":
+    "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 dark:bg-fuchsia-900/30 dark:text-fuchsia-200 dark:border-fuchsia-700/40",
 };
 
 export const Badges = [
@@ -2036,4 +2029,3 @@ export const Badges = [
   "5-Star Rated",
   "Featured Contributor",
 ];
-

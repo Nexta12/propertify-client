@@ -1,5 +1,3 @@
-import React from "react";
-
 const PROMOTION_LABELS = {
   feed_Ads: "Promoted",
   featured: "Featured",

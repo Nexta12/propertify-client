@@ -10,10 +10,8 @@ const MyCompanies = () => {
 
   return (
     <div>
-      { hasCompanies && ( 
-      <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">
-        My Companies
-      </h2>
+      {hasCompanies && (
+        <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">My Companies</h2>
       )}
       {hasCompanies ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -25,7 +23,8 @@ const MyCompanies = () => {
             You haven’t created any company page yet.
           </h3>
           <p className="mt-2 text-gray-500 dark:text-gray-400">
-            Create your first company page to start showcasing your properties using your company profile.
+            Create your first company page to start showcasing your properties using your company
+            profile.
           </p>
           <Link
             to={`${paths.protected}/create-company`}
