@@ -1,7 +1,7 @@
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
-const EnhancedEditor = ({
+const EnhancedTextarea = ({
   value,
   onChange,
   placeholder,
@@ -55,4 +55,4 @@ const EnhancedEditor = ({
   );
 };
 
-export default EnhancedEditor;
+export default EnhancedTextarea;

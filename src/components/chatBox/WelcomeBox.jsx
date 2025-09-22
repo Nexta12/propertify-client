@@ -2,7 +2,6 @@ import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import Button from "@components/ui/Button";
 import EnhancedInput from "@components/ui/EnhancedInput";
-import EnhancedEditor from "@components/ui/EnhancedTextArea";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import useAuthStore from "@store/authStore";
 import { getLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
@@ -10,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
+import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const WelcomeBox = ({ onStarted }) => {
   const [firstName, setFirstName] = useState("");
@@ -129,7 +129,7 @@ const WelcomeBox = ({ onStarted }) => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <EnhancedEditor
+          <EnhancedTextarea
             name="message"
             placeholder="Type your message..."
             rows={3}

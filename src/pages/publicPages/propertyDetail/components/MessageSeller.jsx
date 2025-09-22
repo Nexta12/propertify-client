@@ -1,11 +1,11 @@
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import EnhancedInput from "@components/ui/EnhancedInput";
-import EnhancedEditor from "@components/ui/EnhancedTextArea";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
+import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const MessageSeller = ({ receiverId, propertyId }) => {
   const [isSending, setIsSending] = useState(false);
@@ -101,7 +101,7 @@ const MessageSeller = ({ receiverId, propertyId }) => {
         />
       </div>
       <div>
-        <EnhancedEditor
+        <EnhancedTextarea
           name="message"
           onChange={handleChange}
           value={formData.message}

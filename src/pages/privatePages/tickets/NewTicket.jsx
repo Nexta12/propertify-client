@@ -9,8 +9,9 @@ import { endpoints } from "@api/endpoints";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import DOMPurify from "dompurify";
 import HeaderTitle from "@components/ui/HeaderTitle";
-import EnhancedEditor from "@components/ui/EnhancedTextarea";
+
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
+import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const NewTicket = () => {
   const [subject, setSubject] = useState("");
@@ -94,7 +95,7 @@ const NewTicket = () => {
           className="focus:outline-none w-full p-4"
         />
 
-        <EnhancedEditor
+        <EnhancedTextarea
           id="message"
           label="Message"
           name="message"
