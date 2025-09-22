@@ -60,7 +60,7 @@ const SingleCompany = () => {
          <CoverBanner company={company} handleNaviagete={handleNaviagete} />
 
         {/* Company Info */}
-        <div className="section-container bg-white mt-16 text-center md:text-left">
+        <div className="section-container bg-white dark:bg-gray-800  mt-16 text-center md:text-left">
           <h1 className="text-2xl md:text-3xl font-bold">
             {company?.companyName}
           </h1>
@@ -70,7 +70,7 @@ const SingleCompany = () => {
         </div>
 
         {/* Tabs */}
-        <div className=" border-b border-gray-200 dark:border-gray-700 bg-white section-container">
+        <div className=" border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 section-container">
           <div className="flex space-x-6 overflow-x-auto">
             {tabs.map((tab) => (
               <button
@@ -89,7 +89,7 @@ const SingleCompany = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="section-container bg-white">
+        <div className="section-container bg-white dark:bg-gray-800  ">
           {/* About Us */}
          
           <AboutUsTab activeTab={activeTab} company={company} />

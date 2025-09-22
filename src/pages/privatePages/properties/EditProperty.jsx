@@ -31,6 +31,7 @@ import { paths } from "@routes/paths";
 import { handleGoBack } from "@utils/helper";
 import useAuthStore from "@store/authStore";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import useCompanyStore from "@store/userCompaniesStore";
 
 const EditProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +40,7 @@ const EditProperty = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
+    const { userCompanies } = useCompanyStore();
 
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -67,6 +69,7 @@ const EditProperty = () => {
     media: [{}],
     existingImages: [],
     status: "",
+    postAs: "self",
   });
 
   // Fetch The Property from API
@@ -84,6 +87,7 @@ const EditProperty = () => {
           ...propertyData,
           existingImages: propertyData.media || [], // Store original images
           media: propertyData.media || [], // Initialize with existing images
+          postAs: propertyData.postAs ? propertyData.postAs._id : "self",
         });
 
         // Then update city options based on the property's state
@@ -266,6 +270,13 @@ const EditProperty = () => {
     }
   };
 
+    const handlePostAsChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      postAs: e.target.value,
+    }));
+  };
+
   const handleCancel = async () => {
     if (hasUploadedImages && formData.media.length > 0) {
       setOpenModal(true);
@@ -442,6 +453,7 @@ const EditProperty = () => {
                     onChange={handleChange}
                     options={bedsOptions}
                     placeholder="Number of bedrooms"
+
                     required
                   />
 
@@ -640,6 +652,54 @@ const EditProperty = () => {
                 Upload additional images to showcase your property
               </p>
             </div>
+          </div>
+        </div>
+
+          {/* Post As Section */}
+        <div className="bg-white dark:bg-gray-800 text-sm space-y-4 p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-main-green border-b pb-3">
+            Property Owned by: 
+          </h3>
+
+          <div className="flex flex-col gap-4">
+            {/* Post as Self */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="postAs"
+                value="self"
+                checked={formData.postAs === "self"}
+                onChange={handlePostAsChange}
+                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+              />
+              <span className="text-gray-700 dark:text-gray-300">
+                Post as Myself ({user?.firstName} {user?.lastName})
+              </span>
+            </label>
+
+            {/* Post as Companies */}
+            {userCompanies?.length > 0 && (
+              <div className="flex flex-col gap-2 ml-4">
+                {userCompanies.map((company) => (
+                  <label
+                    key={company._id}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="postAs"
+                      value={company._id}
+                      checked={formData.postAs === company._id}
+                      onChange={handlePostAsChange}
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                    />
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {company.companyName}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

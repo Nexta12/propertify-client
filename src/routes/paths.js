@@ -19,6 +19,7 @@ export const paths = {
     properties: "/properties",
     professionals: "/professionals",
     companies:"/companies",
+    user:"/user",
 
    
 

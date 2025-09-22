@@ -21,7 +21,7 @@ import {
   PropertyTypes,
   purposeOptions,
 } from "@utils/data";
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { MdLocationOn } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +31,7 @@ import DeleteModal from "@components/deleteModal/DeleteModal";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 import HeaderTitle from "@components/ui/HeaderTitle";
+import useCompanyStore from "@store/userCompaniesStore";
 
 const NewProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,7 @@ const NewProperty = () => {
   const [cityOptions, setCityOptions] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { userCompanies } = useCompanyStore();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -62,11 +64,8 @@ const NewProperty = () => {
     propertySize: "",
     propertySizeUnit: "",
     media: [{}],
+    postAs: "self",
   });
-
-
-
-
 
   // Options data
   const stateOptions = NigerianStates.map((state) => ({
@@ -156,10 +155,17 @@ const NewProperty = () => {
       propertySize: "",
       propertySizeUnit: "",
       media: [],
-    
+      postAs: "self",
     });
     setCityOptions([]);
     setHasUploadedImages(false);
+  };
+
+  const handlePostAsChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      postAs: e.target.value,
+    }));
   };
 
   // Cleanup abandoned Images
@@ -278,329 +284,378 @@ const NewProperty = () => {
   });
 
   return (
-   <section className="rounded-md max-w-7xl mx-auto">
-  {/* Check If profile is complete */}
-  <CompleteProfileCall />
+    <section className="rounded-md max-w-7xl mx-auto">
+      {/* Check If profile is complete */}
+      <CompleteProfileCall />
 
-  <DeleteModal
-    isOpen={openModal}
-    onClose={() => setOpenModal(false)}
-    onConfirm={confirmDelete}
-    confirmText="Discard Listing"
-    message="You have unsaved upload, Do you really want to cancel ? "
-    isDeleting={isTrashing}
-    actTionText="Save As Draft"
-    onAction={handleSaveDraft}
-    isTakingAction={isLoading}
-  />
+      <DeleteModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        onConfirm={confirmDelete}
+        confirmText="Discard Listing"
+        message="You have unsaved upload, Do you really want to cancel ? "
+        isDeleting={isTrashing}
+        actTionText="Save As Draft"
+        onAction={handleSaveDraft}
+        isTakingAction={isLoading}
+      />
 
-  <HandleGoBackBtn />
+      <HandleGoBackBtn />
 
-  <div className=" px-6 py-5 text-center rounded-t-lg bg-white dark:bg-gray-800 dark:text-gray-200">
-    <HeaderTitle titleText="List a New Property" />
-  </div>
-
-  <form className="space-y-6 w-full mb-6" onSubmit={handleSubmit}>
-    {/* Basic Information */}
-    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-      <div className="grid grid-cols-1 gap-3">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <EnhancedInput
-            name="title"
-            label="Property Title*"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="e.g. Beautiful 3-bedroom apartment in Lekki"
-            maxLength={55}
-            required
-          />
-
-          <EnhancedSelect
-            name="category"
-            label="Property Category"
-            value={formData.category}
-            onChange={handleChange}
-            options={categoryOptions}
-            placeholder="Select Document"
-          />
-
-          <EnhancedSelect
-            name="documentType"
-            label="Property Document"
-            value={formData.documentType}
-            onChange={handleChange}
-            options={propertyDocumentTypes}
-            placeholder="Select Document"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <EnhancedSelect
-            name="propertyType"
-            label="Property Type*"
-            value={formData.propertyType}
-            onChange={handleChange}
-            options={PropertyTypes}
-            placeholder="Select property type"
-            required
-            className="focus:ring-2 focus:ring-main-green"
-          />
-          <EnhancedSelect
-            name="purpose"
-            label="Purpose*"
-            value={formData.purpose}
-            onChange={handleChange}
-            options={purposeOptions}
-            placeholder="Select purpose"
-            required
-            className="focus:ring-2 focus:ring-main-green"
-          />
-          <EnhancedSelect
-            name="condition"
-            label="Condition"
-            value={formData.condition}
-            onChange={handleChange}
-            options={conditionOptions}
-            placeholder="Select Condition"
-            className="focus:ring-2 focus:ring-main-green"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <EnhancedInput
-            name="price"
-            label="Price*"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Enter price"
-            required
-          />
-
-          <EnhancedSelect
-            name="currency"
-            label="currency"
-            value={formData.currency}
-            onChange={handleChange}
-            options={currencyOptions}
-            placeholder="Select Currency"
-            required
-          />
-          <EnhancedSelect
-            name="frequency"
-            label="Frequency*"
-            value={formData.frequency}
-            onChange={handleChange}
-            options={frequencyOptions}
-            placeholder="Select frequency"
-            required
-          />
-        </div>
+      <div className=" px-6 py-5 text-center rounded-t-lg bg-white dark:bg-gray-800 dark:text-gray-200">
+        <HeaderTitle titleText="List a New Property" />
       </div>
-    </div>
 
-    {/* Property Details */}
-    {(isResidential || isCommercial) && (
-      <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-        <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-          Property Details
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {isResidential && (
-            <>
-              <EnhancedSelect
-                name="beds"
-                label="Bedrooms*"
-                value={formData.beds}
+      <form className="space-y-6 w-full mb-6" onSubmit={handleSubmit}>
+        {/* Basic Information */}
+        <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+          <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <EnhancedInput
+                name="title"
+                label="Property Title*"
+                value={formData.title}
                 onChange={handleChange}
-                options={bedsOptions}
-                placeholder="Number of bedrooms"
+                placeholder="e.g. Beautiful 3-bedroom apartment in Lekki"
+                maxLength={55}
+                required
+              />
+
+              <EnhancedSelect
+                name="category"
+                label="Property Category"
+                value={formData.category}
+                onChange={handleChange}
+                options={categoryOptions}
+                placeholder="Select Document"
+              />
+
+              <EnhancedSelect
+                name="documentType"
+                label="Property Document"
+                value={formData.documentType}
+                onChange={handleChange}
+                options={propertyDocumentTypes}
+                placeholder="Select Document"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <EnhancedSelect
+                name="propertyType"
+                label="Property Type*"
+                value={formData.propertyType}
+                onChange={handleChange}
+                options={PropertyTypes}
+                placeholder="Select property type"
+                required
+                className="focus:ring-2 focus:ring-main-green"
+              />
+              <EnhancedSelect
+                name="purpose"
+                label="Purpose*"
+                value={formData.purpose}
+                onChange={handleChange}
+                options={purposeOptions}
+                placeholder="Select purpose"
+                required
+                className="focus:ring-2 focus:ring-main-green"
+              />
+              <EnhancedSelect
+                name="condition"
+                label="Condition"
+                value={formData.condition}
+                onChange={handleChange}
+                options={conditionOptions}
+                placeholder="Select Condition"
+                className="focus:ring-2 focus:ring-main-green"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <EnhancedInput
+                name="price"
+                label="Price*"
+                type="number"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder="Enter price"
+                required
+              />
+
+              <EnhancedSelect
+                name="currency"
+                label="currency"
+                value={formData.currency}
+                onChange={handleChange}
+                options={currencyOptions}
+                placeholder="Select Currency"
                 required
               />
               <EnhancedSelect
-                name="baths"
-                label="Bathrooms"
-                value={formData.baths}
+                name="frequency"
+                label="Frequency*"
+                value={formData.frequency}
                 onChange={handleChange}
-                options={bedsOptions}
-                placeholder="Number of bathrooms"
+                options={frequencyOptions}
+                placeholder="Select frequency"
+                required
               />
-            </>
-          )}
-
-          {isCommercial && (
-            <>
-              <EnhancedInput
-                name="propertySize"
-                type="text"
-                placeholder="e.g. 1200"
-                label="Property Size*"
-                value={formData.propertySize}
-                onChange={handleChange}
-              />
-              <EnhancedSelect
-                name="propertySizeUnit"
-                label="Units"
-                value={formData.propertySizeUnit}
-                onChange={handleChange}
-                options={propertySizeOptions}
-                placeholder="Plots/Acres/Square feet"
-              />
-            </>
-          )}
+            </div>
+          </div>
         </div>
-      </div>
-    )}
 
-    {/* Property Location */}
-    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-      <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-        Property Location
-      </h3>
+        {/* Property Details */}
+        {(isResidential || isCommercial) && (
+          <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-xl font-semibold text-main-green border-b pb-3">
+              Property Details
+            </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <EnhancedSelect
-          name="state"
-          label="State*"
-          value={formData.state}
-          options={stateOptions}
-          onChange={handleStateChange}
-          placeholder="Select state"
-          required
-        />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {isResidential && (
+                <>
+                  <EnhancedSelect
+                    name="beds"
+                    label="Bedrooms*"
+                    value={formData.beds}
+                    onChange={handleChange}
+                    options={bedsOptions}
+                    placeholder="Number of bedrooms"
+                    required
+                  />
+                  <EnhancedSelect
+                    name="baths"
+                    label="Bathrooms"
+                    value={formData.baths}
+                    onChange={handleChange}
+                    options={bedsOptions}
+                    placeholder="Number of bathrooms"
+                  />
+                </>
+              )}
 
-        <EnhancedSelect
-          name="city"
-          label="City*"
-          value={formData.city}
-          onChange={handleChange}
-          options={cityOptions}
-          placeholder={formData.state ? "Select city" : "Select state first"}
-          disabled={!formData.state}
-          required
-        />
+              {isCommercial && (
+                <>
+                  <EnhancedInput
+                    name="propertySize"
+                    type="text"
+                    placeholder="e.g. 1200"
+                    label="Property Size*"
+                    value={formData.propertySize}
+                    onChange={handleChange}
+                  />
+                  <EnhancedSelect
+                    name="propertySizeUnit"
+                    label="Units"
+                    value={formData.propertySizeUnit}
+                    onChange={handleChange}
+                    options={propertySizeOptions}
+                    placeholder="Plots/Acres/Square feet"
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
-        <EnhancedInput
-          name="location"
-          type="text"
-          placeholder="e.g. 123 Main Street"
-          label="Address*"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
-      </div>
+        {/* Property Location */}
+        <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-main-green border-b pb-3">
+            Property Location
+          </h3>
 
-      {formData.state && (
-        <div className="mt-6">
-          <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-            <Map
-              address={formData.location}
-              city={formData.city}
-              state={formData.state}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <EnhancedSelect
+              name="state"
+              label="State*"
+              value={formData.state}
+              options={stateOptions}
+              onChange={handleStateChange}
+              placeholder="Select state"
+              required
+            />
+
+            <EnhancedSelect
+              name="city"
+              label="City*"
+              value={formData.city}
+              onChange={handleChange}
+              options={cityOptions}
+              placeholder={
+                formData.state ? "Select city" : "Select state first"
+              }
+              disabled={!formData.state}
+              required
+            />
+
+            <EnhancedInput
+              name="location"
+              type="text"
+              placeholder="e.g. 123 Main Street"
+              label="Address*"
+              value={formData.location}
+              onChange={handleChange}
+              required
             />
           </div>
-          <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex items-center">
-            <MdLocationOn className="inline mr-1 text-green-600" />
-            {formData.location || "No address specified"} {formData.city} {formData.state}
-          </div>
+
+          {formData.state && (
+            <div className="mt-6">
+              <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <Map
+                  address={formData.location}
+                  city={formData.city}
+                  state={formData.state}
+                />
+              </div>
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                <MdLocationOn className="inline mr-1 text-green-600" />
+                {formData.location || "No address specified"} {formData.city}{" "}
+                {formData.state}
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
 
-    {/* Description */}
-    <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-      <h3 className="text-xl font-semibold text-main-green border-b pb-3">
-        Detailed Description
-      </h3>
+        {/* Description */}
+        <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-main-green border-b pb-3">
+            Detailed Description
+          </h3>
 
-      <EnhancedTextarea
-        name="description"
-        label="Description*"
-        value={formData.description}
-        onChange={handleChange}
-        rows={6}
-        withToolbar
-      />
-    </div>
-
-    {/* Amenities */}
-    {isResidential && (
-      <div className="bg-white dark:bg-gray-800 space-y-6 border border-gray-200 dark:border-gray-700">
-        <CollapsableBox title="Amenities">
-          <EnhancedCheckbox
-            name="amenities"
-            label="Select Amenities"
-            value={formData.amenities}
+          <EnhancedTextarea
+            name="description"
+            label="Description*"
+            value={formData.description}
             onChange={handleChange}
-            amenities={Amenities}
+            rows={6}
+            withToolbar
           />
-        </CollapsableBox>
-      </div>
-    )}
+        </div>
 
-    {/* Media */}
-    {(user?.firstName && user?.lastName) && (
-      <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b pb-3">
-          Media
-        </h3>
+        {/* Amenities */}
+        {isResidential && (
+          <div className="bg-white dark:bg-gray-800 space-y-6 border border-gray-200 dark:border-gray-700">
+            <CollapsableBox title="Amenities">
+              <EnhancedCheckbox
+                name="amenities"
+                label="Select Amenities"
+                value={formData.amenities}
+                onChange={handleChange}
+                amenities={Amenities}
+              />
+            </CollapsableBox>
+          </div>
+        )}
 
-        <div className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Images (max 10)
+        {/* Media */}
+        {user?.firstName && user?.lastName && (
+          <div className="bg-white dark:bg-gray-800 space-y-6 p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b pb-3">
+              Media
+            </h3>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images (max 10)
+                </label>
+                <FileUpload
+                  value={formData.media}
+                  onChange={(files) => handleFileUpload("media", files)}
+                  multiple={true}
+                  maxFiles={10}
+                  accept="image/*,video/*"
+                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 hover:border-green-500 transition-colors"
+                />
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  Upload additional images to showcase your property
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Post As Section */}
+        <div className="bg-white dark:bg-gray-800 text-sm space-y-4 p-6 border border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-main-green border-b pb-3">
+            Property Owned by: 
+          </h3>
+
+          <div className="flex flex-col gap-4">
+            {/* Post as Self */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="postAs"
+                value="self"
+                checked={formData.postAs === "self"}
+                onChange={handlePostAsChange}
+                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+              />
+              <span className="text-gray-700 dark:text-gray-300">
+                Post as Myself ({user?.firstName} {user?.lastName})
+              </span>
             </label>
-            <FileUpload
-              value={formData.media}
-              onChange={(files) => handleFileUpload("media", files)}
-              multiple={true}
-              maxFiles={10}
-              accept="image/*,video/*"
-              className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 hover:border-green-500 transition-colors"
-            />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Upload additional images to showcase your property
-            </p>
+
+            {/* Post as Companies */}
+            {userCompanies?.length > 0 && (
+              <div className="flex flex-col gap-2 ml-4">
+                {userCompanies.map((company) => (
+                  <label
+                    key={company._id}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="postAs"
+                      value={company._id}
+                      checked={formData.postAs === company._id}
+                      onChange={handlePostAsChange}
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                    />
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {company.companyName}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </div>
-    )}
 
-    {/* Form Actions */}
-    {(user?.firstName && user?.lastName) && (
-      <div className="flex flex-col-reverse gap-4 md:flex-row justify-end">
-        <button
-          type="button"
-          onClick={handleCancel}
-          className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-        >
-          Cancel
-        </button>
+        {/* Form Actions */}
+        {user?.firstName && user?.lastName && (
+          <div className="flex flex-col-reverse gap-4 md:flex-row justify-end">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+            >
+              Cancel
+            </button>
 
-        <button
-          type="button"
-          onClick={handleSaveDraft}
-          className="px-6 py-3 border border-blue-500 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-          disabled={isLoading}
-        >
-          {isLoading ? "Saving..." : "Save As Draft"}
-        </button>
+            <button
+              type="button"
+              onClick={handleSaveDraft}
+              className="px-6 py-3 border border-blue-500 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save As Draft"}
+            </button>
 
-        <button
-          type="submit"
-          className="px-6 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
-          disabled={isLoading}
-        >
-          {isLoading ? "Please Wait..." : "Publish Listing"}
-        </button>
-      </div>
-    )}
-  </form>
-</section>
-
-
+            <button
+              type="submit"
+              className="px-6 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+              disabled={isLoading}
+            >
+              {isLoading ? "Please Wait..." : "Publish Listing"}
+            </button>
+          </div>
+        )}
+      </form>
+    </section>
   );
 };
 

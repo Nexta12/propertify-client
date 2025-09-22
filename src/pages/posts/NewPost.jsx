@@ -1,10 +1,9 @@
-
 import { apiClient } from "@api/apiClient";
 import { endpoints } from "@api/endpoints";
 import DOMPurify from "dompurify";
 import FileUpload from "@components/ui/FileUpload";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
-import {  useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { handleGoBack, useTenMinuteTimeout } from "@utils/helper";
@@ -12,9 +11,9 @@ import useAuthStore from "@store/authStore";
 import DeleteModal from "@components/deleteModal/DeleteModal";
 import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";  
-import Avater from "@assets/img/avater.png"
-
+import data from "@emoji-mart/data";
+import Avater from "@assets/img/avater.png";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const NewPost = ({ closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -134,12 +133,9 @@ const NewPost = ({ closeModal }) => {
     }
   });
 
-
-
-
   return (
     <section className="mx-auto mb-8">
-    <CompleteProfileCall />
+      <CompleteProfileCall />
 
       <DeleteModal
         isOpen={openModal}
@@ -150,7 +146,10 @@ const NewPost = ({ closeModal }) => {
         isDeleting={isTrashing}
       />
 
-      <form className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-4 space-y-4" onSubmit={handleSubmit}>
+      <form
+        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-4 space-y-4"
+        onSubmit={handleSubmit}
+      >
         {/* Header with profile */}
         <div className="flex items-center gap-3">
           <img
@@ -159,9 +158,18 @@ const NewPost = ({ closeModal }) => {
             className="w-12 h-12 rounded-full object-cover"
           />
           <div>
-            <p className="font-semibold text-gray-800 dark:text-gray-100">
+            <p className="font-semibold text-gray-800 dark:text-gray-100 flex items-center">
               {user?.firstName} {user?.lastName}
+              
+                 {user?.isVerifiedUser && (
+              <RiVerifiedBadgeFill
+                className="ml-1 text-blue-500"
+                title="Duly Verified user"
+              />
+            )}
             </p>
+         
+
             <span className="text-xs text-gray-500">Posting publicly</span>
           </div>
         </div>
@@ -187,7 +195,11 @@ const NewPost = ({ closeModal }) => {
           </div>
           {showEmojiPicker && (
             <div className="mt-2">
-              <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
+              <Picker
+                data={data}
+                onEmojiSelect={handleEmojiSelect}
+                theme="light"
+              />
             </div>
           )}
         </div>
@@ -199,7 +211,7 @@ const NewPost = ({ closeModal }) => {
           multiple
           maxFiles={4}
           accept="image/*,video/*"
-           innerClass="w-4 h-4 overflow-hidden"
+          innerClass="w-4 h-4 overflow-hidden"
         />
 
         {/* Footer Actions */}
@@ -225,4 +237,3 @@ const NewPost = ({ closeModal }) => {
 };
 
 export default NewPost;
-

@@ -13,6 +13,7 @@ export const endpoints = {
   getAllUsers: "/api/user/getAll",
   getUserId: "/api/user/getUserId",
   fetchAllProfessionals: "/api/user/professionals",
+  checkUsername: "/api/user/userName-check",
   getUserDetails: "/api/user/getUser",
   UpdateUser: "/api/user/update",
   CreateUser: "/api/user/create",
@@ -32,6 +33,7 @@ export const endpoints = {
   deleteListing: "/api/property/deleteProperty",
   deleteMediaFileFromCloud: '/api/property/deleteFromCloud',
   trackViewNoClicks: "/api/property/trackViewNoClicks",
+  getCompanyProperties: "/api/property/companyProperties",
 
 
   // Messaging
@@ -66,6 +68,10 @@ export const endpoints = {
   postComment: "/api/comment/create",
   fetchPostComment: "/api/comment/all",
   deleteComment: "/api/comment/delete",
+  reactToComment: "/api/comment/react",
+  replyToComment: "/api/comment/reply",
+  getCommentReplies: "/api/comment/replies",
+  updateComment: "/api/comment/edit",
 
   // Stats
   fetchUserStats: "/api/stats/user-stats",
@@ -123,6 +129,15 @@ export const endpoints = {
   fetchUserCompanies: "/api/company/getUserAll",
   fetchCompanyDetails: "/api/company/getOne",
   updateCompany: "/api/company/update",
-  getAllCompanies: "/api/company/getAll"
+  getAllCompanies: "/api/company/getAll",
+
+
+  // Verification 
+
+  verificationRequest: "/api/verify/user",
+  getVerificaionStatus: "/api/verify/status",
+  getAllVerificationRequests: "/api/verify/getAll",
+  getVerificationById: "/api/verify/getOne",
+  verifyUser: "/api/verify/admin-verify",
  
 };

@@ -29,10 +29,10 @@ const CompleteProfileCall = () => {
             <FiUser className="text-3xl" />
           </div>
         </div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
           Complete Your Profile
         </h2>
-        <p className="text-gray-600 mb-4 text-sm">
+        <p className="text-gray-600 mb-4 text-sm dark:text-gray-100">
           We noticed your profile is missing some important information.
           Completing your profile helps you interact better with the platform,
           like listing properties, posts, posting comments, messages and more.

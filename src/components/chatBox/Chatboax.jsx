@@ -123,7 +123,7 @@ const Chatboax = ({ expanded, setExpanded }) => {
                 <FiMinus size={18} title="Minimize" />
               </button>
               <button
-                onClick={() => setHandleCloseChatToggle(true)}
+                onClick={() => {setHandleCloseChatToggle(true), setExpanded(false)}}
                 className="hover:text-gray-200 transition"
               >
                 <IoCloseSharp size={20} title="End Chat" />

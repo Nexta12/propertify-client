@@ -1,10 +1,9 @@
-
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import FileUpload from "@components/ui/FileUpload";
 import DOMPurify from "dompurify";
 import EnhancedSelect from "@components/ui/EnhancedSelect";
-import { NigerianStates, professions} from "@utils/data";
+import { NigerianStates, professions } from "@utils/data";
 import EnhancedInput from "@components/ui/EnhancedInput";
 import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 import { toast } from "react-toastify";
@@ -25,7 +24,8 @@ const ProfileTab = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     firstName: "",
     lastName: "",
@@ -58,7 +58,7 @@ const ProfileTab = () => {
           coverPic: data.coverPic || null,
           description: data.description || "",
           phone: data.phone || "",
-          whatsapp: data.whatsapp  || "",
+          whatsapp: data.whatsapp || "",
           profession: data.profession || "",
         });
       } catch (error) {
@@ -150,10 +150,10 @@ const ProfileTab = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfileData(prev => ({
-        ...prev,
-        [name]: value,
-      }));
+    setProfileData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -161,7 +161,6 @@ const ProfileTab = () => {
     setLoading(true);
 
     try {
-  
       // Create FormData
       const formData = new FormData();
       formData.append("firstName", profileData.firstName);
@@ -214,13 +213,10 @@ const ProfileTab = () => {
             coverPic: response.data.coverPic,
           }));
         }
-         setTimeout(()=>{
-            navigate(paths.feed)
-
-         },2000)
-    
+        setTimeout(() => {
+          navigate(paths.feed);
+        }, 2000);
       }
-
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
@@ -252,201 +248,204 @@ const ProfileTab = () => {
   }, [profileData.state]);
 
   return (
-   <section>
-  <DeleteModal
-    isOpen={openModal}
-    onClose={() => setOpenModal(false)}
-    onConfirm={confirmDelete}
-    message="This image will be deleted if replaced !"
-    isDeleting={isDeleting}
-    confirmText="Replace"
-    confirmTextClass="!bg-blue-500"
-  />
+    <section>
+      <DeleteModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        onConfirm={confirmDelete}
+        message="This image will be deleted if replaced !"
+        isDeleting={isDeleting}
+        confirmText="Replace"
+        confirmTextClass="!bg-blue-500"
+      />
 
-  <form onSubmit={handleSubmit}>
-    <div className="space-y-8">
-      {/* Cover Photo */}
-      <div className="relative mb-16">
-        <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded-xl overflow-hidden">
-          {profileData.coverPic ? (
-            <img
-              src={getImageSrc(
-                profileData.coverPic?.url || profileData.coverPic
-              )}
-              alt="Cover"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-              <FiEdit2 className="text-2xl" />
-            </div>
-          )}
-        </div>
-
-        <button
-          type="button"
-          onClick={handleCoverPicClick}
-          className="absolute top-4 right-4 bg-white/90 hover:bg-white text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 shadow-sm"
-        >
-          <FiEdit2 size={14} />
-          Change Cover
-        </button>
-
-        <FileUpload
-          ref={coverPicRef}
-          value={profileData.coverPic?.url || profileData.coverPic}
-          onChange={(file) => handleFileUpload("coverPic", file)}
-          multiple={false}
-          maxFiles={1}
-          accept="image/*"
-          className="hidden"
-          key="cover-upload"
-        />
-
-        {/* Profile Picture */}
-        <div className="absolute -bottom-12 left-6">
-          <div className="relative">
-            <div className="w-24 h-24 border-4 border-white dark:border-gray-700 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center overflow-hidden">
-              {profileData.profilePic ? (
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-8">
+          {/* Cover Photo */}
+          <div className="relative mb-16">
+            <div className="h-40 bg-gray-300 dark:bg-gray-600 rounded-xl overflow-hidden">
+              {profileData.coverPic ? (
                 <img
                   src={getImageSrc(
-                    profileData.profilePic?.url || profileData.profilePic
+                    profileData.coverPic?.url || profileData.coverPic
                   )}
-                  alt="Profile"
+                  alt="Cover"
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-3xl font-medium text-gray-500 dark:text-gray-300">
-                  {profileData?.firstName?.charAt(0)}
-                  {profileData?.lastName?.charAt(0)}
-                </span>
+                <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+                  <FiEdit2 className="text-2xl" />
+                </div>
               )}
             </div>
+
             <button
               type="button"
-              className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-              onClick={handleProfilePicClick}
+              onClick={handleCoverPicClick}
+              className="absolute top-4 right-4 bg-white/90 hover:bg-white text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 shadow-sm"
             >
-              <FiEdit2 className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              <FiEdit2 size={14} />
+              Change Cover
+            </button>
+
+            <FileUpload
+              ref={coverPicRef}
+              value={profileData.coverPic?.url || profileData.coverPic}
+              onChange={(file) => handleFileUpload("coverPic", file)}
+              multiple={false}
+              maxFiles={1}
+              accept="image/*"
+              className="hidden"
+              key="cover-upload"
+            />
+
+            {/* Profile Picture */}
+            <div className="absolute -bottom-12 left-6">
+              <div className="relative">
+                <div className="w-24 h-24 border-4 border-white dark:border-gray-700 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center overflow-hidden">
+                  {profileData.profilePic ? (
+                    <img
+                      src={getImageSrc(
+                        profileData.profilePic?.url || profileData.profilePic
+                      )}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-3xl font-medium text-gray-500 dark:text-gray-300">
+                      {profileData?.firstName?.charAt(0)}
+                      {profileData?.lastName?.charAt(0)}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  onClick={handleProfilePicClick}
+                >
+                  <FiEdit2 className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                </button>
+              </div>
+            </div>
+
+            <FileUpload
+              ref={profilePicRef}
+              value={profileData.profilePic?.url || profileData.profilePic}
+              onChange={(file) => handleFileUpload("profilePic", file)}
+              multiple={false}
+              maxFiles={1}
+              accept="image/*"
+              className="hidden"
+              key="profile-upload"
+            />
+          </div>
+
+          {/* Form Inputs */}
+          <div className="mt-16 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <EnhancedSelect
+                name="profession"
+                label="Profession"
+                value={profileData.profession}
+                onChange={handleChange}
+                options={professions}
+                placeholder="Select Profession"
+              />
+           
+
+             
+            </div>
+
+            
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <EnhancedInput
+                name="firstName"
+                label="First Name"
+                value={profileData.firstName}
+                onChange={handleChange}
+                placeholder="e.g. John"
+                maxLength={35}
+                required
+              />
+              <EnhancedInput
+                name="lastName"
+                label="Last Name"
+                value={profileData.lastName}
+                onChange={handleChange}
+                placeholder="e.g. Doe"
+                maxLength={35}
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <EnhancedSelect
+                name="state"
+                label="Location"
+                value={profileData.state}
+                onChange={handleStateChange}
+                options={stateOptions}
+                placeholder="Select State"
+              />
+              <EnhancedSelect
+                name="city"
+                label="City"
+                value={profileData.city}
+                onChange={handleChange}
+                options={cityOptions}
+                placeholder={
+                  profileData.state ? "Select city" : "Select state first"
+                }
+                disabled={!profileData.state}
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <EnhancedInput
+                name="phone"
+                label="Phone Number"
+                value={profileData.phone}
+                onChange={handleChange}
+                required
+                maxLength={15}
+              />
+              <EnhancedInput
+                name="whatsapp"
+                label="WhatsApp Number"
+                value={profileData.whatsapp}
+                onChange={handleChange}
+                maxLength={15}
+              />
+            </div>
+          </div>
+
+          <div>
+            <EnhancedTextarea
+              name="description"
+              label="Bio"
+              value={profileData.description}
+              onChange={handleChange}
+              rows={6}
+              withToolbar
+            />
+          </div>
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              className={`bg-[#28B16D] hover:bg-[#09C269] text-white font-medium py-3 px-8 rounded shadow-sm transition ${
+                loading ? "opacity-75 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Save Profile"}
             </button>
           </div>
         </div>
-
-        <FileUpload
-          ref={profilePicRef}
-          value={profileData.profilePic?.url || profileData.profilePic}
-          onChange={(file) => handleFileUpload("profilePic", file)}
-          multiple={false}
-          maxFiles={1}
-          accept="image/*"
-          className="hidden"
-          key="profile-upload"
-        />
-      </div>
-
-      {/* Form Inputs */}
-      <div className="mt-16 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-          <EnhancedSelect
-            name="profession"
-            label="Profession"
-            value={profileData.profession}
-            onChange={handleChange}
-            options={professions}
-            placeholder="Select Profession"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <EnhancedInput
-            name="firstName"
-            label="First Name"
-            value={profileData.firstName}
-            onChange={handleChange}
-            placeholder="e.g. John"
-            maxLength={35}
-            required
-          />
-          <EnhancedInput
-            name="lastName"
-            label="Last Name"
-            value={profileData.lastName}
-            onChange={handleChange}
-            placeholder="e.g. Doe"
-            maxLength={35}
-            required
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <EnhancedSelect
-            name="state"
-            label="Location"
-            value={profileData.state}
-            onChange={handleStateChange}
-            options={stateOptions}
-            placeholder="Select State"
-          />
-          <EnhancedSelect
-            name="city"
-            label="City"
-            value={profileData.city}
-            onChange={handleChange}
-            options={cityOptions}
-            placeholder={
-              profileData.state ? "Select city" : "Select state first"
-            }
-            disabled={!profileData.state}
-            required
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <EnhancedInput
-            name="phone"
-            label="Phone Number"
-            value={profileData.phone}
-            onChange={handleChange}
-            required
-            maxLength={15}
-          />
-          <EnhancedInput
-            name="whatsapp"
-            label="WhatsApp Number"
-            value={profileData.whatsapp}
-            onChange={handleChange}
-            maxLength={15}
-          />
-        </div>
-      </div>
-
-      <div>
-        <EnhancedTextarea
-          name="description"
-          label="Bio"
-          value={profileData.description}
-          onChange={handleChange}
-          rows={6}
-          withToolbar
-        />
-      </div>
-
-      <div className="pt-2">
-        <button
-          type="submit"
-          className={`bg-[#28B16D] hover:bg-[#09C269] text-white font-medium py-3 px-8 rounded shadow-sm transition ${
-            loading ? "opacity-75 cursor-not-allowed" : ""
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Updating..." : "Save Profile"}
-        </button>
-      </div>
-    </div>
-  </form>
-</section>
-
+      </form>
+    </section>
   );
 };
 

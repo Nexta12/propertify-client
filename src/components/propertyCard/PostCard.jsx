@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
-import { FiMoreVertical, FiMessageSquare, FiGrid, FiBarChart, FiBarChart2 } from "react-icons/fi";
+import { FiMoreVertical, FiMessageSquare, FiBarChart2 } from "react-icons/fi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { formatDistanceToNow } from "date-fns";
-import { formatLargeNumber, formatTitleCase } from "@utils/helper";
+import {
+  formatLargeNumber,
+  formatTitleCase,
+  timeAgoShort,
+} from "@utils/helper";
 import Avater from "@assets/img/avater.png";
 import useAuthStore from "@store/authStore";
 import { Link } from "react-router-dom";
@@ -18,6 +21,7 @@ import SocialShare from "./SocialShare";
 import Comments from "./Comments";
 import PropertyPlaceholder from "@assets/img/placeholder.webp";
 import PromotionBadge from "./PromotionBadge";
+import LogoPlaceHolder from "@assets/img/your-logo.webp";
 
 const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
   const [showComments, setShowComments] = useState(false);
@@ -30,23 +34,22 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
   const [allComments, setAllComments] = useState([]);
   const optionsRef = useRef(null);
 
-  // FetCh Post Comment.
+  // Fetch Post Comments
   useEffect(() => {
     const fetchPostComments = async () => {
       try {
         const response = await apiClient.get(
           `${endpoints.fetchPostComment}/${post._id}`
         );
-
         setAllComments(response.data.data);
       } catch (error) {
         toast(ErrorFormatter(error));
       }
     };
-
     fetchPostComments();
   }, [post]);
 
+  // Handle impressions
   useEffect(() => {
     const handleImpressions = async () => {
       try {
@@ -55,10 +58,10 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         toast.error(ErrorFormatter(error));
       }
     };
-
     if (post) handleImpressions();
   }, [post]);
 
+  // Render post media
   const renderMedia = () => {
     if (!post.media || post.media.length === 0) return null;
 
@@ -143,6 +146,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
     );
   };
 
+  // Render property details
   const renderPropertyDetails = () => {
     if (!isProperty) return null;
 
@@ -188,9 +192,13 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
           )}
         </div>
 
-        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
+         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
           {post.description}
-        </p>
+        </p> 
+        {/* <div
+          className="prose prose-lg text-[15px] dark:prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: post.description }}
+        />  */}
 
         <div className="flex items-center space-x-4 text-sm mt-3 text-gray-700 dark:text-gray-200">
           {post.beds && (
@@ -214,6 +222,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
     );
   };
 
+  // Close options when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
@@ -232,6 +241,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
     };
   }, [showOptions]);
 
+  // Handle delete
   const handleDelete = (post) => {
     setOpenModal(true);
     setItemToDelete(post._id);
@@ -243,14 +253,9 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
 
     setIsDeleting(true);
     try {
-      if (itemToDelete) {
-        // Delete post
-        await apiClient.delete(`${endpoints.deleteListing}/${itemToDelete}`);
-        toast.success("Listing Deleted");
-
-        onDeleteSuccess?.(itemToDelete); // Notify parent to remove the post
-      }
-
+      await apiClient.delete(`${endpoints.deleteListing}/${itemToDelete}`);
+      toast.success("Listing Deleted");
+      onDeleteSuccess?.(itemToDelete);
       setOpenModal(false);
     } catch (error) {
       toast.error(ErrorFormatter(error));
@@ -259,7 +264,8 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
       setItemToDelete(null);
     }
   };
-  // Hit The Current Property in View to count it a views
+
+  // Track views
   useEffect(() => {
     const trackViewNoClicks = async () => {
       try {
@@ -268,7 +274,6 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         toast(ErrorFormatter(error));
       }
     };
-
     trackViewNoClicks();
   }, [post._id]);
 
@@ -289,49 +294,87 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
           <span className="italic text-[11px] text-orange">{promoType}</span>
         )}
       </div>
+
       <div className="flex justify-between items-start">
         <div className="flex items-center space-x-3">
           <Link
             to={
               user
-                ? `${paths.protected}/profile/${post.owner.slug}`
+                ? post.postAs
+                  ? `${paths.protected}/companies/${post.postAs.slug}`
+                  : `${paths.protected}/profile/${post.owner.slug}`
+                : post.postAs
+                ? `${paths.companies}/${post.postAs.slug}`
                 : `${paths.properties}/${post.slug}`
             }
           >
             <img
-              src={post.owner.profilePic || Avater}
+              src={
+                post.postAs
+                  ? post.postAs.companyLogo || LogoPlaceHolder
+                  : post.owner.profilePic || Avater
+              }
               alt="Profile"
-              className="w-10 h-10 rounded-full object-cover "
+              className="w-10 h-10 rounded-full object-cover"
             />
           </Link>
 
           <div>
-            <div className="flex items-center">
-              <Link
-                to={
-                  user
-                    ? `${paths.protected}/profile/${post.owner?.slug}`
-                    : `${paths.properties}/${post.slug}`
-                }
-              >
-                <span className="font-semibold dark:text-gray-100">
-                  {post?.owner?.title} {post?.owner?.firstName}{" "}
-                  {post?.owner?.lastName}{" "}
+            {post.postAs ? (
+              <>
+                <Link
+                  to={
+                    user
+                      ? post.postAs
+                        ? `${paths.protected}/companies/${post.postAs.slug}`
+                        : `${paths.protected}/profile/${post.owner.slug}`
+                      : post.postAs
+                      ? `${paths.companies}/${post.postAs.slug}`
+                      : `${paths.properties}/${post.slug}`
+                  }
+                >
+                  <span className="font-semibold dark:text-gray-100">
+                    {post.postAs.companyName}
+                  </span>
+                </Link>
+
+                <div className="text-xs text-gray-500 dark:text-gray-300 capitalize">
+                  {post.postAs.city}, {post.postAs.state}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center">
+                  <Link
+                    to={
+                      user
+                        ? `${paths.protected}/profile/${post.owner?.slug}`
+                        : `${paths.properties}/${post.slug}`
+                    }
+                  >
+                    <span className="font-semibold dark:text-gray-100">
+                      {post?.owner?.title} {post?.owner?.firstName}{" "}
+                      {post?.owner?.lastName}
+                    </span>
+                  </Link>
+                  {post.owner.isVerifiedUser && (
+                    <RiVerifiedBadgeFill
+                      className="ml-1 text-blue-500"
+                      title="Duly Verified user"
+                    />
+                  )}
+                </div>
+                <span className="text-xs text-gray-500 dark:text-gray-300 capitalize">
+                  {post?.owner?.companyDetails?.companyName}
                 </span>
-              </Link>
-              {post.owner.isVerifiedUser && (
-                <RiVerifiedBadgeFill className="ml-1 text-blue-500" />
-              )}
-            </div>
-            <span className="text-xs text-gray-500 capitalize dark:text-gray-100 ">
-              {post?.owner?.companyDetails?.companyName}
-            </span>
+              </>
+            )}
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
           <span className="text-[11px] text-gray-500 capitalize dark:text-gray-200">
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+            {timeAgoShort(post.createdAt)}
           </span>
           {user?.id === post.owner._id && (
             <div className="relative">
@@ -341,7 +384,6 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
               >
                 <FiMoreVertical />
               </button>
-
               {showOptions && (
                 <div
                   ref={optionsRef}
@@ -351,14 +393,13 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                     to={`${paths.protected}/${
                       post.isProperty ? "properties" : "posts"
                     }/edit/${post.slug}`}
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left transition-colors"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                   >
                     Edit Post
                   </Link>
-
                   <button
                     onClick={() => handleDelete(post)}
-                    className="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left transition-colors"
+                    className="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                   >
                     Delete Post
                   </button>
@@ -384,7 +425,12 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         <div className="flex justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-500">
           <div className="flex items-center space-x-4 text-gray-500 dark:text-gray-300 ">
             <span className="text-xs">{post?.views} views</span>
-            <span className="text-xs flex items-center gap-x-1" title="Impressions"><FiBarChart2 /> {post?.impressions || 0}  </span>
+            <span
+              className="text-xs flex items-center gap-x-1"
+              title="Impressions"
+            >
+              <FiBarChart2 /> {post?.impressions || 0}
+            </span>
           </div>
 
           <div className="flex items-center space-x-4">

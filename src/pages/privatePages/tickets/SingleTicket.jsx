@@ -86,6 +86,7 @@ const SingleTicket = () => {
         data
       );
      toast.success("Ticket Closed successfully")
+     window.location.reload();
     } catch (error) {
       toast.error(ErrorFormatter(error));
     }
@@ -107,13 +108,13 @@ const SingleTicket = () => {
         {formatDistanceToNow(new Date(createdAt))} ago
       </div>
     </div>
-    <h2 className="text-xl font-bold mb-2 dark:text-white">Subject: {subject}</h2>
+    <h2 className="text-sm font-bold mb-2 dark:text-white">Subject: {subject}</h2>
     <h2 className="text-sm font-bold mb-2 dark:text-gray-300">{message}</h2>
 
     <div className="flex flex-wrap gap-4 mt-2 text-sm items-center justify-between">
       <div className="flex flex-wrap gap-4 mt-2 text-sm">
         <div>
-          <span className="font-semibold dark:text-gray-200">Status:</span>{" "}
+          <span className="font-semibold dark:text-gray-200 text-xs ">Status:</span>{" "}
           <span
             className={`inline-block px-2 py-0.5 rounded-full capitalize ${
               status === "closed"
@@ -125,7 +126,7 @@ const SingleTicket = () => {
           </span>
         </div>
         <div>
-          <span className="font-semibold dark:text-gray-200">Priority:</span>{" "}
+          <span className="font-semibold dark:text-gray-200 text-sm">Priority:</span>{" "}
           <span
             className={`inline-block px-2 py-0.5 rounded-full ${
               priorityColors[priority] || ""

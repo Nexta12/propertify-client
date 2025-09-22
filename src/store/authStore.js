@@ -12,6 +12,9 @@ import {
 } from "@utils/localStorage";
 import { toast } from "react-toastify";
 import { create } from "zustand";
+import useCompanyStore from "./userCompaniesStore";
+
+
 
 const localStorageUser = getLocalStorageItem("user");
 
@@ -108,6 +111,8 @@ const useAuthStore = create((set, get) => ({
 
   validateAuth: async () => {
     const token = getLocalStorageItem("accessToken");
+    const { setUserCompanies } = useCompanyStore.getState();
+
     if (!token) {
       
      await apiClient.post(endpoints.logout)
@@ -116,7 +121,16 @@ const useAuthStore = create((set, get) => ({
     }
     try {
       const response = await apiClient.get(endpoints.validateAuth);
-      set({ isAuthenticated: true, user: response.data.data });
+      const user = response.data.data;
+
+      set({ isAuthenticated: true, user});
+
+      
+        if (user?.id) {
+      const companiesRes = await apiClient.get(`${endpoints.fetchUserCompanies}/${user.id}`);
+      setUserCompanies(companiesRes.data.data); 
+    }
+
     } catch {
       set({ isAuthenticated: false });
       removeLocalStorageItem("accessToken");

@@ -49,6 +49,8 @@ import SingleCompany from "@pages/publicPages/company/SingleCompany";
 import CreateCompany from "@pages/privatePages/companyPageSettings/CreateCompany";
 import MyCompanies from "@pages/privatePages/companyPageSettings/MyCompanies";
 import UpdateCompany from "@pages/privatePages/companyPageSettings/UpdateCompany";
+import VerificationDetails from "@pages/privatePages/adsManager/VerificationDetails";
+import UserProfilePublic from "@pages/publicPages/userPublicProfile/UserProfilePublic";
 
 
 
@@ -75,6 +77,7 @@ const AppRoutes = () => (
       <Route path={`${paths.properties}/:slug`} element={<PropertyDetails />} />
       <Route path={paths.companies} element={<Companies />} />
       <Route path={`${paths.companies}/:slug`} element={<SingleCompany />} />
+      <Route path={`${paths.user}/:slug`} element={<UserProfilePublic />} />
      
     </Route>
     
@@ -127,6 +130,7 @@ const AppRoutes = () => (
          <Route path={`${paths.protected}/verification`} element={<GetVerifiedPage />} />
          <Route path={`${paths.protected}/badges`} element={<Badges />} />
          <Route path={`${paths.protected}/verified-list`} element={<Verifications />} />
+         <Route path={`${paths.protected}/verification-details/:id`} element={<VerificationDetails />} />
        
         {/* Company Settings */}
          <Route path={`${paths.protected}/create-company`} element={<CreateCompany />} />

@@ -181,3 +181,14 @@ export const shufflePostsArray = (array) => {
   }
   return shuffled;
 };
+
+
+export const timeAgoShort = (date) => {
+  const now = new Date();
+  const diff = Math.floor((now - new Date(date)) / 1000); // seconds
+
+  if (diff < 60) return `${diff}s`; // seconds
+  if (diff < 3600) return `${Math.floor(diff / 60)}m`; // minutes
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h`; // hours
+  return `${Math.floor(diff / 86400)}d`; // days
+};

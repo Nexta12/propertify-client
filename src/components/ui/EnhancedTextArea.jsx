@@ -12,11 +12,20 @@ const EnhancedEditor = ({
   ...rest
 }) => {
   // modules config depends on `withToolbar`
-  const modules = withToolbar
-    ? {
-        toolbar: [["bold", "italic"]],
-      }
-    : { toolbar: false };
+ const modules = withToolbar
+  ? {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }], // headers
+        ["bold", "italic", "underline", "strike"], // basic styles
+        [{ list: "ordered" }, { list: "bullet" }], // lists
+        ["blockquote", "code-block"], // special blocks
+        ["link", "image"], // media
+        [{ color: [] }, { background: [] }], // text & background colors
+        [{ align: [] }], // alignment
+        ["clean"], // remove formatting
+      ],
+    }
+  : { toolbar: false };
 
   return (
     <div>

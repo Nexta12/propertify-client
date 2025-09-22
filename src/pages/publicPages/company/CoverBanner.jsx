@@ -23,7 +23,7 @@ const CoverBanner = ({company, handleNaviagete}) => {
             <img
               src={company?.companyLogo || LogoPlaceholder}
               alt="logo"
-              className="w-24 h-24 md:w-28 md:h-28 rounded-xl border-4 border-white dark:border-gray-800 shadow-lg object-cover"
+              className="w-24 h-24 md:w-28 md:h-28 rounded-xl border-4 border-white dark:border-gray-500 shadow-lg object-cover"
             />
             {isStaff && (
           <div className="absolute bottom-0 right-20">

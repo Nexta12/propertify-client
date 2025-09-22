@@ -11,7 +11,7 @@ const Hero = () => {
 
    useEffect(() => {
      const verifyAuth = async () => {
-       await validateAuth(); // Ensure validateAuth works properly
+       await validateAuth(); 
      };
      verifyAuth();
    }, [validateAuth]);

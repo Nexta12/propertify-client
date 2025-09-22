@@ -294,12 +294,7 @@ const UpdateCompany = () => {
         category: companyData.category,
         companyWebsite: companyData.companyWebsite,
         isVerified: companyData.isVerified,
-        // certificates: companyData.certificates
-        //   .filter((c) => (c.file || c.file?.url) && c.title)
-        //   .map((c) => ({
-        //     title: c.title,
-        //     url: typeof c.file === "string" ? c.file : c.file?.url,
-        //   })),
+      
 
         certificates: companyData.certificates.map((c) => ({
           title: c.title,

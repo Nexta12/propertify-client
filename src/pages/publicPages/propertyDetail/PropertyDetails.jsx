@@ -113,7 +113,7 @@ const PropertyDetails = () => {
      
       <div className=" w-full overflow-x-hidden">
         {/* Main Container */}
-        <div className="container mx-auto px-4  w-full max-w-7xl box-border">
+        <div className="container mx-auto w-full max-w-7xl box-border">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6 w-full  p-4 rounded-md bg-white dark:bg-gray-800">

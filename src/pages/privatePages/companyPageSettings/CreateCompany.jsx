@@ -12,6 +12,8 @@ import EnhancedSelect from "@components/ui/EnhancedSelect";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 
 import { companyCategory, NigerianStates } from "@utils/data";
+import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
+import CompleteProfileCall from "@components/profileComplete/CompleteProfileCall";
 
 const CreateCompany = () => {
   const [cityOptions, setCityOptions] = useState([]);
@@ -28,6 +30,7 @@ const CreateCompany = () => {
     phones: [""],
     category: "",
     companyWebsite: "",
+    whatsapp: ""
   });
 
   // Static options
@@ -114,6 +117,7 @@ const CreateCompany = () => {
         phones: companyData.phones.filter((p) => p),
         category: companyData.category,
         companyWebsite: companyData.companyWebsite,
+        whatsapp: companyData.whatsapp,
       };
 
       const response = await apiClient.post(
@@ -134,6 +138,7 @@ const CreateCompany = () => {
         phones: [""],
         category: "",
         companyWebsite: "",
+        whatsapp: ""
       });
     } catch (error) {
       toast.error(ErrorFormatter(error));
@@ -143,8 +148,10 @@ const CreateCompany = () => {
   };
 
   return (
-    <section className="section-container mx-auto bg-white dark:bg-gray-800 p-6 rounded-2xl">
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <section className="section-container mx-auto bg-white dark:bg-gray-800 p-6 rounded-sm">
+      <HandleGoBackBtn/>
+        <CompleteProfileCall />
+      <form onSubmit={handleSubmit} className="space-y-6 mt-2">
         {/* Logo & Cover */}
 
         {/* Basic Info */}
@@ -239,6 +246,15 @@ const CreateCompany = () => {
             + Add another phone
           </button>
         </div>
+
+           <EnhancedInput
+            name="whatsapp"
+            type="text"
+            label="WhatsApp"
+            value={companyData.whatsapp}
+            onChange={handleChange}
+           
+          />
 
         {/* Description */}
         <EnhancedTextarea

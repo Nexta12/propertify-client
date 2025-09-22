@@ -9,6 +9,7 @@ import Notification from "./Notification";
 import DeskTopUserMenu from "./DeskTopUserMenu";
 import useSearchStore from "@store/searchStore";
 import ToggleSwitch from "@components/toggleSwitch/ToggleSwitch";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const DesktopTopbar = () => {
   const { user } = useAuthStore();
@@ -58,10 +59,17 @@ const DesktopTopbar = () => {
 
         <div className="flex items-center space-x-2">
           <div className="text-right">
-            <p className="text-sm font-medium">
+            <p className="text-sm font-medium flex items-center">
               {user?.firstName && user?.lastName
                 ? `${user.firstName} ${user.lastName}`
                 : "Welcome"}
+
+              {user?.isVerifiedUser && (
+                <RiVerifiedBadgeFill
+                  className="ml-1 text-blue-500"
+                  title="Duly Verified user"
+                />
+              )}
             </p>
 
             <p className="text-xs text-gray-500 dark:text-gray-300">
