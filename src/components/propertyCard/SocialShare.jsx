@@ -4,11 +4,10 @@ import { FiShare2 } from "react-icons/fi";
 
 const SocialShare = ({ content }) => {
   // Proper URL for the property
-  const contentUrl = `${import.meta.env.VITE_COMPANY_WEBSITE}/properties/${content.slug}`;
+  const contentUrl = `${import.meta.env.VITE_COMPANY_WEBSITE}/properties/${content?.slug}`;
 
   const [showShareButtons, setShowShareButtons] = useState(false);
   const handleShareButtons = () => setShowShareButtons(!showShareButtons);
-
   const shareText = encodeURIComponent("Check this out!");
   const encodedUrl = encodeURIComponent(contentUrl);
 
