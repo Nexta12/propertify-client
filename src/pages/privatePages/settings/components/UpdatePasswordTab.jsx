@@ -70,7 +70,7 @@ const UpdatePasswordTab = () => {
   return (
     <section>
       <form onSubmit={handleSubmit}>
-        <div className="space-y-6 max-w-md">
+        <div className="space-y-6 max-w-lg mx-auto shadow-lg p-6 bg-bg-green rounded-md">
           <div>
             <EnhancedInput
               type="password"

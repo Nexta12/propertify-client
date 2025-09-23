@@ -114,14 +114,16 @@ const PropertyDetails = () => {
               )} */}
 
                 {/* Image Slider */}
-                <ImageSlider
-                  property={property}
-                  nextImage={nextImage}
-                  currentImageIndex={currentImageIndex}
-                  prevImage={prevImage}
-                  setShowFullScreen={setShowFullScreen}
-                  setCurrentImageIndex={setCurrentImageIndex}
-                />
+                {property.media.length > 0 && (
+                  <ImageSlider
+                    property={property}
+                    nextImage={nextImage}
+                    currentImageIndex={currentImageIndex}
+                    prevImage={prevImage}
+                    setShowFullScreen={setShowFullScreen}
+                    setCurrentImageIndex={setCurrentImageIndex}
+                  />
+                )}
 
                 {/* Property Main Details */}
                 <PropertyMainDetail property={property} />

@@ -35,6 +35,7 @@ import EnhancedTextarea from "@components/ui/EnhancedTextArea";
 
 const NewProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [isTrashing, setIsTrashing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [draftId, setDraftId] = useState("");
@@ -213,7 +214,7 @@ const NewProperty = () => {
 
   // Manual Save Draft handler
   const handleSaveDraft = async () => {
-    setIsLoading(true);
+    setIsSaving(true);
     try {
       const sanitizedFormData = {
         ...formData,
@@ -242,7 +243,7 @@ const NewProperty = () => {
     } catch (error) {
       toast.error(ErrorFormatter(error));
     } finally {
-      setIsLoading(false);
+      setIsSaving(false);
     }
   };
 
@@ -614,9 +615,9 @@ const NewProperty = () => {
               type="button"
               onClick={handleSaveDraft}
               className="px-6 py-3 border border-blue-500 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-              disabled={isLoading}
+              disabled={isSaving}
             >
-              {isLoading ? "Saving..." : "Save As Draft"}
+              {isSaving ? "Saving..." : "Save As Draft"}
             </button>
 
             <button

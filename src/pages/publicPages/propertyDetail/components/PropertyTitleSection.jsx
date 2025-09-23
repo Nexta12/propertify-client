@@ -1,7 +1,5 @@
 import FavouriteProperty from "@components/propertyCard/FavouriteProperty";
 import SocialShare from "@components/propertyCard/SocialShare";
-import { formatTitleCase } from "@utils/helper";
-import { truncate } from "lodash";
 import { MdLocationOn } from "react-icons/md";
 
 const PropertyTitleSection = ({ property }) => {
@@ -9,9 +7,7 @@ const PropertyTitleSection = ({ property }) => {
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
       <div>
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-200 capitalize ">
-          {property?.title != undefined
-            ? property?.title
-            : truncate(formatTitleCase(property.slug), { length: 30 })}
+          {property?.title != undefined ? property?.title : null}
         </h1>
         {property.isProperty && (
           <div className="flex items-center text-gray-600 mt-2 dark:text-gray-200">

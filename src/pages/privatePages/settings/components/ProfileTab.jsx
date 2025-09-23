@@ -238,7 +238,7 @@ const ProfileTab = () => {
   }, [profileData.state]);
 
   return (
-    <section>
+    <section className="">
       <DeleteModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
@@ -328,7 +328,7 @@ const ProfileTab = () => {
 
           {/* Form Inputs */}
           <div className="mt-16 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <EnhancedSelect
                 name="profession"
                 label="Profession"
@@ -337,9 +337,6 @@ const ProfileTab = () => {
                 options={professions}
                 placeholder="Select Profession"
               />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <EnhancedInput
                 name="firstName"
                 label="First Name"

@@ -60,11 +60,11 @@ const OwnerContact = ({ property }) => {
       </div>
 
       {/* Contact buttons */}
-      <div className="flex items-center flex-wrap gap-2">
+      <div className="flex items-center justify-between flex-wrap gap-2 ">
         {phone && (
           <a
             href={`tel:${phone}`}
-            className="flex items-center justify-center p-2 bg-indigo-50 dark:bg-indigo-800 text-indigo-600 dark:text-indigo-100 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-700 transition-colors text-sm"
+            className=" flex-1 flex items-center justify-center p-2 bg-indigo-200 dark:bg-indigo-800 text-indigo-600 dark:text-indigo-100 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-700 transition-colors text-sm"
           >
             <FiPhone className="mr-2" />
             Call
@@ -75,7 +75,7 @@ const OwnerContact = ({ property }) => {
           href={`mailto:${email || import.meta.env.VITE_OFFICIAL_EMAIL}?subject=Regarding ${
             property.title
           }&body=Hello, I'm interested in...`}
-          className="flex items-center justify-center p-2 bg-yellow-50 dark:bg-yellow-800 text-orange dark:text-yellow-200 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-700 transition-colors text-sm"
+          className="flex-1 flex items-center justify-center p-2 bg-yellow-200 dark:bg-yellow-800 text-orange dark:text-yellow-200 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-700 transition-colors text-sm"
         >
           <FiMail className="mr-2" />
           Email
@@ -88,7 +88,7 @@ const OwnerContact = ({ property }) => {
             href={`https://wa.me/${whatsapp}${MessageEncoder(
               ` Hi ${displayName}, I am interested in ${property.title}`
             )}`}
-            className="flex items-center justify-center p-2 bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors text-sm"
+            className="flex-1 flex items-center justify-center p-2 bg-green-200 dark:bg-green-800 text-green-600 dark:text-green-100 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors text-sm"
             aria-label="Chat on WhatsApp"
           >
             <FaWhatsapp className="mr-2" />
