@@ -91,6 +91,21 @@ const Header = () => {
 
   if (!scrollDirection) void scrollDirection;
 
+  useEffect(() => {
+    if (sidepanel) {
+      // Prevent background scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scroll
+      document.body.style.overflow = "";
+    }
+
+    // Cleanup when component unmounts (important!)
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidepanel]);
+
   return (
     <header
       className={` w-full z-50 transition-transform duration-300 section-container ${
@@ -101,7 +116,7 @@ const Header = () => {
     >
       <div className=" flex items-center justify-between">
         {/* Left Section */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleSidepanel}
             className="lg:hidden text-2xl text-gray-600 dark:text-gray-200 focus:outline-none"
@@ -215,7 +230,7 @@ const Header = () => {
 
       {/* Mobile Sidepanel */}
       <div
-        className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 transform ${
+        className={`fixed inset-0 bg-white text-[18px] dark:bg-gray-900 z-40 transform ${
           sidepanel ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out lg:hidden mt-[60px] h-[calc(100vh-60px)]`}
       >

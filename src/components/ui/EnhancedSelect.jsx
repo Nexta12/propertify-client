@@ -104,7 +104,7 @@ const EnhancedSelect = ({
       <div
         className={`mt-1 block w-full rounded-md border ${
           error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-        } p-4 sm:py-3 !text-[16px] font-medium text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-800 cursor-pointer`}
+        } p-4 sm:py-3 !text-[16px] font-medium text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-800 cursor-pointer  `}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {value

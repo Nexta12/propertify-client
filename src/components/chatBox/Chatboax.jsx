@@ -72,12 +72,12 @@ const Chatboax = ({ expanded, setExpanded }) => {
   }, [socket, chatId]);
 
   return (
-    <div className="fixed bottom-8 md:bottom-6 right-6 z-50">
+    <div className="fixed bottom-8 md:bottom-6 right-4 sm:right-6 z-50">
       {/* Floating chat button */}
       {!expanded && (
         <button
           onClick={() => setExpanded(true)}
-          className="p-4 bg-main-green text-white rounded-full shadow-lg hover:bg-green-600 transition-all animate-bounce"
+          className="p-2 bg-main-green text-white rounded-full shadow-lg hover:bg-green-600 transition-all animate-bounce"
         >
           <IoChatbubblesOutline size={28} />
         </button>
@@ -85,9 +85,9 @@ const Chatboax = ({ expanded, setExpanded }) => {
 
       {/* Chatbox */}
       {expanded && (
-        <div className="w-80 md:w-96 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div className="w-[90vw] md:w-96 bg-bg-green dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="flex justify-between items-center bg-main-green text-white px-4 py-3">
+          <div className="flex justify-between items-center bg-main-green text-white px-4 py-4">
             {joinedUser ? (
               <div className="flex items-center gap-x-2">
                 <div className="relative flex">
