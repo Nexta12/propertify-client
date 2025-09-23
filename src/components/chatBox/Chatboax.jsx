@@ -77,7 +77,7 @@ const Chatboax = ({ expanded, setExpanded }) => {
       {!expanded && (
         <button
           onClick={() => setExpanded(true)}
-          className="p-2 bg-main-green text-white rounded-full shadow-lg hover:bg-green-600 transition-all animate-bounce"
+          className="p-4 bg-main-green text-white rounded-full shadow-lg hover:bg-green-600 transition-all animate-bounce"
         >
           <IoChatbubblesOutline size={28} />
         </button>

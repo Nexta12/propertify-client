@@ -2,7 +2,7 @@ import {
   FaFacebook,
   FaInstagram,
   FaTwitter,
-  FaLinkedin,
+  // FaLinkedin,
   FaMapMarkerAlt,
   FaPhone,
   FaEnvelope,
@@ -48,6 +48,13 @@ const Footer = ({ className }) => {
     { to: "#", label: "Terms of Service" },
   ];
 
+  const socialLinks = [
+    { Icon: FaFacebook, url: "https://facebook.com/PropertifyNG" },
+    { Icon: FaInstagram, url: "https://www.instagram.com/propertifyng" },
+    { Icon: FaTwitter, url: "https://x.com/PropertifyNG" },
+    // { Icon: FaLinkedin, url: "https://linkedin.com/in/yourprofile" },
+  ];
+
   const [email, setEmail] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
 
@@ -76,10 +83,12 @@ const Footer = ({ className }) => {
               agents nationwide.
             </p>
             <div className="flex space-x-4">
-              {[FaFacebook, FaInstagram, FaTwitter, FaLinkedin].map((Icon, i) => (
+              {socialLinks.map(({ Icon, url }, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-secondary dark:text-gray-400 hover:text-main-green transition-colors duration-200"
                 >
                   <Icon size={18} />

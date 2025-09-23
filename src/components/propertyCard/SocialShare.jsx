@@ -2,15 +2,15 @@ import { useState } from "react";
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
 
-const SocialShare = () => {
-  // Social Share handler
+const SocialShare = ({ content }) => {
+  // Proper URL for the property
+  const contentUrl = `${import.meta.env.VITE_COMPANY_WEBSITE}/properties/${content.slug}`;
 
   const [showShareButtons, setShowShareButtons] = useState(false);
   const handleShareButtons = () => setShowShareButtons(!showShareButtons);
 
-  const currentUrl = window.location.href;
   const shareText = encodeURIComponent("Check this out!");
-  const encodedUrl = encodeURIComponent(currentUrl);
+  const encodedUrl = encodeURIComponent(contentUrl);
 
   const socialLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
@@ -20,7 +20,7 @@ const SocialShare = () => {
 
   const handleShare = (platform) => {
     const link = socialLinks[platform];
-    if (link) window.open(link, "_blank");
+    if (link) window.open(link, "_blank", "noopener,noreferrer,width=600,height=400");
   };
 
   return (
@@ -33,33 +33,30 @@ const SocialShare = () => {
         Share
       </button>
 
-      {/* Simple share options dropdown */}
-      <div
-        className={`flex gap-6 bg-white dark:bg-gray-800 dark:border-gray-600 border p-2 absolute right-0 bottom-full mb-2 w-48 rounded-md shadow-lg py-2 transform ${
-          showShareButtons ? "translate-x-0" : "hidden"
-        } transition-transform duration-300 ease-in-out`}
-      >
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => handleShare("facebook")}
-            className="p-2 text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
-          >
-            <FaFacebook />
-          </button>
-          <button
-            onClick={() => handleShare("twitter")}
-            className="p-2 text-blue-400 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
-          >
-            <FaTwitter />
-          </button>
-          <button
-            onClick={() => handleShare("linkedin")}
-            className="p-2 text-blue-700 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
-          >
-            <FaLinkedin />
-          </button>
+      {showShareButtons && (
+        <div className="flex gap-6 bg-white dark:bg-gray-800 dark:border-gray-600 border p-2 absolute right-0 bottom-full mb-2 w-48 rounded-md shadow-lg py-2">
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => handleShare("facebook")}
+              className="p-2 text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+            >
+              <FaFacebook />
+            </button>
+            <button
+              onClick={() => handleShare("twitter")}
+              className="p-2 text-blue-400 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+            >
+              <FaTwitter />
+            </button>
+            <button
+              onClick={() => handleShare("linkedin")}
+              className="p-2 text-blue-700 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+            >
+              <FaLinkedin />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

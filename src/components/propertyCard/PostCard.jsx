@@ -427,7 +427,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                 onClick={() => setShowShareOptions(!showShareOptions)}
                 className="flex items-center space-x-1 text-gray-500"
               >
-                <SocialShare />
+                <SocialShare content={post} />
               </Link>
             </div>
           </div>

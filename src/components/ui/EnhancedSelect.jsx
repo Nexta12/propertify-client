@@ -114,7 +114,7 @@ const EnhancedSelect = ({
 
       {isOpen && (
         <div
-          className={`absolute z-50 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto ${
+          className={`absolute z-50 w-full bg-bg-green dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-72 overflow-auto ${
             openUpward ? "bottom-full mb-1" : "top-full mt-1"
           }`}
         >
