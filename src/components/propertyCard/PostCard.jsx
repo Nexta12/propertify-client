@@ -334,7 +334,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                     }
                   >
                     <span className="font-semibold dark:text-gray-100">
-                      {post?.owner?.title} {post?.owner?.firstName} {post?.owner?.lastName}
+                      {post?.owner?.firstName} {post?.owner?.lastName}
                     </span>
                   </Link>
                   {post.owner.isVerifiedUser && (
@@ -344,8 +344,10 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
                     />
                   )}
                 </div>
+
                 <span className="text-xs text-gray-500 dark:text-gray-300 capitalize">
-                  {post?.owner?.companyDetails?.companyName}
+                  {formatTitleCase(post?.owner?.profession)}, {post?.owner?.city},{" "}
+                  {post?.owner?.state}
                 </span>
               </>
             )}
