@@ -28,7 +28,7 @@ const AboutUsTab = ({ activeTab, company }) => {
                   <h3 className="text-center mt-3 font-medium">
                     {member?.user?.firstName} {member?.user?.lastName}
                   </h3>
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-center capitalize text-sm text-gray-500 dark:text-gray-400">
                     {member?.role}
                   </p>
                 </div>
