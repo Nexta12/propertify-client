@@ -64,6 +64,10 @@ const Companies = () => {
     if (page > 1) fetchCompanies(page);
   }, [page, fetchCompanies]);
 
+  const handleDeleteCompany = (slug) => {
+    setCompanies((prev) => prev.filter((c) => c.slug !== slug));
+  };
+
   return (
     <div className=" section-container mx-auto bg-gray-100  flex flex-col lg:flex-row gap-6">
       {/* Left Sidebar */}
@@ -113,7 +117,7 @@ const Companies = () => {
       {/* Companies Grid */}
       <div className="flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          <CompanyCard companies={companies} />
+          <CompanyCard companies={companies} onDelete={handleDeleteCompany} />
         </div>
 
         {/* Load More */}

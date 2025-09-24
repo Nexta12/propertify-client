@@ -51,6 +51,7 @@ import MyCompanies from "@pages/privatePages/companyPageSettings/MyCompanies";
 import UpdateCompany from "@pages/privatePages/companyPageSettings/UpdateCompany";
 import VerificationDetails from "@pages/privatePages/adsManager/VerificationDetails";
 import UserProfilePublic from "@pages/publicPages/userPublicProfile/UserProfilePublic";
+import AllCompanies from "@pages/privatePages/companyPageSettings/AllCompanies";
 
 const AppRoutes = () => (
   <Routes>
@@ -130,6 +131,7 @@ const AppRoutes = () => (
       />
 
       {/* Company Settings */}
+      <Route path={`${paths.protected}/companies-list`} element={<AllCompanies />} />
       <Route path={`${paths.protected}/create-company`} element={<CreateCompany />} />
       <Route path={`${paths.protected}/company-pages`} element={<MyCompanies />} />
       <Route path={`${paths.protected}/companies/:slug`} element={<SingleCompany />} />

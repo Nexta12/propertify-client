@@ -126,6 +126,7 @@ export const endpoints = {
   fetchCompanyDetails: "/api/company/getOne",
   updateCompany: "/api/company/update",
   getAllCompanies: "/api/company/getAll",
+  deleteCompanyPage: "/api/company/delete",
 
   // Verification
 

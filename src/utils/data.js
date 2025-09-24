@@ -127,7 +127,13 @@ export const DashBoardMenuItems = [
     type: "",
     subItems: [
       {
-        title: "Create Company Page",
+        title: "All Companies",
+        link: `${paths.protected}/companies-list`,
+        visibility: ["admin"],
+        type: "",
+      },
+      {
+        title: "Create Page",
         link: `${paths.protected}/create-company`,
         visibility: ["admin", "realtor", "engineer", "service", "trader"],
         type: "",

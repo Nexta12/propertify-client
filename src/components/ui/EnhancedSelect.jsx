@@ -125,7 +125,7 @@ const EnhancedSelect = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search..."
-              className="w-full p-2 text-[16px] border rounded-md dark:bg-gray-700 dark:text-gray-100"
+              className="w-full p-2 text-[16px] border rounded-md dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-100"
             />
           </div>
           {/* Options */}
@@ -135,8 +135,10 @@ const EnhancedSelect = ({
                 <li
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
-                  className={`px-4 py-2 text-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                    value === opt.value ? "bg-gray-100 dark:bg-gray-700 font-semibold" : ""
+                  className={`px-4 py-2 text-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300  ${
+                    value === opt.value
+                      ? "bg-gray-100 dark:text-gray-100 dark:bg-gray-700 font-semibold"
+                      : ""
                   }`}
                 >
                   {opt.label}
