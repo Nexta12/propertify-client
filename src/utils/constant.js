@@ -4,4 +4,5 @@ export const UserRole = {
   ENGINEER: "engineer",
   SERVICE: "service",
   TRADER: "trader",
+  STAFF: "staff",
 };

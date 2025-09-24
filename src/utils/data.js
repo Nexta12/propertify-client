@@ -1666,6 +1666,15 @@ export const PropertyTypes = [
   { label: "Wind Farm", value: "wind-farm", category: "miscellaneous" },
 ];
 
+export const roleOptions = [
+  { value: "admin", label: "Admin" },
+  { value: "realtor", label: "Realtor" },
+  { value: "engineer", label: "Engineer" },
+  { value: "service", label: "Service" },
+  { value: "trader", label: "Trader" },
+  { value: "staff", label: "Staff" },
+];
+
 export const purposeOptions = [
   { value: "For Rent", label: "For Rent" },
   { value: "Lease", label: "Lease" },
@@ -1825,6 +1834,11 @@ export const professions = [
   {
     label: "Maintenance Technician",
     value: "maintenance_technician",
+    role: "service",
+  },
+  {
+    label: "Customer Care",
+    value: "Customer Experience",
     role: "service",
   },
 ];

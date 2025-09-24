@@ -6,7 +6,7 @@ import DataTable from "@components/ui/DataTable";
 import { ErrorFormatter } from "@pages/errorPages/ErrorFormatter";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
-import { FiEye, FiTrash2, FiSlash } from "react-icons/fi";
+import { FiEye, FiTrash2, FiSlash, FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import UserProfileCard from "./UserProfileCard";
 import Avater from "@assets/img/avater.png";
@@ -26,6 +26,10 @@ const Users = () => {
   useEffect(() => {
     getPermittedRole(user, navigate);
   }, [user, navigate]);
+
+  const handleEdit = (currentUser) => {
+    navigate(`${paths.protected}/users/edit/${currentUser?.slug}`);
+  };
 
   const fetchUsers = async ({ page, limit, sortField, sortOrder, search }) => {
     try {
@@ -130,6 +134,14 @@ const Users = () => {
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex gap-2">
+          <button
+            onClick={() => handleEdit(row.original)}
+            className="p-2 text-blue-500 dark:text-gray-100 rounded hover:bg-gray-100 dark:hover:text-primary-text hover:text-gray-700"
+            title="View"
+          >
+            <FiEdit className="w-4 h-4" />
+          </button>
+
           <button
             onClick={() => handleView(row.original)}
             className="p-2 text-gray-500 dark:text-gray-100 rounded hover:bg-gray-100 dark:hover:text-primary-text hover:text-gray-700"

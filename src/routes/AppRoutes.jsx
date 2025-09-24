@@ -52,6 +52,7 @@ import UpdateCompany from "@pages/privatePages/companyPageSettings/UpdateCompany
 import VerificationDetails from "@pages/privatePages/adsManager/VerificationDetails";
 import UserProfilePublic from "@pages/publicPages/userPublicProfile/UserProfilePublic";
 import AllCompanies from "@pages/privatePages/companyPageSettings/AllCompanies";
+import EditUserByAdmin from "@pages/privatePages/users/EditUserByAdmin";
 
 const AppRoutes = () => (
   <Routes>
@@ -96,6 +97,7 @@ const AppRoutes = () => (
       {/* Users */}
       <Route path={`${paths.protected}/users`} element={<Users />} />
       <Route path={`${paths.protected}/users/add`} element={<AddUsers />} />
+      <Route path={`${paths.protected}/users/edit/:slug`} element={<EditUserByAdmin />} />
 
       {/* Lead, Inquiries and Messages */}
       <Route path={`${paths.protected}/messages`} element={<Messages />} />
