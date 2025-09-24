@@ -347,7 +347,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
 
                 <span className="text-xs text-gray-500 dark:text-gray-300 capitalize">
                   {formatTitleCase(post?.owner?.profession)}, {post?.owner?.city},{" "}
-                  {post?.owner?.state}
+                  {post?.owner?.state} State
                 </span>
               </>
             )}

@@ -11,7 +11,7 @@ const ProfessionalCard = ({ user }) => {
       {/* Top Section: Image + Info */}
       <div className="flex flex-col md:flex-row">
         {/* Profile Image */}
-        <div className="md:w-1/3 w-full h-60 md:h-auto">
+        <div className="md:w-1/3 w-full h-full sm:h-60 md:h-auto">
           <img
             src={user?.profilePic || b2}
             alt={`${user.firstName} ${user.lastName}`}
