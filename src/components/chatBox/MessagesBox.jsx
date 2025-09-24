@@ -125,7 +125,7 @@ const MessagesBox = () => {
   };
 
   return (
-    <div className="flex flex-col h-[400px] bg-gray-50 rounded-2xl shadow-md relative">
+    <div className="flex flex-col h-[400px] bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-md relative">
       <div className="flex-1 p-2 overflow-y-auto space-y-3">
         {chatMessages.map((msg, i) => (
           <div

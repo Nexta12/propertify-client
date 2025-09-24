@@ -98,7 +98,7 @@ const CompanyCard = ({ companies, onDelete }) => {
                 className="absolute top-10 right-4 bg-white dark:bg-gray-700 shadow-md rounded-lg z-50 overflow-hidden"
               >
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="block w-full text-left dark:text-gray-200 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                   onClick={() => navigate(`${paths.protected}/companies/update/${company.slug}`)}
                 >
                   Edit

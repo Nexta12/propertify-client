@@ -12,6 +12,7 @@ const ChatInput = ({ handleSend, newMessage, setNewMessage, socket, chatId, user
   // Handle emoji select
   const handleEmojiSelect = (emoji) => {
     setNewMessage((prev) => prev + emoji.native);
+    setShowEmojiPicker(false);
   };
 
   const handleTyping = (e) => {
@@ -39,7 +40,13 @@ const ChatInput = ({ handleSend, newMessage, setNewMessage, socket, chatId, user
           <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
         </div>
       )}
-      <form onSubmit={handleSend} className="flex items-center p-3 border-t bg-white rounded-b-2xl">
+      <form
+        onSubmit={(e) => {
+          handleSend(e);
+          setShowEmojiPicker(false); // 👈 close after sending
+        }}
+        className="flex items-center p-3 border-t bg-white dark:bg-gray-800 rounded-b-2xl"
+      >
         <button
           type="button"
           onClick={() => setShowEmojiPicker((prev) => !prev)}

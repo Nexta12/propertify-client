@@ -62,7 +62,7 @@ const MyProperties = () => {
 
   if (authLoading || !user) {
     return (
-      <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green font-sans items-center justify-center">
+      <div className="flex flex-col md:flex-row h-[calc(100vh-1px)] bg-bg-green dark:bg-gray-800 font-sans items-center justify-center">
         <PuffLoader height="80" width="80" radius={1} color="#4866ff" area-label="puff-loading" />
       </div>
     );

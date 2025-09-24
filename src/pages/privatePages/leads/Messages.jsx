@@ -179,7 +179,7 @@ const Messages = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 font-sans bg-white text-primary-text dark:text-gray-300">
+    <div className="p-4 md:p-8 font-sans bg-white dark:bg-gray-800 text-primary-text dark:text-gray-300">
       <DeleteModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
@@ -194,7 +194,7 @@ const Messages = () => {
       <div className="flex space-x-4 border-b mb-6">
         <button
           onClick={() => setActiveTab("received")}
-          className={`pb-2 px-4 text-sm font-medium ${
+          className={`pb-2 px-4 text-[16px] font-medium ${
             activeTab === "received"
               ? "border-b-2 border-main-green text-main-green"
               : "text-secondary dark:text-gray-300"
@@ -204,7 +204,7 @@ const Messages = () => {
         </button>
         <button
           onClick={() => setActiveTab("sent")}
-          className={`pb-2 px-4 text-sm font-medium ${
+          className={`pb-2 px-4 text-[16px] font-medium ${
             activeTab === "sent"
               ? "border-b-2 border-main-green text-main-green"
               : "text-secondary dark:text-gray-300"

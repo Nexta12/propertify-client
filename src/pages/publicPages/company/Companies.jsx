@@ -69,7 +69,7 @@ const Companies = () => {
   };
 
   return (
-    <div className=" section-container mx-auto bg-gray-100  flex flex-col lg:flex-row gap-6">
+    <div className=" section-container mx-auto bg-gray-100 dark:bg-gray-900  flex flex-col lg:flex-row gap-6">
       {/* Left Sidebar */}
       <div className="w-full lg:w-1/4  bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md self-start lg:sticky top-5 space-y-3 ">
         <h3 className="font-semibold text-lg mb-4 dark:text-gray-300 ">Search & Filters</h3>

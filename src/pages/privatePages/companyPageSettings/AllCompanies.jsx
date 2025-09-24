@@ -157,7 +157,8 @@ const AllCompanies = () => {
   ];
 
   const handleView = (company) => {
-    navigate(`${paths.companies}/${company?.slug}`);
+    const basePath = user ? `${paths.protected}/companies` : paths.companies;
+    navigate(`${basePath}/${company.slug}`);
   };
 
   const handleEdit = (company) => {

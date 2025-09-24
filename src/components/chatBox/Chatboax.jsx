@@ -142,7 +142,7 @@ const Chatboax = ({ expanded, setExpanded }) => {
           </div>
 
           {/* Footer */}
-          <div className="bg-gray-50 px-4 py-2 text-xs text-gray-500 text-center">
+          <div className="bg-gray-50 dark:bg-gray-900 dark:border-t-gray-500 px-4 py-2 text-xs text-gray-500 text-center">
             &copy; powered by{" "}
             <a href="/" className="text-main-green font-medium hover:underline">
               Nextapps
