@@ -46,9 +46,14 @@ const PropertyMainDetail = ({ property }) => {
         </h2>
       )}
 
-      <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base text-justify">
+      {/* <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base text-justify">
         {property.description}
-      </p>
+      </p> */}
+
+      <div
+        className="prose prose-lg text-[16px] mb-4  dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: property.description }}
+      />
     </div>
   );
 };

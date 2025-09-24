@@ -176,13 +176,13 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
           )}
         </div>
 
-        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
+        {/* <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
           {post.description}
-        </p>
-        {/* <div
-          className="prose prose-lg text-[15px] dark:prose-invert max-w-none"
+        </p> */}
+        <div
+          className="prose prose-lg text-[16px] dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{ __html: post.description }}
-        />  */}
+        />
 
         <div className="flex items-center space-x-4 text-sm mt-3 text-gray-700 dark:text-gray-200">
           {post.beds && (

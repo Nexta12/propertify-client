@@ -13,8 +13,8 @@ import { formatDistanceToNow } from "date-fns";
 import useAuthStore from "@store/authStore";
 import HandleGoBackBtn from "@components/goBackBtn/HandleGoBackBtn";
 import { FiMail } from "react-icons/fi";
-import { truncate } from "lodash";
 import Avater from "@assets/img/avater.png";
+import truncateHtml from "html-truncate";
 
 const UserProfile = () => {
   const { slug } = useParams();
@@ -98,9 +98,10 @@ const UserProfile = () => {
             </Link>
           </p>
 
-          <p className="mt-3 text-gray-700 dark:text-gray-200 text-sm whitespace-pre-line">
-            {userDetails?.description || "No bio available."}
-          </p>
+          <div
+            className="prose prose-lg text-[15px] dark:prose-invert max-w-none mt-3 text-gray-700 dark:text-gray-200 text-sm whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: userDetails?.description || "No bio available." }}
+          />
 
           <div className="flex items-center gap-4 mt-3 text-sm text-gray-600 dark:text-gray-300">
             {userDetails?.phone && (
@@ -180,9 +181,12 @@ const UserProfile = () => {
                   )}
 
                   <div className="p-3">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                      {truncate(property.description, { length: 50 })}
-                    </p>
+                    <div
+                      className="prose prose-lg text-[15px] dark:prose-invert max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: truncateHtml(property.description, 50),
+                      }}
+                    />
                   </div>
                 </Link>
               ))}

@@ -6,7 +6,10 @@ const AboutUsTab = ({ activeTab, company }) => {
     <>
       {activeTab === "about" && (
         <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{company?.description}</p>
+          <div
+            className="prose prose-lg dark:prose-invert max-w-none mt-3 leading-relaxed text-gray-700 dark:text-gray-200 text-[16px] whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: company?.description || "No bio available." }}
+          />
 
           <div>
             <h2 className="text-xl font-semibold mb-4">Our Team</h2>

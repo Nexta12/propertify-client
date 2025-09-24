@@ -1,5 +1,5 @@
 import { paths } from "@routes/paths";
-import { truncate } from "lodash";
+import truncateHtml from "html-truncate";
 import { useNavigate } from "react-router-dom";
 import Placeholder from "@assets/img/placeholder.webp";
 import LogoPlaceHolder from "@assets/img/your-logo.webp";
@@ -131,9 +131,13 @@ const CompanyCard = ({ companies, onDelete }) => {
             </div>
 
             {/* Description */}
-            <p className="text-sm text-gray-600 mb-4 line-clamp-2 dark:text-gray-200">
-              {truncate(company.description, { length: 150 })}
-            </p>
+
+            <div
+              className="prose prose-lg text-[15px] dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: truncateHtml(company.description, 150),
+              }}
+            />
 
             {/* View More Button */}
             <button

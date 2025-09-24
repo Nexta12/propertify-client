@@ -79,9 +79,10 @@ const UserProfileCard = ({ currentUser }) => {
         </div>
       </div>
       <div className="px-6 pb-4">
-        <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-sm whitespace-pre-line">
-          {currentUser.description}
-        </p>
+        <div
+          className="prose prose-lg text-[15px] dark:prose-invert max-w-none mt-3 text-gray-700 dark:text-gray-200 text-sm whitespace-pre-line"
+          dangerouslySetInnerHTML={{ __html: currentUser?.description || "No bio available." }}
+        />
       </div>
       <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
         <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">

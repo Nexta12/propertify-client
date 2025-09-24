@@ -19,7 +19,7 @@ const EnhancedTextarea = ({
           ["bold", "italic", "underline", "strike"], // basic styles
           [{ list: "ordered" }, { list: "bullet" }], // lists
           ["blockquote", "code-block"], // special blocks
-          ["link", "image"], // media
+          // ["link", "image"], // media
           [{ color: [] }, { background: [] }], // text & background colors
           [{ align: [] }], // alignment
           ["clean"], // remove formatting

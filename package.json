@@ -42,6 +42,7 @@
     "eslint-plugin-react": "^7.37.5",
     "esri-leaflet-geocoder": "^2.3.3",
     "framer-motion": "^12.7.4",
+    "html-truncate": "^1.2.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
