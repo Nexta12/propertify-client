@@ -7,10 +7,11 @@ import truncateHtml from "html-truncate";
 
 const ProfessionalCard = ({ user }) => {
   return (
-    <div className="bg-white dark:bg-gray-900 dark:border dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden w-full">
+    <div className="bg-white mb-5 dark:bg-gray-900 dark:border dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden w-full">
       {/* Top Section: Image + Info */}
       <div className="flex flex-col md:flex-row">
         {/* Profile Image */}
+
         <div className="md:w-1/3 w-full h-full sm:h-60 md:h-auto">
           <img
             src={user?.profilePic || b2}
@@ -24,14 +25,16 @@ const ProfessionalCard = ({ user }) => {
           {/* Header */}
           <div>
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              {user?.title} {user?.firstName} {user?.lastName}
+              <span className="dark:text-gray-100">
+                {user?.title} {user?.firstName} {user?.lastName}
+              </span>
               {user.isVerifiedUser && <RiVerifiedBadgeFill className="text-blue-500 text-lg" />}
             </h2>
 
-            <p className="text-sm text-secondary mt-1 dark:text-gray-400">
-              {formatTitleCase(user.profession)} • {user.city}, {user.state}
+            <p className="text-sm text-secondary mt-1 dark:text-gray-300">
+              {formatTitleCase(user.profession)} , {user.city}, {user.state}
             </p>
-            <p className="text-xs text-tertiary mt-1 dark:text-gray-500">
+            <p className="text-xs text-tertiary mt-1 dark:text-gray-300">
               Joined {new Date(user.createdAt).toLocaleDateString()}
             </p>
 
@@ -65,7 +68,7 @@ const ProfessionalCard = ({ user }) => {
             {user?.phone && (
               <a
                 href={`tel:${user.phone}`}
-                className=" flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-full text-sm text-white bg-tertiary hover:bg-primary transition"
+                className=" flex-1 flex items-center justify-center gap-1 px-3 py-2  rounded-full text-sm text-white bg-tertiary hover:bg-primary transition"
               >
                 <FiPhone /> Call
               </a>

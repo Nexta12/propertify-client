@@ -53,6 +53,7 @@ import VerificationDetails from "@pages/privatePages/adsManager/VerificationDeta
 import UserProfilePublic from "@pages/publicPages/userPublicProfile/UserProfilePublic";
 import AllCompanies from "@pages/privatePages/companyPageSettings/AllCompanies";
 import EditUserByAdmin from "@pages/privatePages/users/EditUserByAdmin";
+import AllProperties from "@pages/privatePages/properties/AllProperties";
 
 const AppRoutes = () => (
   <Routes>
@@ -87,6 +88,7 @@ const AppRoutes = () => (
 
       {/* Properties */}
       <Route path={`${paths.protected}/properties/all`} element={<MyProperties />} />
+      <Route path={`${paths.protected}/all-properties`} element={<AllProperties />} />
       <Route path={`${paths.protected}/properties/add`} element={<NewProperty />} />
       <Route path={`${paths.protected}/properties/edit/:slug`} element={<EditProperty />} />
 

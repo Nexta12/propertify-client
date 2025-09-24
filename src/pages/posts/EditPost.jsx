@@ -15,6 +15,7 @@ import data from "@emoji-mart/data";
 import Avater from "@assets/img/avater.png";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { paths } from "@routes/paths";
+import useCompanyStore from "@store/userCompaniesStore";
 
 const EditPost = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,7 @@ const EditPost = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const { userCompanies } = useCompanyStore();
 
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const EditPost = () => {
     description: "",
     media: [],
     existingImages: [],
+    postAs: "self",
   });
 
   useEffect(() => {
@@ -86,6 +89,13 @@ const EditPost = () => {
   const handleRemoveImage = async (imageUrl) => {
     setOpenModal(true);
     setItemToDelete(imageUrl);
+  };
+
+  const handlePostAsChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      postAs: e.target.value,
+    }));
   };
 
   const confirmDelete = async () => {
@@ -242,6 +252,49 @@ const EditPost = () => {
           accept="image/*,video/*"
           innerClass="w-4 h-4 overflow-hidden"
         />
+
+        {/* Post As Section */}
+        {userCompanies?.length > 0 && (
+          <div className="bg-white dark:bg-gray-800 text-sm space-y-4 mt-2">
+            <div className="flex flex-col gap-4">
+              {/* Post as Self */}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="postAs"
+                  value="self"
+                  checked={formData.postAs === "self"}
+                  onChange={handlePostAsChange}
+                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                />
+                <span className="text-gray-700 dark:text-gray-300">
+                  Post as Myself ({user?.firstName} {user?.lastName})
+                </span>
+              </label>
+
+              {/* Post as Companies */}
+              {userCompanies?.length > 0 && (
+                <div className="flex flex-wrap gap-2 ml-4">
+                  {userCompanies.map((company) => (
+                    <label key={company._id} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="postAs"
+                        value={company._id}
+                        checked={formData.postAs === company._id}
+                        onChange={handlePostAsChange}
+                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                      />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {company.companyName}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Footer Actions */}
         <div className="flex justify-end gap-3 pt-2 border-t border-gray-200 dark:border-gray-700">

@@ -89,7 +89,7 @@ const SearchAndFilterBar = ({
           {/* Quick Filters */}
           <div className="space-y-3">
             <div className="space-y-2">
-              <h3 className="text-[13px] text-primary-text dark:text-white font-semibold">
+              <h3 className="text-[16px] text-main-green dark:text-white font-semibold">
                 Listing Type
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -97,7 +97,7 @@ const SearchAndFilterBar = ({
                   <button
                     key={type}
                     onClick={() => toggleFilter("listingType", type)}
-                    className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                    className={`px-3 py-1 text-[16px] rounded-full transition capitalize ${
                       filters.listingType.includes(type)
                         ? "bg-main-green text-white"
                         : "bg-gray-100 text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -110,7 +110,7 @@ const SearchAndFilterBar = ({
             </div>
 
             <div className="space-y-2">
-              <label className="text-[13px] font-medium text-primary-text dark:text-white">
+              <label className="text-[16px] font-medium text-main-green dark:text-white">
                 Property Type
               </label>
               <div className="flex flex-wrap gap-2">
@@ -118,7 +118,7 @@ const SearchAndFilterBar = ({
                   <button
                     key={index}
                     onClick={() => toggleFilter("propertyType", category)}
-                    className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                    className={`px-3 py-1 text-[16px] rounded-full transition capitalize ${
                       filters.propertyType.includes(category)
                         ? "bg-main-green text-white"
                         : "bg-gray-100 text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -132,14 +132,14 @@ const SearchAndFilterBar = ({
 
             <CollapsableBox
               title="By States"
-              className="!p-0 !shadow-none !border-none pr-1 !text-[13px]"
+              className="!p-0 !shadow-none !text-main-green !border-none pr-1 !text-[16px]"
             >
               <div className="flex flex-wrap gap-2 pt-2 max-h-[100px] overflow-y-auto">
                 {NigerianStates.map((item, index) => (
                   <button
                     key={index}
                     onClick={() => toggleFilter("location", item.state)}
-                    className={`px-3 py-1 text-[13px] rounded-full transition capitalize ${
+                    className={`px-3 py-1 text-[16px] rounded-full transition capitalize ${
                       filters.location.includes(item.state)
                         ? "bg-main-green text-white"
                         : "bg-gray-100 text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"

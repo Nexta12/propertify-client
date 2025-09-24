@@ -106,10 +106,14 @@ const FileUpload = forwardRef(
           sources: ["local"],
           // sources: ["local", "url", "camera"],
           folder: "PropertifyNG",
+
           cropping: cropping,
           croppingAspectRatio: croppingAspectRatio,
+          croppingCoordinatesMode: "custom",
           croppingDefaultSelectionRatio: croppingDefaultSelectionRatio,
+          croppingShowBackButton: false,
           showAdvancedOptions: false,
+
           multiple,
           clientAllowedFormats: getFormatsFromAccept(accept),
           resourceType: "auto",

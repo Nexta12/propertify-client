@@ -9,6 +9,8 @@ import ChatInput from "@components/chatBox/ChatInput";
 import ChatMsgsContainer from "./ChatMsgsContainer";
 import useSocket from "@context/useSocket";
 import useAuthStore from "@store/authStore";
+import { getPermittedRole } from "@utils/helper";
+import { useNavigate } from "react-router-dom";
 
 const ChatDashBoard = () => {
   // Auto-scroll
@@ -19,6 +21,11 @@ const ChatDashBoard = () => {
   const socket = useSocket();
   const { user } = useAuthStore();
   const [typingUser, setTypingUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getPermittedRole(user, navigate);
+  }, [user, navigate]);
 
   useEffect(() => {
     if (!socket) return;

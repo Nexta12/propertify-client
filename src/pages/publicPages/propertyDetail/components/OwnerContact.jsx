@@ -64,7 +64,7 @@ const OwnerContact = ({ property }) => {
         {phone && (
           <a
             href={`tel:${phone}`}
-            className=" flex-1 flex items-center justify-center p-2 bg-indigo-200 dark:bg-indigo-800 text-indigo-600 dark:text-indigo-100 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-700 transition-colors text-sm"
+            className=" flex-1 flex items-center justify-center gap-1 px-3 py-2  rounded-full text-sm text-white bg-tertiary hover:bg-primary transition"
           >
             <FiPhone className="mr-2" />
             Call
@@ -75,7 +75,7 @@ const OwnerContact = ({ property }) => {
           href={`mailto:${email || import.meta.env.VITE_OFFICIAL_EMAIL}?subject=Regarding ${
             property.title
           }&body=Hello, I'm interested in...`}
-          className="flex-1 flex items-center justify-center p-2 bg-yellow-200 dark:bg-yellow-800 text-orange dark:text-yellow-200 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-700 transition-colors text-sm"
+          className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-full text-sm text-white bg-orange hover:opacity-90 transition"
         >
           <FiMail className="mr-2" />
           Email
@@ -88,7 +88,7 @@ const OwnerContact = ({ property }) => {
             href={`https://wa.me/${whatsapp}${MessageEncoder(
               ` Hi ${displayName}, I am interested in ${property.title}`
             )}`}
-            className="flex-1 flex items-center justify-center p-2 bg-green-200 dark:bg-green-800 text-green-600 dark:text-green-100 rounded-lg hover:bg-green-100 dark:hover:bg-green-700 transition-colors text-sm"
+            className=" flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-full text-sm text-white bg-main-green hover:bg-green-hover transition"
             aria-label="Chat on WhatsApp"
           >
             <FaWhatsapp className="mr-2" />

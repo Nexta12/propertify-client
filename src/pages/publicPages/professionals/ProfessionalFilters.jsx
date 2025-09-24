@@ -12,7 +12,7 @@ const ProfessionalFilters = ({ filters, setFilters, hideModal }) => {
   return (
     <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm text-sm space-y-4">
       <h2 className="text-lg font-semibold text-primary-text dark:text-white mb-4">
-        Search & Filter
+        Search Professionals
       </h2>
 
       {/* Keyword Search */}

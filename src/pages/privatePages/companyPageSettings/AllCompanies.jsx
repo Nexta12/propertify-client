@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import LogoPlaceHolder from "@assets/img/your-logo.webp";
-import { formatTitleCase } from "@utils/helper";
+import { formatTitleCase, getPermittedRole } from "@utils/helper";
 
 const AllCompanies = () => {
   const { user, validateAuth } = useAuthStore();
@@ -32,6 +32,10 @@ const AllCompanies = () => {
     };
     verifyAuth();
   }, [validateAuth]);
+
+  useEffect(() => {
+    getPermittedRole(user, navigate);
+  }, [user, navigate]);
 
   const fetchCompanies = async ({ page, limit, sortField, sortOrder, search }) => {
     try {

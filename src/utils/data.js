@@ -78,6 +78,13 @@ export const DashBoardMenuItems = [
     visibility: ["realtor", "engineer", "service", "trader"],
     type: "",
   },
+  {
+    title: "Properties",
+    icon: FiHome,
+    link: `${paths.protected}/all-properties`,
+    visibility: ["admin"],
+    type: "",
+  },
 
   {
     title: "Leads & Inquiries",
