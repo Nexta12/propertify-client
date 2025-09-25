@@ -179,10 +179,12 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
         {/* <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-[15px] !my-6">
           {post.description}
         </p> */}
-        <div
-          className="prose prose-lg text-[16px] dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.description }}
-        />
+        <Link to={`${paths.properties}/${post.slug}`}>
+          <div
+            className="prose prose-lg text-[16px] dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.description }}
+          />
+        </Link>
 
         <div className="flex items-center space-x-4 text-sm mt-3 text-gray-700 dark:text-gray-200">
           {post.beds && (
@@ -347,7 +349,7 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
 
                 <span className="text-xs text-gray-500 dark:text-gray-300 capitalize">
                   {formatTitleCase(post?.owner?.profession)}, {post?.owner?.city},{" "}
-                  {post?.owner?.state} State
+                  {post?.owner?.state}
                 </span>
               </>
             )}
@@ -394,9 +396,11 @@ const PostCard = ({ post, isProperty, onDeleteSuccess, promoType }) => {
 
       {/* Content */}
       {!isProperty && (
-        <div className="mt-3 dark:text-gray-100">
-          <p>{post.description}</p>
-        </div>
+        <Link to={`${paths.properties}/${post.slug}`}>
+          <div className="mt-3 dark:text-gray-100">
+            <p>{post.description}</p>
+          </div>
+        </Link>
       )}
 
       {renderMedia()}

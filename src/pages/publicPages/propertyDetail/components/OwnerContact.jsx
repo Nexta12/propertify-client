@@ -6,6 +6,7 @@ import { paths } from "@routes/paths";
 import { formatTitleCase, MessageEncoder } from "@utils/helper";
 import LogoPlaceHolder from "@assets/img/your-logo.webp";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import HeaderTitle from "@components/ui/HeaderTitle";
 
 const OwnerContact = ({ property }) => {
   const isCompany = !!property?.postAs; // check if postAs is set
@@ -35,21 +36,22 @@ const OwnerContact = ({ property }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
       {/* Header with avatar + name */}
-      <div className="flex items-center mb-4">
+      <HeaderTitle titleText="Meet The Seller" className="text-center" />
+      <div className="flex flex-col items-center mb-4">
         <img
           src={profileImage}
           alt={displayName}
-          className="w-12 h-12 rounded-full object-cover mr-3"
+          className="w-full h-auto  object-cover rounded-sm object-fix mr-3"
         />
 
         <div>
-          <h4 className="font-medium text-gray-800 dark:text-gray-100 flex items-center">
+          <h4 className="font-medium text-gray-800 mt-4 dark:text-gray-100 flex items-center ">
             {displayName}
             {isVerified && (
               <RiVerifiedBadgeFill className="ml-1 text-blue-500" title="Duly Verified user" />
             )}
           </h4>
-          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{displaySubText}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{displaySubText} </p>
           <Link
             to={profileLink}
             className="text-[12px] text-blue-500 dark:text-blue-400 capitalize italic"
